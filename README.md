@@ -1,4 +1,4 @@
-# app_ciudadano_vc
+# Aplicacion Mobil Ciudadado: Vamos en bici
 
 Developer: Maximiliano Alzugaray
 
@@ -27,3 +27,8 @@ Esta paleta de colores esta bazada en el logo
 - light blue: 00b8ea
 - green: 94c400
 - white: ffffff
+
+## Notas:
+
+Otras librerias:
+selector de pais: https://pub.dev/packages/country_calling_code_picker

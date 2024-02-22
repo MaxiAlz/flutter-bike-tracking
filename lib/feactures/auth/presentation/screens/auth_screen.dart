@@ -14,9 +14,8 @@ class AuthScreen extends StatelessWidget {
     final titleStyle = Theme.of(context).textTheme.titleLarge;
     final subTitleStyle = Theme.of(context).textTheme.titleMedium;
 
-    final textController = TextEditingController(text: '+54');
-    // textController.selection =
-    //     const TextSelection.collapsed(offset: '+54'.length);
+    final textController = TextEditingController();
+
     final focusNode = FocusNode();
 
     return Scaffold(
@@ -64,11 +63,9 @@ class AuthScreen extends StatelessWidget {
 
 class _SendPhoneNumberButton extends ConsumerWidget {
   const _SendPhoneNumberButton({
-    /*  required this.maskFormatter, */
     required this.focusNode,
   });
 
-  /* final MaskTextInputFormatter maskFormatter; */
   final FocusNode focusNode;
 
   @override
@@ -76,7 +73,7 @@ class _SendPhoneNumberButton extends ConsumerWidget {
     return CustomFilledButtom(
       text: 'Solicitar codigo',
       onPressed: () {
-        ref.read(authFormProvider.notifier).onSubmitPhoneNumber();
+        ref.read(authFormProvider.notifier).onSubmitPhoneNumber(context);
         focusNode.unfocus();
       },
     );
@@ -85,7 +82,7 @@ class _SendPhoneNumberButton extends ConsumerWidget {
 
 class _InputPhoneNumber extends ConsumerWidget {
   final maskFormatter = MaskTextInputFormatter(
-      mask: '+## (###) #-##-##-##',
+      mask: '(###) #-##-##-##',
       filter: {"#": RegExp(r'[0-9]')},
       type: MaskAutoCompletionType.lazy);
 
@@ -95,16 +92,19 @@ class _InputPhoneNumber extends ConsumerWidget {
   _InputPhoneNumber({
     required this.textController,
     required this.focusNode,
-  }) {
+  }) /* {
     textController.selection = const TextSelection.collapsed(offset: 3);
-  }
+  } */
+  ;
 
   @override
   Widget build(BuildContext context, ref) {
+    final authForm = ref.watch(authFormProvider);
+
     return GestureDetector(
-      onTap: () {
-        focusNode.unfocus();
-      },
+      // onTap: () {
+      //   focusNode.unfocus();
+      // },
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
         child: TextFormField(
@@ -120,7 +120,10 @@ class _InputPhoneNumber extends ConsumerWidget {
             textController.clear();
           },
           decoration: InputDecoration(
-              hintText: '+54 (383) 4-12-34-56',
+              errorText: authForm.isPhoneNumberSubmitted
+                  ? authForm.phoneNumber.errorMessage
+                  : null,
+              hintText: '(383) 4-12-34-56',
               prefixIcon: const Icon(Icons.phone),
               hintStyle: const TextStyle(fontSize: 18),
               labelText: 'Ingrese su numero',
