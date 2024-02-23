@@ -1,4 +1,5 @@
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_form_provider.dart';
+import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/enter_code_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/widgets/Info_text.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class EnterCodeScreen extends ConsumerWidget {
     final focusNode = FocusNode();
     final maskFormatter = MaskTextInputFormatter(
         mask: '##-##-##-##',
-        // filter: {"#": RegExp(r'[0-9]')},
+        filter: {"#": RegExp(r'[0-9]')},
         type: MaskAutoCompletionType.lazy);
 
     return Scaffold(
@@ -60,11 +61,13 @@ class EnterCodeScreen extends ConsumerWidget {
             const SizedBox(height: 40),
             CustomFilledButtom(
               text: 'Validar mi codigo',
-              onPressed: () {
-                ref.read(authFormProvider.notifier).onSubmitVerificationCode();
-                focusNode.unfocus();
-              },
+              onPressed:
+                  ref.read(enterCodePRovider.notifier).onSubmitValidateCode,
             ),
+            // FilledButton(
+            //     onPressed:
+            //         ref.read(enterCodePRovider.notifier).onSubmitValidateCode,
+            //     child: Text('maver'))
           ],
         ),
       ),
@@ -84,8 +87,10 @@ class _InputVerificationCode extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authForm = ref.watch(authFormProvider);
+  Widget build(BuildContext context, ref) {
+    // final authForm = ref.watch(authFormProvider);
+
+    final enterCodeForm = ref.watch(enterCodePRovider);
 
     return GestureDetector(
       child: SizedBox(
@@ -95,19 +100,18 @@ class _InputVerificationCode extends ConsumerWidget {
           onTapOutside: (e) {
             focusNode.unfocus();
           },
-          // Utiliza el TextEditingController recibido como argumento
           controller: textController,
           focusNode: focusNode,
-          onChanged: (value) {
-            ref.read(authFormProvider.notifier).onVerificationCodeChange(value);
-          },
           keyboardType: TextInputType.number,
+          onChanged: /*  (value) {}, */
+              // ref.read(authFormProvider.notifier).onVerificationCodeChange,
+              ref.read(enterCodePRovider.notifier).onChangeValidateCode,
           onFieldSubmitted: (value) {
             textController.clear();
           },
           decoration: InputDecoration(
-            errorText: authForm.isVerificationCodeSubmitted
-                ? authForm.verificationCode.errorMessage
+            errorText: enterCodeForm.isCodeSubmitted
+                ? enterCodeForm.validateCode.errorMessage
                 : null,
             hintText: '_ _ - _ _ -  _ _',
             prefixIcon: const Icon(Icons.numbers),
