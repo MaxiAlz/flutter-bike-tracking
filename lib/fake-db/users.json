@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "email": "usuario1@example.com",
+    "name": "Juan",
+    "lastName": "Pérez",
+    "token": "token_usuario1",
+    "gender": "male",
+    "dni": 12345678,
+    "phoneNumber": 1234567899,
+    "isActive": true,
+    "birthDay": "1990-01-01",
+    "profileImage": "/path/to/profile_image1.png",
+    "dniFrontImage": "/path/to/dni_front_image1.png",
+    "dniBackImage": "/path/to/dni_back_image1.png"
+  },
+  {
+    "id": "2",
+    "email": "usuario2@example.com",
+    "name": "María",
+    "lastName": "Gómez",
+    "token": "token_usuario2",
+    "gender": "female",
+    "dni": 87654321,
+    "phoneNumber": 9876543211,
+    "isActive": true,
+    "birthDay": "1995-05-15",
+    "profileImage": "/path/to/profile_image2.png",
+    "dniFrontImage": "/path/to/dni_front_image2.png",
+    "dniBackImage": "/path/to/dni_back_image2.png"
+  },
+  {
+    "id": "3",
+    "email": "usuario3@example.com",
+    "name": "Pedro",
+    "lastName": "García",
+    "token": "token_usuario3",
+    "gender": "male",
+    "dni": 55555555,
+    "phoneNumber": 5555555555,
+    "isActive": false,
+    "birthDay": "1985-12-10",
+    "profileImage": "/path/to/profile_image3.png",
+    "dniFrontImage": null,
+    "dniBackImage": null
+  }
+]
