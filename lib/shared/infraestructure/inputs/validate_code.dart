@@ -34,12 +34,6 @@ class ValidateCode extends FormzInput<String, ValidateCodeError> {
       return ValidateCodeError.invalidFormat;
     }
 
-    // Additional validation if necessary, e.g., to check if it contains only digits.
-
     return null;
   }
 }
-
-
-  // final phoneNumberWithoutMask =
-  //       state.phoneNumber.value.replaceAll(RegExp(r'[^0-9]'), '');

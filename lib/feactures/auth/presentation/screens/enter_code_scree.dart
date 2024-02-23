@@ -60,10 +60,12 @@ class EnterCodeScreen extends ConsumerWidget {
                     '¿No recibiste ningun codigo? Vuelve a escribir tu numero'),
             const SizedBox(height: 40),
             CustomFilledButtom(
-              text: 'Validar mi codigo',
-              onPressed:
-                  ref.read(enterCodePRovider.notifier).onSubmitValidateCode,
-            ),
+                text: 'Validar mi codigo',
+                onPressed: () {
+                  ref
+                      .read(enterCodePRovider.notifier)
+                      .onSubmitValidateCode(context);
+                }),
             // FilledButton(
             //     onPressed:
             //         ref.read(enterCodePRovider.notifier).onSubmitValidateCode,
@@ -88,8 +90,6 @@ class _InputVerificationCode extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    // final authForm = ref.watch(authFormProvider);
-
     final enterCodeForm = ref.watch(enterCodePRovider);
 
     return GestureDetector(

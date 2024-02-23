@@ -1,9 +1,11 @@
 import 'package:app_ciudadano_vc/shared/infraestructure/inputs/validate_code.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
+import 'package:go_router/go_router.dart';
 
 final enterCodePRovider =
-    StateNotifierProvider<EnterCodeNotifier, EnterCodeState>(
+    StateNotifierProvider.autoDispose<EnterCodeNotifier, EnterCodeState>(
         (ref) => EnterCodeNotifier());
 
 class EnterCodeState {
@@ -48,13 +50,22 @@ class EnterCodeNotifier extends StateNotifier<EnterCodeState> {
         isCodeValid: Formz.validate([newValidateCode, state.validateCode]));
   }
 
-  onSubmitValidateCode() {
+  onSubmitValidateCode(BuildContext context) {
     _touchedValidateCodeField();
     if (!state.isCodeValid) return;
     final validateNumberWithoutMask =
         state.validateCode.value.replaceAll(RegExp(r'[^0-9]'), '');
 
     print('=>>>>>>>>>>>> $validateNumberWithoutMask');
+
+    const userAutenticatedtrue = true;
+
+
+    if (userAutenticatedtrue) {
+      context.push('/home');
+    } /* else {
+      context.push('/register');
+    } */
   }
 
   _touchedValidateCodeField() {
