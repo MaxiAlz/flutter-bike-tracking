@@ -15,53 +15,28 @@ class MenuItems {
 
 const appMenuItems = <MenuItems>[
   MenuItems(
-      title: 'Riverpod Counter',
-      subtittle: 'introduccion a riverpod',
-      link: '/counter',
-      icon: Icons.add),
+      title: 'Mi cuenta',
+      subtittle: '',
+      link: '/my-account',
+      icon: Icons.account_circle_outlined),
   MenuItems(
-      title: 'Botones',
-      subtittle: 'varios Botones',
-      link: '/buttons',
-      icon: Icons.smart_button_outlined),
+      title: 'Mis viajes',
+      subtittle: 'Revisa los viajes que realizaste',
+      link: '/my-trips',
+      icon: Icons.pedal_bike_outlined),
   MenuItems(
-      title: 'Tarjetas',
-      subtittle: 'Contenedor estilizado',
-      link: '/cards',
-      icon: Icons.credit_card),
+      title: 'Historial de reportes',
+      subtittle: 'Mis reportes ciudadanos.',
+      link: '/my-reports',
+      icon: Icons.report_outlined),
   MenuItems(
-      title: 'Progress Indicator',
-      subtittle: 'indicador de progreso dinamico',
-      link: '/progress',
-      icon: Icons.refresh_rounded),
+      title: 'Terminos y condiciones',
+      subtittle: '',
+      link: '/terms-and-conditions',
+      icon: Icons.comment_bank_outlined),
   MenuItems(
-      title: 'Snackbar y dialogos',
-      subtittle: 'indicadores en pantalla',
-      link: '/snackbar',
-      icon: Icons.info_outline),
-  MenuItems(
-      title: 'animated',
-      subtittle: 'animacion en pantalla',
-      link: '/animated',
-      icon: Icons.move_up_outlined),
-  MenuItems(
-      title: 'ui-controls',
-      subtittle: 'controles de pantalla',
-      link: '/controls',
-      icon: Icons.noise_control_off_sharp),
-  MenuItems(
-      title: 'tutorial',
-      subtittle: 'Tutorial de la aplicacion',
-      link: '/tutorial',
-      icon: Icons.accessible_rounded),
-  MenuItems(
-      title: 'infinite scroll',
-      subtittle: 'Listas infinitas y baja para recargar',
-      link: '/infiniteScroll',
-      icon: Icons.list_alt_outlined),
-  MenuItems(
-      title: 'Theme changer',
-      subtittle: 'Cambiar el tema de la aplicacion',
-      link: '/themeChanger',
-      icon: Icons.change_circle_outlined),
+      title: 'Ayuda',
+      subtittle: '',
+      link: '/help',
+      icon: Icons.help_outline_outlined),
 ];
