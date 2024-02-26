@@ -6,13 +6,24 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final colors = Theme.of(context).colorScheme;
     final scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
         body: _HomeView(),
         appBar: AppBar(
-          
-            // backgroundColor: Colors.blue,
+          title: const Text(
+            '¡Hola, Usuario!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 25,
             ),
+          ),
+          actions: [
+            IconButton(onPressed: () {}, icon: Icon(Icons.notifications))
+          ],
+        ),
+
+        // floatingActionButton: Icon(Icons.menu_book_outlined),
         drawer: SideMenuDrawer(
           scaffoldKey: scaffoldKey,
         ));
@@ -26,11 +37,8 @@ class _HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-      child: Center(
-        child: Text('adasdasd'),
-      ),
+    return Center(
+      child: Text('Home screen'),
     );
   }
 }

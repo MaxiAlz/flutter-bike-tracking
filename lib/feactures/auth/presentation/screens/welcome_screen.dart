@@ -34,7 +34,7 @@ class WelcomeScreen extends StatelessWidget {
               child: FadeIn(
                 duration: const Duration(milliseconds: 100),
                 child: Image.asset(
-                  'assets/images/sustentable-01.png',
+                  'assets/images/capital-sustentable.png',
                 ),
               ),
             ),

@@ -8,7 +8,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 // #3 crear instancia del proveedor para usarlo en el widget
 final authFormProvider =
-    StateNotifierProvider<AuthFormNotifier, AuthFormState>((ref) {
+    StateNotifierProvider.autoDispose<AuthFormNotifier, AuthFormState>((ref) {
 // usar esto y pasar como argumento cuadno se tenga la llamada a la api
   // final authUserCallback = ref.watch(authProvider.notifier).loginUser;
 
