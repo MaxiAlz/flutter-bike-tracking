@@ -6,13 +6,21 @@ enum PhoneNumberError { empty, invalidFormat }
 // Extend FormzInput and provide the input type and error type.
 class PhoneNumber extends FormzInput<String, PhoneNumberError> {
   // Define the length of the phone number
-  static const int phoneNumberLength = 10;
+  static const int phoneNumberLength = 12;
+
+  static const String defaultCountryCode = '+54';
 
   // Call super.pure to represent an unmodified form input.
   const PhoneNumber.pure() : super.pure('');
 
+  const PhoneNumber.dirty(String value) : super.dirty(value);
+
+  factory PhoneNumber.withDefaultCountryCode() {
+    return const PhoneNumber.dirty(defaultCountryCode);
+  }
   // Call super.dirty to represent a modified form input.
-  const PhoneNumber.dirty(super.value) : super.dirty();
+  // const PhoneNumber.dirty(super.value) : super.dirty();
+// const PhoneNumber.dirty(String value) : super.dirty(value != '' ? value : defaultCountryCode);
 
   String? get errorMessage {
     if (isValid || isPure) return null;

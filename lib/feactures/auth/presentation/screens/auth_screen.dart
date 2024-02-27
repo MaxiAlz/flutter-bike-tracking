@@ -82,7 +82,7 @@ class _SendPhoneNumberButton extends ConsumerWidget {
 
 class _InputPhoneNumber extends ConsumerWidget {
   final maskFormatter = MaskTextInputFormatter(
-      mask: '(###) #-##-##-##',
+      mask: '+## (###) #-##-##-##',
       filter: {"#": RegExp(r'[0-9]')},
       type: MaskAutoCompletionType.lazy);
 
@@ -100,7 +100,12 @@ class _InputPhoneNumber extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final authForm = ref.watch(authFormProvider);
+    // textController.text = '+54';
+    if (textController.text.isEmpty) {
+      textController.text = '+54';
+    }
 
+    print('======>>>>>>>>>>> $textController');
 
     return GestureDetector(
       // onTap: () {
@@ -120,10 +125,12 @@ class _InputPhoneNumber extends ConsumerWidget {
           onFieldSubmitted: (value) {
             textController.clear();
           },
+          // initialValue: '+54',
           decoration: InputDecoration(
               errorText: authForm.isPhoneNumberSubmitted
                   ? authForm.phoneNumber.errorMessage
                   : null,
+              // prefixText: '+54',
               hintText: '(383) 4-12-34-56',
               prefixIcon: const Icon(Icons.phone),
               hintStyle: const TextStyle(fontSize: 18),
