@@ -1,18 +1,26 @@
-import 'package:app_ciudadano_vc/feactures/auth/presentation/screens/auth_screen.dart';
-import 'package:app_ciudadano_vc/feactures/auth/presentation/screens/enter_code_scree.dart';
-import 'package:app_ciudadano_vc/feactures/auth/presentation/screens/welcome_screen.dart';
-import 'package:app_ciudadano_vc/feactures/home/presentation/screens/home_screen.dart';
+import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
 import 'package:go_router/go_router.dart';
 
-final appRouter = GoRouter(initialLocation: '/welcome', routes: [
+final appRouter = GoRouter(initialLocation: '/register', routes: [
   ///* Auth Routes
   GoRoute(
     path: '/welcome',
     builder: (context, state) => const WelcomeScreen(),
   ),
+
   GoRoute(
     path: '/auth',
     builder: (context, state) => const AuthScreen(),
+  ),
+
+  GoRoute(
+    path: '/register',
+    builder: (context, state) => const RegisterScreen(),
+  ),
+
+  GoRoute(
+    path: '/enter-code',
+    builder: (context, state) => const EnterCodeScreen(),
   ),
 
   /// Home Routes
@@ -20,8 +28,4 @@ final appRouter = GoRouter(initialLocation: '/welcome', routes: [
     path: '/home',
     builder: (context, state) => const HomeScreen(),
   ),
-  GoRoute(
-    path: '/enter-code',
-    builder: (context, state) => const EnterCodeScreen(),
-  )
 ]);

@@ -23,4 +23,6 @@ class AppTheme {
               fontWeight: FontWeight.normal,
               fontSize: 15,
               color: primaryColor)));
+
+      
 }
