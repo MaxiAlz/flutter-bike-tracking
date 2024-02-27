@@ -36,9 +36,10 @@ class AuthFormState {
     this.isPhoneNumberValid = false,
     this.isVerificationCodeValid = false,
     this.errorMessage,
-    this.phoneNumber = const PhoneNumber.pure(),
+    // this.phoneNumber = const PhoneNumber.pure(),
+    PhoneNumber? phoneNumber,
     this.verificationCode = const ValidateCode.pure(),
-  });
+  }) : phoneNumber = phoneNumber ?? PhoneNumber.withDefaultCountryCode();
 
   AuthFormState copyWith({
     bool? isLoading,
@@ -68,8 +69,10 @@ class AuthFormState {
 // #2 notificador del estado del formualrio
 class AuthFormNotifier extends StateNotifier<AuthFormState> {
   // final Function(String, String) authUserCallback;
-  AuthFormNotifier(/* {required this.authUserCallback} */)
-      : super(AuthFormState());
+  // AuthFormNotifier(/* {required this.authUserCallback} */)
+  //     : super(AuthFormState());
+  AuthFormNotifier()
+      : super(AuthFormState(phoneNumber: const PhoneNumber.pure()));
 
   final maskFormatter = MaskTextInputFormatter();
 
