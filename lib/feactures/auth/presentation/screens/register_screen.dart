@@ -15,12 +15,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: [
-        Column(
-          children: [
-            Expanded(
-                child: PageView(
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 20,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Image.asset('assets/images/vamos-en-bici-01.png', width: 250),
+          Expanded(
+            child: PageView(
               controller: pageController,
               onPageChanged: (value) {
                 setState(() {
@@ -32,13 +37,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 NumberIdentificationForm(),
                 UploadFiles()
               ],
-            )),
-          ],
-        ),
-        _NavigateButtons(
-            currentPageIndex: currentPageIndex, pageController: pageController),
-      ],
-    ));
+            ),
+          ),
+          _NavigateButtons(
+              currentPageIndex: currentPageIndex,
+              pageController: pageController),
+        ],
+      ),
+    );
   }
 }
 
