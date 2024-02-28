@@ -35,8 +35,8 @@ dependencies:
   flutter_riverpod: ^2.4.10
   formz: ^0.6.1
   go_router: ^13.2.0
+  image_picker: ^1.0.7
   mask_text_input_formatter: ^2.9.0
-  # riverpod: ^2.5.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
