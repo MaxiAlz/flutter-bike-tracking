@@ -18,9 +18,6 @@ class PhoneNumber extends FormzInput<String, PhoneNumberError> {
   factory PhoneNumber.withDefaultCountryCode() {
     return const PhoneNumber.dirty(defaultCountryCode);
   }
-  // Call super.dirty to represent a modified form input.
-  // const PhoneNumber.dirty(super.value) : super.dirty();
-// const PhoneNumber.dirty(String value) : super.dirty(value != '' ? value : defaultCountryCode);
 
   String? get errorMessage {
     if (isValid || isPure) return null;
