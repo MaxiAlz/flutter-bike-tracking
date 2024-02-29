@@ -7,7 +7,7 @@ class VBCustomTextInput extends StatelessWidget {
   final String hintText;
   final String labelText;
   final TextInputType? keyboardType;
-  final Function(String)? onChanged;
+  final void Function(String)? onChanged;
   final String? errorMessage;
   final String? Function(String?)? validator;
 

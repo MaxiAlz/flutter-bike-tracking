@@ -1,18 +1,18 @@
+import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/register_form_provider.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class PersonalInformationForm extends StatelessWidget {
-  // final TextEditingController textController;
-  // final FocusNode focusNode;
+class PersonalInformationForm extends ConsumerWidget {
   const PersonalInformationForm({
     super.key,
-    // required this.focusNode,
-    // required this.textController,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final registerForm = ref.watch(registerFormProvider);
+
     final birthDaymaskFormatter = MaskTextInputFormatter(
         mask: '## / ## / ####',
         filter: {"#": RegExp(r'[0-9]')},
@@ -28,59 +28,21 @@ class PersonalInformationForm extends StatelessWidget {
             'Ingresa tus datos',
             style: titleStyle,
           ),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          // TextFormField(
-          //   decoration: InputDecoration(
-          //       border:
-          //           OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          //       hintText: 'Nombre',
-          //       labelText: 'Nombre'),
-          // ),
-          const VBCustomTextInput(
+          const SizedBox(
+            height: 20,
+          ),
+          VBCustomTextInput(
             hintText: 'Nombre',
             labelText: 'Nombre',
+            errorMessage: registerForm.name.errorMessage,
+            onChanged: ref.read(registerFormProvider.notifier).onNameChange,
           ),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          // TextFormField(
-          //   decoration: InputDecoration(
-          //       border:
-          //           OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          //       hintText: 'Apellido',
-          //       labelText: 'Apellido'),
-          // ),
           const VBCustomTextInput(hintText: 'Apellido', labelText: 'Apellido'),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          // TextFormField(
-          //   decoration: InputDecoration(
-          //       border:
-          //           OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          //       hintText: 'Correo electronico',
-          //       labelText: 'Correo electronico'),
-          // ),
           const VBCustomTextInput(
             hintText: 'Correo electronico',
             labelText: 'Correo electronico',
             keyboardType: TextInputType.emailAddress,
           ),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          // TextFormField(
-          //   keyboardType: TextInputType.datetime,
-          //   inputFormatters: [birthDaymaskFormatter],
-          //   decoration: InputDecoration(
-          //     border:
-          //         OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          //     hintText: 'Fecha de nacimiento',
-          //     labelText: 'Fecha de nacimiento',
-          //   ),
-          // ),
           VBCustomTextInput(
             hintText: '01 / 10 / 1998',
             labelText: 'Fecha de nacimiento',
