@@ -15,34 +15,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Image.asset('assets/images/vamos-en-bici-01.png', width: 250),
-          Expanded(
-            child: PageView(
-              controller: pageController,
-              onPageChanged: (value) {
-                setState(() {
-                  currentPageIndex = value;
-                });
-              },
-              children: const [
-                PersonalInformationForm(),
-                NumberIdentificationForm(),
-                UploadFiles()
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-          ),
-          _NavigateButtons(
-              currentPageIndex: currentPageIndex,
-              pageController: pageController),
-        ],
+            const SizedBox(
+              height: 20,
+            ),
+            Image.asset('assets/images/vamos-en-bici-01.png', width: 250),
+            SizedBox(
+              height: 450,
+              child: PageView(
+                controller: pageController,
+                onPageChanged: (value) {
+                  setState(() {
+                    currentPageIndex = value;
+                  });
+                },
+                children: const [
+                  PersonalInformationForm(),
+                  NumberIdentificationForm(),
+                  UploadFiles()
+                ],
+              ),
+            ),
+            _NavigateButtons(
+                currentPageIndex: currentPageIndex,
+                pageController: pageController),
+          ],
+        ),
       ),
     );
   }
@@ -50,7 +53,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
 class _NavigateButtons extends StatelessWidget {
   const _NavigateButtons({
-    super.key,
     required this.currentPageIndex,
     required this.pageController,
   });
@@ -79,18 +81,20 @@ class _NavigateButtons extends StatelessWidget {
           ),
           const SizedBox(width: 16), // Espacio entre botones
           Expanded(
-            flex: 1,
-            child: ElevatedButton(
-              onPressed: currentPageIndex < 2
-                  ? () {
-                      pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease);
-                    }
-                  : null,
-              child: const Text('Siguiente'),
-            ),
-          ),
+              flex: 1,
+              child: currentPageIndex < 2
+                  ? ElevatedButton(
+                      onPressed: currentPageIndex < 2
+                          ? () {
+                              pageController.nextPage(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.ease);
+                            }
+                          : null,
+                      child: const Text('Siguiente'),
+                    )
+                  : FilledButton(
+                      onPressed: () {}, child: const Text('Finalizar'))),
         ],
       ),
     );
