@@ -1,4 +1,6 @@
+import 'package:app_ciudadano_vc/shared/widgets/inputs/custom_text_input.dart';
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class NumberIdentificationForm extends StatelessWidget {
   const NumberIdentificationForm({
@@ -7,6 +9,10 @@ class NumberIdentificationForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dniMaskFormatter = MaskTextInputFormatter(
+        mask: '##.###.###',
+        filter: {"#": RegExp(r'[0-9]')},
+        type: MaskAutoCompletionType.lazy);
     final titleStyle = Theme.of(context).textTheme.titleLarge;
     final subtitleStyle = Theme.of(context).textTheme.titleMedium;
     return Padding(
@@ -22,16 +28,23 @@ class NumberIdentificationForm extends StatelessWidget {
             'Ingresa tus datos para hacer la verificacion digital',
             style: subtitleStyle,
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          TextFormField(
-            decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                hintText: 'DNI',
-                labelText: 'DNI'),
+          // const SizedBox(
+          //   height: 20,
+          // ),
+          // TextFormField(
+          //   inputFormatters: [dniMaskFormatter],
+          //   decoration: InputDecoration(
+          //       border:
+          //           OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+          //       hintText: '12.345.678',
+          //       labelText: 'DNI'),
+          //   keyboardType: TextInputType.number,
+          // ),
+          VBCustomTextInput(
+            hintText: '12.345.678',
+            labelText: 'DNI',
             keyboardType: TextInputType.number,
+            inputFormatters: [dniMaskFormatter],
           ),
           const SizedBox(
             height: 20,

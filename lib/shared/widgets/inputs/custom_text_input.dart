@@ -7,6 +7,9 @@ class VBCustomTextInput extends StatelessWidget {
   final String hintText;
   final String labelText;
   final TextInputType? keyboardType;
+  final Function(String)? onChanged;
+  final String? errorMessage;
+  final String? Function(String?)? validator;
 
   const VBCustomTextInput(
       {super.key,
@@ -14,7 +17,10 @@ class VBCustomTextInput extends StatelessWidget {
       this.inputFormatters,
       required this.hintText,
       required this.labelText,
-      this.keyboardType});
+      this.keyboardType,
+      this.onChanged,
+      this.validator,
+      this.errorMessage});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +30,13 @@ class VBCustomTextInput extends StatelessWidget {
           height: 20,
         ),
         TextFormField(
+          onChanged: onChanged,
+          validator: validator,
           inputFormatters: inputFormatters,
           decoration: InputDecoration(
+              errorText: errorMessage,
+              errorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red)),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               hintText: hintText,

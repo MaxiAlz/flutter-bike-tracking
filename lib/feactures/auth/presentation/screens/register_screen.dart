@@ -65,7 +65,7 @@ class _NavigateButtons extends StatelessWidget {
     return Container(
       alignment: Alignment.bottomCenter / 1.1,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
             child: ElevatedButton(
@@ -76,7 +76,8 @@ class _NavigateButtons extends StatelessWidget {
                           curve: Curves.ease);
                     }
                   : null,
-              child: const Text('Anterior'),
+              child: const Row(
+                  children: [Icon(Icons.arrow_back), Text('Anterior')]),
             ),
           ),
           const SizedBox(width: 16), // Espacio entre botones
@@ -84,6 +85,7 @@ class _NavigateButtons extends StatelessWidget {
               flex: 1,
               child: currentPageIndex < 2
                   ? ElevatedButton(
+                      autofocus: true,
                       onPressed: currentPageIndex < 2
                           ? () {
                               pageController.nextPage(
@@ -91,10 +93,19 @@ class _NavigateButtons extends StatelessWidget {
                                   curve: Curves.ease);
                             }
                           : null,
-                      child: const Text('Siguiente'),
+                      child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text('Siguiente'),
+                            Icon(Icons.arrow_forward)
+                          ]),
                     )
                   : FilledButton(
-                      onPressed: () {}, child: const Text('Finalizar'))),
+                      onPressed: () {},
+                      child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [Text('Finalizar'), Icon(Icons.check)]),
+                    )),
         ],
       ),
     );
