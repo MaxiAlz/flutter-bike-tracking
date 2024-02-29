@@ -1,5 +1,4 @@
 import 'package:app_ciudadano_vc/shared/infraestructure/inputs/inputs.dart';
-import 'package:app_ciudadano_vc/shared/infraestructure/inputs/validate_code.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';

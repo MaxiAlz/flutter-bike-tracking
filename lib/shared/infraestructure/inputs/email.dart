@@ -9,7 +9,7 @@ class EmailInput extends FormzInput<String, EmailInputError> {
   const EmailInput.pure() : super.pure('');
 
   // Call super.dirty to represent a modified form input.
-  const EmailInput.dirty({String value = ''}) : super.dirty(value);
+  const EmailInput.dirty(String value) : super.dirty(value);
 
   // Override validator to handle validating a given input value.
   @override

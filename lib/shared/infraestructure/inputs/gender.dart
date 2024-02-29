@@ -2,9 +2,9 @@ import 'package:formz/formz.dart';
 
 enum GenderValidationError { empty, validFormat }
 
-class Gender extends FormzInput<String, GenderValidationError> {
-  const Gender.pure() : super.pure('');
-  const Gender.dirty([String value = '']) : super.dirty(value);
+class GenderInput extends FormzInput<String, GenderValidationError> {
+  const GenderInput.pure() : super.pure('');
+  const GenderInput.dirty([String value = '']) : super.dirty(value);
 
   @override
   GenderValidationError? validator(String value) {

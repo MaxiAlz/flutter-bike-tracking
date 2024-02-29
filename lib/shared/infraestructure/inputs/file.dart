@@ -2,9 +2,9 @@ import 'package:formz/formz.dart';
 
 enum FileValidationError { empty }
 
-class File extends FormzInput<String, FileValidationError> {
-  const File.pure() : super.pure('');
-  const File.dirty([String value = '']) : super.dirty(value);
+class FileInput extends FormzInput<String, FileValidationError> {
+  const FileInput.pure() : super.pure('');
+  const FileInput.dirty([String value = '']) : super.dirty(value);
 
   @override
   FileValidationError? validator(String value) {

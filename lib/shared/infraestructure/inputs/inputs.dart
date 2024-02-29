@@ -1,1 +1,9 @@
+export 'package:app_ciudadano_vc/shared/infraestructure/inputs/date_of_birth.dart';
+export 'package:app_ciudadano_vc/shared/infraestructure/inputs/email.dart';
+export 'package:app_ciudadano_vc/shared/infraestructure/inputs/file.dart';
+export 'package:app_ciudadano_vc/shared/infraestructure/inputs/gender.dart';
+export 'package:app_ciudadano_vc/shared/infraestructure/inputs/identification_number.dart';
+export 'package:app_ciudadano_vc/shared/infraestructure/inputs/lastname.dart';
+export 'package:app_ciudadano_vc/shared/infraestructure/inputs/name.dart';
 export 'package:app_ciudadano_vc/shared/infraestructure/inputs/phone_number.dart';
+export 'package:app_ciudadano_vc/shared/infraestructure/inputs/validate_code.dart';

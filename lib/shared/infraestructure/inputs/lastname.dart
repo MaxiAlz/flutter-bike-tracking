@@ -7,7 +7,7 @@ class LastnameInput extends FormzInput<String, LastnameInputError> {
   const LastnameInput.pure() : super.pure('');
 
   // Call super.dirty to represent a modified form input.
-  const LastnameInput.dirty({String value = ''}) : super.dirty(value);
+  const LastnameInput.dirty(String value) : super.dirty(value);
 
   // Override validator to handle validating a given input value.
   @override
