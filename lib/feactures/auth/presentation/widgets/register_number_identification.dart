@@ -1,20 +1,27 @@
+import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/register_form_provider.dart';
 import 'package:app_ciudadano_vc/shared/widgets/inputs/custom_text_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class NumberIdentificationForm extends StatelessWidget {
+class NumberIdentificationForm extends ConsumerWidget {
   const NumberIdentificationForm({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final registerForm = ref.watch(registerFormProvider);
     final dniMaskFormatter = MaskTextInputFormatter(
         mask: '##.###.###',
         filter: {"#": RegExp(r'[0-9]')},
         type: MaskAutoCompletionType.lazy);
     final titleStyle = Theme.of(context).textTheme.titleLarge;
     final subtitleStyle = Theme.of(context).textTheme.titleMedium;
+
+    final textController = TextEditingController();
+    final focusNode = FocusNode();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
@@ -28,23 +35,17 @@ class NumberIdentificationForm extends StatelessWidget {
             'Ingresa tus datos para hacer la verificacion digital',
             style: subtitleStyle,
           ),
-          // const SizedBox(
-          //   height: 20,
-          // ),
-          // TextFormField(
-          //   inputFormatters: [dniMaskFormatter],
-          //   decoration: InputDecoration(
-          //       border:
-          //           OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          //       hintText: '12.345.678',
-          //       labelText: 'DNI'),
-          //   keyboardType: TextInputType.number,
-          // ),
           VBCustomTextInput(
             hintText: '12.345.678',
+            controller: textController,
+            focusNode: focusNode,
             labelText: 'DNI',
             keyboardType: TextInputType.number,
             inputFormatters: [dniMaskFormatter],
+            onChanged: ref
+                .read(registerFormProvider.notifier)
+                .onIdentificationNumberChange,
+            errorMessage: registerForm.identificationNumber.errorMessage,
           ),
           const SizedBox(
             height: 20,

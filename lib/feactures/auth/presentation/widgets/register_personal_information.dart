@@ -16,8 +16,10 @@ class PersonalInformationForm extends ConsumerWidget {
     final birthDaymaskFormatter = MaskTextInputFormatter(
         mask: '## / ## / ####',
         filter: {"#": RegExp(r'[0-9]')},
-        type: MaskAutoCompletionType.lazy);
+        type: MaskAutoCompletionType.eager);
     final titleStyle = Theme.of(context).textTheme.titleLarge;
+    // final textController = TextEditingController();
+    // final focusNode = FocusNode();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -32,23 +34,47 @@ class PersonalInformationForm extends ConsumerWidget {
             height: 20,
           ),
           VBCustomTextInput(
+            // controller: textController,
+            // focusNode: focusNode,
             hintText: 'Nombre',
             labelText: 'Nombre',
             errorMessage: registerForm.name.errorMessage,
             onChanged: ref.read(registerFormProvider.notifier).onNameChange,
           ),
-          const VBCustomTextInput(hintText: 'Apellido', labelText: 'Apellido'),
-          const VBCustomTextInput(
+          VBCustomTextInput(
+            // controller: textController,
+            // focusNode: focusNode,
+            hintText: 'Apellido',
+            labelText: 'Apellido',
+            errorMessage: registerForm.lastName.errorMessage,
+            onChanged: ref.read(registerFormProvider.notifier).onLastNameChange,
+          ),
+          VBCustomTextInput(
+            // controller: textController,
+            // focusNode: focusNode,
             hintText: 'Correo electronico',
             labelText: 'Correo electronico',
             keyboardType: TextInputType.emailAddress,
+            errorMessage: registerForm.lastName.errorMessage,
+            onChanged: ref.read(registerFormProvider.notifier).onEmailChange,
           ),
-          VBCustomTextInput(
-            hintText: '01 / 10 / 1998',
-            labelText: 'Fecha de nacimiento',
-            keyboardType: TextInputType.datetime,
+          const SizedBox(
+            height: 20,
+          ),
+          TextFormField(
             inputFormatters: [birthDaymaskFormatter],
-          )
+            keyboardType: TextInputType.phone,
+            onChanged: ref
+                .read(registerFormProvider.notifier)
+                .onIdentificationNumberChange,
+            decoration: InputDecoration(
+                hintText: 'DD / MM / AAAA',
+                hintStyle: const TextStyle(fontSize: 18),
+                labelText: 'Ingrese su dni',
+                errorText: registerForm.identificationNumber.errorMessage,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20))),
+          ),
         ],
       ),
     );
