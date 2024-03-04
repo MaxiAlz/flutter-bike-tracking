@@ -105,8 +105,6 @@ class _InputPhoneNumber extends ConsumerWidget {
       textController.text = '+54';
     }
 
-    print('======>>>>>>>>>>> $textController');
-
     return GestureDetector(
       // onTap: () {
       //   focusNode.unfocus();
@@ -125,12 +123,10 @@ class _InputPhoneNumber extends ConsumerWidget {
           onFieldSubmitted: (value) {
             textController.clear();
           },
-          // initialValue: '+54',
           decoration: InputDecoration(
               errorText: authForm.isPhoneNumberSubmitted
                   ? authForm.phoneNumber.errorMessage
                   : null,
-              // prefixText: '+54',
               hintText: '(383) 4-12-34-56',
               prefixIcon: const Icon(Icons.phone),
               hintStyle: const TextStyle(fontSize: 18),
