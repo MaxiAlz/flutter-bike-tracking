@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 
 class VBCustomTextInput extends StatelessWidget {
   final int? sizeBoxHeight;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
   final List<TextInputFormatter>? inputFormatters;
   final String hintText;
   final String labelText;
@@ -20,7 +22,9 @@ class VBCustomTextInput extends StatelessWidget {
       this.keyboardType,
       this.onChanged,
       this.validator,
-      this.errorMessage});
+      this.errorMessage,
+      this.controller,
+      this.focusNode});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +34,8 @@ class VBCustomTextInput extends StatelessWidget {
           height: 20,
         ),
         TextFormField(
+          controller: controller,
+          focusNode: focusNode,
           onChanged: onChanged,
           validator: validator,
           inputFormatters: inputFormatters,
