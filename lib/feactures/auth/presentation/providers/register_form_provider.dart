@@ -65,6 +65,19 @@ class RegisterFormState {
       isFormSubmitted: isFormSubmitted ?? this.isFormSubmitted,
     );
   }
+
+  @override
+  String toString() {
+    return ''' 
+        LoginFormState:
+        name: $name
+        lastName: $lastName
+        email: $email
+        dateOfBirth: $dateOfBirth
+        identificationNumber: $identificationNumber
+        gender: $gender
+        ''';
+  }
 }
 
 class RegisterFormNofier extends StateNotifier<RegisterFormState> {
@@ -84,17 +97,22 @@ class RegisterFormNofier extends StateNotifier<RegisterFormState> {
     state = state.copyWith(email: EmailInput.dirty(value));
   }
 
-  void onDateOfBirthChange(String value) {
-    print('====onDateOfBirthChange====>>>>>>>>>>>> ${state.dateOfBirth.value}');
+  void asd(value) {
+    print('asdasd==>>>> $value');
+    print(state.toString());
+    final withoutMask = value.replaceAll(RegExp(r'[^0-9]'), '');
 
+    state = state.copyWith(dateOfBirth: DateOfBirth.dirty(withoutMask));
+  }
+
+  void onDateOfBirthChange(String value) {
     state = state.copyWith(dateOfBirth: DateOfBirth.dirty(value));
+    print(state.toString());
   }
 
   void onIdentificationNumberChange(String value) {
-    print(
-        '====onIdentificationNumberChange====>>>>>>>>>>>> ${state.identificationNumber.value}');
-    // state =
-    //     state.copyWith(identificationNumber: IdentificationNumber.dirty(value));
+    state =
+        state.copyWith(identificationNumber: IdentificationNumber.dirty(value));
   }
 
   void onGenderChange(String value) {
@@ -103,7 +121,9 @@ class RegisterFormNofier extends StateNotifier<RegisterFormState> {
   }
 
   onSubmittRegisterForm() {
-    -_validateForm();
+    // -_validateForm();
+
+    print(state.toString());
   }
 
   _validateForm() {

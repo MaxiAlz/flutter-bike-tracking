@@ -1,6 +1,6 @@
 import 'package:formz/formz.dart';
 
-enum IdentificationNumberValidationError { empty, validFormat }
+enum IdentificationNumberValidationError { empty }
 
 class IdentificationNumber
     extends FormzInput<String, IdentificationNumberValidationError> {
