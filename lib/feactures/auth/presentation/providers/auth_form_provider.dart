@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 // #3 crear instancia del proveedor para usarlo en el widget
 final authFormProvider =
@@ -72,8 +71,6 @@ class AuthFormNotifier extends StateNotifier<AuthFormState> {
   //     : super(AuthFormState());
   AuthFormNotifier()
       : super(AuthFormState(phoneNumber: const PhoneNumber.pure()));
-
-  final maskFormatter = MaskTextInputFormatter();
 
   onPhoneNumberChange(String value) {
     final newPhoneNumber = PhoneNumber.dirty(value);
