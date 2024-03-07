@@ -10,6 +10,7 @@ class VBCustomTextInput extends StatelessWidget {
   final String labelText;
   final TextInputType? keyboardType;
   final void Function(String)? onChanged;
+  final void Function()? onEditingComplete;
   final String? errorMessage;
   final String? Function(String?)? validator;
 
@@ -24,7 +25,8 @@ class VBCustomTextInput extends StatelessWidget {
       this.validator,
       this.errorMessage,
       this.controller,
-      this.focusNode});
+      this.focusNode,
+      this.onEditingComplete});
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class VBCustomTextInput extends StatelessWidget {
           focusNode: focusNode,
           onChanged: onChanged,
           validator: validator,
+          onEditingComplete: onEditingComplete,
           inputFormatters: inputFormatters,
           decoration: InputDecoration(
               errorText: errorMessage,

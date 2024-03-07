@@ -22,6 +22,13 @@ class NumberIdentificationForm extends ConsumerWidget {
     final textController = TextEditingController();
     final focusNode = FocusNode();
 
+    setDateOfBirth() {
+      String withoutMask = dniMaskFormatter.getUnmaskedText();
+      ref
+          .read(registerFormProvider.notifier)
+          .onIdentificationNumberChange(withoutMask);
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
@@ -42,9 +49,9 @@ class NumberIdentificationForm extends ConsumerWidget {
             labelText: 'DNI',
             keyboardType: TextInputType.number,
             inputFormatters: [dniMaskFormatter],
-            onChanged: ref
-                .read(registerFormProvider.notifier)
-                .onIdentificationNumberChange,
+            onEditingComplete: () {
+              setDateOfBirth();
+            },
             errorMessage: registerForm.identificationNumber.errorMessage,
           ),
           const SizedBox(
@@ -58,10 +65,14 @@ class NumberIdentificationForm extends ConsumerWidget {
 }
 
 // ignore: must_be_immutable
-class _GenderDropdown extends StatelessWidget {
-  String? selectedGender = '';
+class _GenderDropdown extends ConsumerWidget {
   // List<String> genders = ['Masculino', 'Femenino'];
   List<DropdownMenuItem> genders = [
+    const DropdownMenuItem(
+      enabled: true,
+      value: 'Seleccione',
+      child: Text('seleccione'),
+    ),
     const DropdownMenuItem(
       value: 'Masculino',
       child: Text('Masculino'),
@@ -70,14 +81,16 @@ class _GenderDropdown extends StatelessWidget {
       value: 'Femenino',
       child: Text('Femenino'),
     ),
+    const DropdownMenuItem(
+      value: 'No_Especificado',
+      child: Text('No especificado'),
+    ),
   ];
 
-  _GenderDropdown({
-    this.selectedGender,
-  });
+  _GenderDropdown();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // final colors = Theme.of(context).colorScheme;
     return InputDecorator(
       decoration: InputDecoration(
@@ -88,11 +101,13 @@ class _GenderDropdown extends StatelessWidget {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
-          onChanged: (value) {},
-          value: selectedGender,
+          onChanged: (value) {
+            ref.read(registerFormProvider.notifier).onGenderChange(value);
+          },
+          value: ref.watch(registerFormProvider).gender.value,
           items: genders,
           isExpanded: true,
-          hint: const Text('Selecciona un género'),
+          hint: const Text('Seleccione un género'),
         ),
       ),
     );

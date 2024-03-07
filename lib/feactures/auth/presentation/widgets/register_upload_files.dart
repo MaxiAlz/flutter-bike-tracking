@@ -58,7 +58,6 @@ class UploadFiles extends StatelessWidget {
               photoPaht;
             },
           ),
-         
         ],
       ),
     );
