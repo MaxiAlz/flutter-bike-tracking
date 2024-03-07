@@ -34,3 +34,6 @@ Esta paleta de colores esta bazada en el logo
 
 Otras librerias:
 selector de pais: https://pub.dev/packages/country_calling_code_picker
+
+## Mapa
+  - flutter_osm_plugin: https://pub.dev/packages/flutter_osm_plugin
