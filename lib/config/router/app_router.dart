@@ -1,7 +1,7 @@
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
 import 'package:go_router/go_router.dart';
 
-final appRouter = GoRouter(initialLocation: '/register', routes: [
+final appRouter = GoRouter(initialLocation: '/home', routes: [
   ///* Auth Routes
   GoRoute(
     path: '/welcome',

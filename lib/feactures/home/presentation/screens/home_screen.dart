@@ -2,6 +2,9 @@ import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_center_floating_a
 import 'package:app_ciudadano_vc/shared/widgets/drawer/side_menu_drawer.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -10,7 +13,7 @@ class HomeScreen extends StatelessWidget {
     // final colors = Theme.of(context).colorScheme;
     final scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
-        body: const _HomeView(),
+        body: const SafeArea(child: _HomeView()),
         appBar: AppBar(
           title: const Text(
             '¡Hola, Usuario!',
@@ -37,10 +40,27 @@ class _HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     // final diviceData = MediaQuery.of(context);
     return Stack(children: [
-      Container(
-        alignment: Alignment.center,
-        child: const Text('Home screen'),
+      // Container(
+      //   alignment: Alignment.center,
+      //   child: const Text('Home screen'),
+      // ),
+      FlutterMap(
+        mapController: MapController(),
+        options: const MapOptions(
+          initialZoom: 10,
+          initialCenter: LatLng(-28.460501, -65.780756),
+
+          // initialCameraFit: CameraFit.coordinates(coordinates: )
+        ),
+        children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+            // Plenty of other options available!
+          ),
+        ],
       ),
+
       Container(
         alignment: Alignment.bottomCenter,
         child: const Padding(
