@@ -1,3 +1,4 @@
+export 'package:app_ciudadano_vc/feactures/auth/presentation/screens/waiting_validations_screen.dart';
 export 'package:app_ciudadano_vc/feactures/auth/presentation/screens/auth_screen.dart';
 export 'package:app_ciudadano_vc/feactures/auth/presentation/screens/enter_code_scree.dart';
 export 'package:app_ciudadano_vc/feactures/auth/presentation/screens/register_screen.dart';

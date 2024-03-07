@@ -106,7 +106,7 @@ class _NavigateButtons extends ConsumerWidget {
                       onPressed: () {
                         ref
                             .read(registerFormProvider.notifier)
-                            .onSubmittRegisterForm();
+                            .onSubmittRegisterForm(context);
                       },
                       child: const Row(
                           mainAxisAlignment: MainAxisAlignment.end,

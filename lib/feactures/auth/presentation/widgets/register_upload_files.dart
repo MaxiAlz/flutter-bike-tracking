@@ -66,25 +66,3 @@ class UploadFiles extends StatelessWidget {
 
 
 
-// return Column(
-    //   children: [
-    //     TextButton.icon(
-    //       onPressed: () async {
-    //         final photoPah = await CameraGalleryServiceImpl().selectPhoto();
-    //         if (photoPah == null) return;
-    //         photoPah;
-    //       },
-    //       icon: Icon(Icons.browse_gallery),
-    //       label: Text('galeria'),
-    //     ),
-    //     TextButton.icon(
-    //       onPressed: () async {
-    //         final photoPah = await CameraGalleryServiceImpl().takePhoto();
-    //         if (photoPah == null) return;
-    //         photoPah;
-    //       },
-    //       icon: Icon(Icons.camera),
-    //       label: Text('camara'),
-    //     ),
-    //   ],
-    // );

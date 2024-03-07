@@ -1,5 +1,7 @@
 import 'package:app_ciudadano_vc/shared/infraestructure/inputs/inputs.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 final registerFormProvider =
     StateNotifierProvider<RegisterFormNofier, RegisterFormState>((ref) {
@@ -113,10 +115,12 @@ class RegisterFormNofier extends StateNotifier<RegisterFormState> {
     state = state.copyWith(dniFrontImage: FileInput.dirty(value));
   }
 
-  onSubmittRegisterForm() {
+  onSubmittRegisterForm(BuildContext context) {
     // -_validateForm();
 
     print(state.toString());
+
+    context.push('/waiting-validation');
   }
 
   _validateForm() {
