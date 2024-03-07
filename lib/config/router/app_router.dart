@@ -7,6 +7,10 @@ final appRouter = GoRouter(initialLocation: '/register', routes: [
     path: '/welcome',
     builder: (context, state) => const WelcomeScreen(),
   ),
+  GoRoute(
+    path: '/waiting-validation',
+    builder: (context, state) => const WaitingValidation(),
+  ),
 
   GoRoute(
     path: '/auth',
