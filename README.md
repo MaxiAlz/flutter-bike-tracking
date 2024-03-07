@@ -37,3 +37,4 @@ selector de pais: https://pub.dev/packages/country_calling_code_picker
 
 ## Mapa
   - flutter_osm_plugin: https://pub.dev/packages/flutter_osm_plugin
+  - flutter_map: https://pub.dev/packages/flutter_map ; https://docs.fleaflet.dev/

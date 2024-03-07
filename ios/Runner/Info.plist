@@ -12,6 +12,10 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>we need acced to microfone if you want to rec videos.</string>
 
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Necesitamos acceder a la ubicacion de tu dispositivo</string>
+
+
 
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
