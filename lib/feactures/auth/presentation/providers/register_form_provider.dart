@@ -84,12 +84,10 @@ class RegisterFormNofier extends StateNotifier<RegisterFormState> {
   RegisterFormNofier() : super(RegisterFormState());
 
   onNameChange(String value) {
-    print('====onNameChange====>>>>>>>>>>>> ${state.name}');
     state = state.copyWith(name: NameInput.dirty(value));
   }
 
   void onLastNameChange(String value) {
-    print('====onLastNameChange====>>>>>>>>>>>> ${state.lastName.value}');
     state = state.copyWith(lastName: LastnameInput.dirty(value));
   }
 
@@ -97,17 +95,8 @@ class RegisterFormNofier extends StateNotifier<RegisterFormState> {
     state = state.copyWith(email: EmailInput.dirty(value));
   }
 
-  void asd(value) {
-    print('asdasd==>>>> $value');
-    print(state.toString());
-    final withoutMask = value.replaceAll(RegExp(r'[^0-9]'), '');
-
-    state = state.copyWith(dateOfBirth: DateOfBirth.dirty(withoutMask));
-  }
-
   void onDateOfBirthChange(String value) {
     state = state.copyWith(dateOfBirth: DateOfBirth.dirty(value));
-    print(state.toString());
   }
 
   void onIdentificationNumberChange(String value) {
@@ -116,8 +105,12 @@ class RegisterFormNofier extends StateNotifier<RegisterFormState> {
   }
 
   void onGenderChange(String value) {
-    print('====onGenderChange====>>>>>>>>>>>> ${state.gender.value}');
     state = state.copyWith(gender: GenderInput.dirty(value));
+  }
+
+  void onFrontDNIPictureChange(String value) {
+   
+    state = state.copyWith(dniFrontImage: FileInput.dirty(value));
   }
 
   onSubmittRegisterForm() {

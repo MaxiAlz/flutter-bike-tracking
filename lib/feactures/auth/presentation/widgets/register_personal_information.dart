@@ -18,8 +18,12 @@ class PersonalInformationForm extends ConsumerWidget {
         filter: {"#": RegExp(r'[0-9]')},
         type: MaskAutoCompletionType.eager);
     final titleStyle = Theme.of(context).textTheme.titleLarge;
-    // final textController = TextEditingController();
-    // final focusNode = FocusNode();
+    final dateOfBirthController = TextEditingController();
+   
+    setDateOfBirth() {
+      String withoutMask = birthDaymaskFormatter.getUnmaskedText();
+      ref.read(registerFormProvider.notifier).onDateOfBirthChange(withoutMask);
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -50,7 +54,6 @@ class PersonalInformationForm extends ConsumerWidget {
             onChanged: ref.read(registerFormProvider.notifier).onLastNameChange,
           ),
           VBCustomTextInput(
-            // controller: textController,
             // focusNode: focusNode,
             hintText: 'Correo electronico',
             labelText: 'Correo electronico',
@@ -64,13 +67,17 @@ class PersonalInformationForm extends ConsumerWidget {
           TextFormField(
             inputFormatters: [birthDaymaskFormatter],
             keyboardType: TextInputType.phone,
-            onChanged: ref
-                .read(registerFormProvider.notifier)
-                .onIdentificationNumberChange,
+            onTapOutside: (event) {
+              setDateOfBirth();
+            },
+            controller: dateOfBirthController,
+            onEditingComplete: () {
+              setDateOfBirth();
+            },
             decoration: InputDecoration(
                 hintText: 'DD / MM / AAAA',
                 hintStyle: const TextStyle(fontSize: 18),
-                labelText: 'Ingrese su dni',
+                labelText: 'Fecha de nacimiento',
                 errorText: registerForm.identificationNumber.errorMessage,
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20))),

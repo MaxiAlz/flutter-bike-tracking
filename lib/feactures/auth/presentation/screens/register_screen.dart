@@ -1,5 +1,7 @@
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
+import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/register_form_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -51,7 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
-class _NavigateButtons extends StatelessWidget {
+class _NavigateButtons extends ConsumerWidget {
   const _NavigateButtons({
     required this.currentPageIndex,
     required this.pageController,
@@ -61,7 +63,7 @@ class _NavigateButtons extends StatelessWidget {
   final PageController pageController;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       alignment: Alignment.bottomCenter / 1.1,
       child: Row(
@@ -101,7 +103,11 @@ class _NavigateButtons extends StatelessWidget {
                           ]),
                     )
                   : FilledButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        ref
+                            .read(registerFormProvider.notifier)
+                            .onSubmittRegisterForm();
+                      },
                       child: const Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [Text('Finalizar'), Icon(Icons.check)]),
