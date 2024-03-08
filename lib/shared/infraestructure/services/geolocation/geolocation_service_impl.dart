@@ -3,9 +3,15 @@ import 'package:geolocator/geolocator.dart';
 
 class GeolocationImpl extends GeolocationService {
   @override
-  Future<Position> checkPermission() {
-    // TODO: implement checkPermission
-    throw UnimplementedError();
+  Future<Position> checkPermission() async {
+    dynamic permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+    return permission;
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:app_ciudadano_vc/shared/infraestructure/services/geolocation/markers_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -35,26 +36,19 @@ class MapViewLayer extends StatelessWidget {
           ],
         ),
         MarkerLayer(
-          markers: [
-            Marker(
-              point: const LatLng(-28.476765, -65.787757),
-              width: 50,
-              height: 50,
-              child: Icon(
-                Icons.location_on,
-                color: colors.primary,
-              ),
-            ),
-            Marker(
-              point: const LatLng(-28.460397, -65.767009),
-              width: 50,
-              height: 50,
-              child: Icon(
-                Icons.location_on,
-                color: colors.primary,
-              ),
-            ),
-          ],
+          markers: marcadores
+              .map(
+                (e) => Marker(
+                  point: e,
+                  width: 50.0, // Use double for width and height
+                  height: 50.0,
+                  child: Icon(
+                    Icons.location_on,
+                    color: colors.primary,
+                  ),
+                ),
+              )
+              .toList(),
         ),
       ],
     );
