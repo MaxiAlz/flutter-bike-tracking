@@ -8,6 +8,8 @@ class ScanCodeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     // final colors = Theme.of(context).colorScheme;
     return CustomCenterFloatingActionButton(
+      widthButton: 70,
+      sizeIcon: 35,
       icon: Icons.qr_code_scanner_outlined,
       onPressed: () {},
     );
