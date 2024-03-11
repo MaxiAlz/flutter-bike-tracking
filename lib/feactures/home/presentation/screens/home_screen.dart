@@ -40,6 +40,13 @@ class _HomeView extends StatelessWidget {
     return Stack(children: [
       const MapViewLayer(),
       Container(
+        alignment: Alignment.bottomLeft,
+        child: Image.asset(
+          'assets/images/vamos-en-bici-01.png',
+          width: 150,
+        ),
+      ),
+      Container(
         alignment: Alignment.bottomCenter,
         child: const Padding(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 35),
