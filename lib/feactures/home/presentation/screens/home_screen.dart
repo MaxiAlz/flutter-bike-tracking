@@ -8,18 +8,31 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final colors = Theme.of(context).colorScheme;
+    final colors = Theme.of(context).colorScheme;
+    const String name = 'Jose';
     final scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
         body: const SafeArea(child: _HomeView()),
         appBar: AppBar(
-          title: const Text(
-            '¡Hola, Usuario!',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 25,
+          title: Row(children: [
+            const Text(
+              '¡Hola',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: 25,
+              ),
             ),
-          ),
+            Text(
+              ', $name!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                color: colors.primary,
+                fontSize: 25,
+              ),
+            ),
+          ]),
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.notifications))
           ],
