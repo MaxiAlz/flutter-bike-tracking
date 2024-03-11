@@ -1,4 +1,5 @@
-import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_center_floating_action.dart';
+import 'package:app_ciudadano_vc/feactures/home/presentation/home_presentation.dart';
+import 'package:app_ciudadano_vc/feactures/map/presentation/map_presentation.dart';
 import 'package:app_ciudadano_vc/shared/widgets/drawer/side_menu_drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -7,18 +8,31 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final colors = Theme.of(context).colorScheme;
+    final colors = Theme.of(context).colorScheme;
+    const String name = 'Jose';
     final scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
-        body: const _HomeView(),
+        body: const SafeArea(child: _HomeView()),
         appBar: AppBar(
-          title: const Text(
-            '¡Hola, Usuario!',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 25,
+          title: Row(children: [
+            const Text(
+              '¡Hola',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontSize: 25,
+              ),
             ),
-          ),
+            Text(
+              ', $name!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                color: colors.primary,
+                fontSize: 25,
+              ),
+            ),
+          ]),
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.notifications))
           ],
@@ -37,30 +51,21 @@ class _HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     // final diviceData = MediaQuery.of(context);
     return Stack(children: [
+      const MapViewLayer(),
       Container(
-        alignment: Alignment.center,
-        child: const Text('Home screen'),
+        alignment: Alignment.bottomLeft,
+        child: Image.asset(
+          'assets/images/vamos-en-bici-01.png',
+          width: 150,
+        ),
       ),
       Container(
         alignment: Alignment.bottomCenter,
         child: const Padding(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 35),
-          child: _ScanCodeButton(),
+          child: ScanCodeButton(),
         ),
       ),
     ]);
-  }
-}
-
-class _ScanCodeButton extends StatelessWidget {
-  const _ScanCodeButton();
-
-  @override
-  Widget build(BuildContext context) {
-    // final colors = Theme.of(context).colorScheme;
-    return CustomCenterFloatingActionButton(
-      icon: Icons.qr_code_scanner_outlined,
-      onPressed: () {},
-    );
   }
 }

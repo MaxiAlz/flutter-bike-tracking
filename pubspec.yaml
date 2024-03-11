@@ -32,10 +32,14 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_map: ^6.1.0
+  flutter_map_cancellable_tile_provider: ^2.0.0
   flutter_riverpod: ^2.4.10
   formz: ^0.6.1
+  geolocator: ^11.0.0
   go_router: ^13.2.0
   image_picker: ^1.0.7
+  latlong2: ^0.9.0
   mask_text_input_formatter: ^2.9.0
 
 dev_dependencies:
@@ -64,11 +68,15 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Helvetica
+      fonts:
+        - asset: fonts/HelveticaRoundedLTStdBd.otf
+        # - asset: fonts/HelveticaRoundedLTStdBdCn.otf
+        # - asset: fonts/HelveticaRoundedLTStdBdCnO.otf
+        # - asset: fonts/HelveticaRoundedLTStdBdO.otf
+        # - asset: fonts/HelveticaRoundedLTStdBlack.otf
+        # - asset: fonts/HelveticaRoundedLTStdBlkO.otf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
