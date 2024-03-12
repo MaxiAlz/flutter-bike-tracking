@@ -1,6 +1,7 @@
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_form_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/widgets/info_text.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -15,7 +16,6 @@ class AuthScreen extends StatelessWidget {
     final subTitleStyle = Theme.of(context).textTheme.titleMedium;
 
     final textController = TextEditingController();
-
     final focusNode = FocusNode();
 
     return Scaffold(
@@ -38,6 +38,10 @@ class AuthScreen extends StatelessWidget {
                 subTitleStyle: subTitleStyle,
                 text:
                     'Te enviaremos un código por SMS para verificar tu número'),
+            const SizedBox(height: 10),
+            InfoText(
+                subTitleStyle: subTitleStyle,
+                text: 'No olvides tu codigo de pais ej: +54 9'),
             const SizedBox(height: 20),
 
             _InputPhoneNumber(
@@ -81,10 +85,10 @@ class _SendPhoneNumberButton extends ConsumerWidget {
 }
 
 class _InputPhoneNumber extends ConsumerWidget {
-  final maskFormatter = MaskTextInputFormatter(
-      mask: '+## (###) #-##-##-##',
-      filter: {"#": RegExp(r'[0-9]')},
-      type: MaskAutoCompletionType.lazy);
+  final MaskTextInputFormatter mask = MaskTextInputFormatter(
+    mask: "+## # (###) ###-####",
+    filter: {"#": RegExp(r'[0-9]')},
+  );
 
   final TextEditingController textController;
   final FocusNode focusNode;
@@ -92,27 +96,27 @@ class _InputPhoneNumber extends ConsumerWidget {
   _InputPhoneNumber({
     required this.textController,
     required this.focusNode,
-  }) /* {
-    textController.selection = const TextSelection.collapsed(offset: 3);
-  } */
-  ;
+  });
 
   @override
   Widget build(BuildContext context, ref) {
     final authForm = ref.watch(authFormProvider);
-    // textController.text = '+54';
-    if (textController.text.isEmpty) {
-      textController.text = '+54';
-    }
+    // final ref = ProviderRef.of(context, listen: false);
+
+    textController.addListener(() {
+      // Si el usuario borra todo el texto, vacía el campo de entrada.
+      if (textController.text.isEmpty) {
+        textController.clear();
+      }
+    });
 
     return GestureDetector(
-      // onTap: () {
-      //   focusNode.unfocus();
-      // },
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
         child: TextFormField(
-          inputFormatters: [maskFormatter],
+          inputFormatters: [
+            mask,
+          ],
           onTapOutside: (e) {
             focusNode.unfocus();
           },
@@ -120,19 +124,19 @@ class _InputPhoneNumber extends ConsumerWidget {
           focusNode: focusNode,
           keyboardType: TextInputType.phone,
           onChanged: ref.read(authFormProvider.notifier).onPhoneNumberChange,
-          onFieldSubmitted: (value) {
-            textController.clear();
-          },
+          onFieldSubmitted: (value) {},
           decoration: InputDecoration(
-              errorText: authForm.isPhoneNumberSubmitted
-                  ? authForm.phoneNumber.errorMessage
-                  : null,
-              hintText: '(383) 4-12-34-56',
-              prefixIcon: const Icon(Icons.phone),
-              hintStyle: const TextStyle(fontSize: 18),
-              labelText: 'Ingrese su numero',
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
+            errorText: authForm.isPhoneNumberSubmitted
+                ? authForm.phoneNumber.errorMessage
+                : null,
+            hintText: '54 9 (383) 412-3456',
+            prefixIcon: const Icon(Icons.phone),
+            hintStyle: const TextStyle(fontSize: 18),
+            labelText: 'Ingrese su numero',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
         ),
       ),
     );

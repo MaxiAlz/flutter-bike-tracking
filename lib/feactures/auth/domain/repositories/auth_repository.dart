@@ -2,11 +2,10 @@ import 'package:app_ciudadano_vc/feactures/auth/domain/auth_domain.dart';
 
 abstract class AuthRepository {
   // Future<User> login(int phoneNumber);
-  Future<User> sendPhoneNumber(int phoneNumber);
-  Future<User> sendVerificationCode(int phoneNumber);
+  Future<User> sendPhoneNumber(String phoneNumber);
+  Future<User> sendVerificationCode(String phoneNumber);
   Future<User> checkAuthStatus(String token);
-
-  Future<User> register(UserRegistrationData userRegistrationData);
+  // Future<User> register(UserRegistrationData userRegistrationData);
 }
 
 class UserRegistrationData {
