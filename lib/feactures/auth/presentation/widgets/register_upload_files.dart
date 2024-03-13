@@ -1,4 +1,4 @@
-import 'package:app_ciudadano_vc/shared/infraestructure/services/camera_gallery_service_impl.dart';
+import 'package:app_ciudadano_vc/shared/infraestructure/services/camera_gallery/camera_gallery_service_impl.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
 import 'package:flutter/material.dart';
 
