@@ -1,4 +1,5 @@
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_form_provider.dart';
+import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/widgets/info_text.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
 import 'package:flutter/services.dart';
@@ -98,9 +99,21 @@ class _InputPhoneNumber extends ConsumerWidget {
     required this.focusNode,
   });
 
+  void showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
   @override
   Widget build(BuildContext context, ref) {
     final authForm = ref.watch(authFormProvider);
+
+    ref.listen(authProvider, (previous, next) {
+      if (next.errorMessage.isEmpty) return;
+
+      showSnackbar(context, next.errorMessage);
+    });
     // final ref = ProviderRef.of(context, listen: false);
 
     textController.addListener(() {

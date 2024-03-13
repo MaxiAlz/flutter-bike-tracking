@@ -66,7 +66,9 @@ class AuthFormState {
 
 // #2 notificador del estado del formualrio
 class AuthFormNotifier extends StateNotifier<AuthFormState> {
+  // enlazo el provider de riverpod con el login form
   final Function(String) loginUserCallback;
+
   AuthFormNotifier({required this.loginUserCallback}) : super(AuthFormState());
 
   onPhoneNumberChange(String value) {
@@ -85,9 +87,9 @@ class AuthFormNotifier extends StateNotifier<AuthFormState> {
     final phoneNumberWithoutMask =
         state.phoneNumber.value.replaceAll(RegExp(r'[^0-9]'), '');
 
-    await loginUserCallback(phoneNumberWithoutMask);
+    final asd = await loginUserCallback(phoneNumberWithoutMask);
+    print(asd);
     // context.push('/enter-code');
-
   }
 
   _touchedPhoneNumberField() {
