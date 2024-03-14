@@ -26,6 +26,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     await Future.delayed(const Duration(milliseconds: 500));
 
     try {
+      state = state.copyWith(authStatus: AuthStatus.checking);
       final user = await authRepository.sendPhoneNumber(identifier);
 
       _setLogUSer(user);
@@ -42,6 +43,29 @@ class AuthNotifier extends StateNotifier<AuthState> {
         authStatus: AuthStatus.notAuthenticated,
         user: null,
         errorMessage: errorMessage);
+
+    print('Tokenn =>>>>> $keyValueStorageService');
+  }
+
+  void checkAuthStatus() async {
+    final token = await keyValueStorageService.getKeyValue<String>('token');
+
+    print('Tokenn =>>>>> $token');
+
+    if (token == null) return logout();
+    if (token.isNotEmpty) {
+      state = state.copyWith(
+        authStatus: AuthStatus.authenticated,
+        errorMessage: '',
+      );
+    }
+    // try {
+    //   // final user = await authRepository.checkAuthStatus(token);
+
+    //   _setLogUSer(user);
+    // } catch (e) {
+    //   throw Exception();
+    // }
   }
 
   void _setLogUSer(User user) async {

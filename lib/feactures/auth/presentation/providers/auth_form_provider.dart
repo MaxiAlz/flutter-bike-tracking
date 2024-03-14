@@ -87,9 +87,7 @@ class AuthFormNotifier extends StateNotifier<AuthFormState> {
     final phoneNumberWithoutMask =
         state.phoneNumber.value.replaceAll(RegExp(r'[^0-9]'), '');
 
-    final asd = await loginUserCallback(phoneNumberWithoutMask);
-    print(asd);
-    // context.push('/enter-code');
+    await loginUserCallback(phoneNumberWithoutMask);
   }
 
   _touchedPhoneNumberField() {

@@ -1,5 +1,8 @@
+import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
+// import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
 import 'package:app_ciudadano_vc/shared/widgets/drawer/menu_items.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class SideMenuDrawer extends StatefulWidget {
@@ -52,13 +55,22 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
               ],
             ),
           ),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
+            child: Divider(),
+          ),
+          const _LogoutButton(),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: Divider(),
+          ),
           SizedBox(
+            width: 10,
+            height: 100,
             child: Image.asset(
               'assets/images/capital-sustentable.png',
               fit: BoxFit.cover, // Ajustar la imagen dentro del contenedor
             ),
-            width: 10,
-            height: 100,
           )
         ],
       ),
@@ -117,6 +129,23 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
     //     ],
     //   ),
     // );
+  }
+}
+
+class _LogoutButton extends ConsumerWidget {
+  const _LogoutButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final authnotifier = ref.watch(authProvider);
+    return FilledButton.icon(
+        onPressed: () {
+          ref.watch(authProvider.notifier).logout;
+        },
+        icon: const Icon(Icons.close),
+        label: const Text('Cerrar sesion'));
   }
 }
 
