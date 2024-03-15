@@ -2,6 +2,7 @@ import 'package:app_ciudadano_vc/config/router/app_router_notifier.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/screens/check_auth_status_screen.dart';
+import 'package:app_ciudadano_vc/feactures/user/user_settings.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -46,6 +47,10 @@ final goRouterProvider = Provider((ref) {
         path: '/home',
         builder: (context, state) => const HomeScreen(),
       ),
+      GoRoute(
+        path: '/my-account',
+        builder: (context, state) => const UserProfile(),
+      ),
     ],
     redirect: (context, state) {
       final isGoingTo = state.matchedLocation;
@@ -69,15 +74,19 @@ final goRouterProvider = Provider((ref) {
       }
 
       if (authStatus == AuthStatus.authenticated) {
+        // if (isGoingTo == '/my-account') return null;
+
         if (isGoingTo == '/auth' ||
-            isGoingTo == '/register' ||
-            isGoingTo == '/checking-status') {
+                isGoingTo ==
+                    '/register' /* ||
+            isGoingTo == '/checking-status' */
+            ) {
           return '/home';
         }
-        return '/home';
+        return null;
       }
 
-      return '/home';
+      return null;
     },
   );
 });
