@@ -21,7 +21,6 @@ class MapViewLayer extends StatelessWidget {
       options: const MapOptions(
         initialZoom: 13,
         initialCenter: LatLng(-28.460501, -65.780756),
-
         // initialCameraFit: CameraFit.coordinates(coordinates: )
       ),
       children: [
