@@ -1,27 +1,32 @@
 // import 'package:app_ciudadano_vc/shared/infraestructure/services/geolocation/geolocation_service_impl.dart';
+import 'package:app_ciudadano_vc/feactures/home/presentation/home_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/map/presentation/layers/marker_dialog_hub.dart';
+import 'package:app_ciudadano_vc/feactures/map/presentation/providers/map_settings_provider.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/services/geolocation/markers_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
-class MapViewLayer extends StatelessWidget {
+class MapViewLayer extends ConsumerWidget {
   const MapViewLayer({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mapSettings = ref.watch(mapSettingProvider);
     final markerDialogHub = MarkerDialogHub();
+    final mapController = MapController();
 
+    print('cambio posicion =>>> ${mapSettings}');
 
     return FlutterMap(
-      mapController: MapController(),
+      mapController: mapController,
       options: const MapOptions(
         initialZoom: 13,
         initialCenter: LatLng(-28.460501, -65.780756),
-        // initialCameraFit: CameraFit.coordinates(coordinates: )
       ),
       children: [
         TileLayer(
@@ -38,6 +43,24 @@ class MapViewLayer extends StatelessWidget {
                 color: Color.fromARGB(139, 33, 149, 243)),
           ],
         ),
+        Container(
+          alignment: Alignment.topRight,
+          child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 35),
+              child: MyLocationButton(
+                mapController: mapController,
+                mapSetting: mapSettings,
+              )),
+        ),
+        MarkerLayer(markers: [
+          Marker(
+              point: LatLng(mapSettings.userPosition.latitude,
+                  mapSettings.userPosition.longitude),
+              child: const Icon(
+                Icons.location_on,
+                color: Colors.red,
+              ))
+        ]),
         MarkerLayer(
           markers: marcadoresData
               .map(
