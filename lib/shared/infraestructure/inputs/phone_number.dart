@@ -1,14 +1,14 @@
 import 'package:formz/formz.dart';
 
 // Define input validation errors
-enum PhoneNumberError { empty, invalidFormat }
+enum PhoneNumberError { empty, invalidFormat, length }
 
 // Extend FormzInput and provide the input type and error type.
 class PhoneNumber extends FormzInput<String, PhoneNumberError> {
   // Define the length of the phone number
   static const int phoneNumberLength = 12;
 
-  static const String defaultCountryCode = '+54';
+  static const String defaultCountryCode = '+54 9';
 
   // Call super.pure to represent an unmodified form input.
   const PhoneNumber.pure() : super.pure('');
@@ -24,6 +24,9 @@ class PhoneNumber extends FormzInput<String, PhoneNumberError> {
 
     if (displayError == PhoneNumberError.empty) return 'El campo es requerido';
     if (displayError == PhoneNumberError.invalidFormat) {
+      return 'No olvide el codigo de pais. Ej: +54 9';
+    }
+    if (displayError == PhoneNumberError.length) {
       return 'Formato de teléfono inválido';
     }
 
@@ -35,8 +38,11 @@ class PhoneNumber extends FormzInput<String, PhoneNumberError> {
   PhoneNumberError? validator(String value) {
     if (value.isEmpty || value.trim().isEmpty) return PhoneNumberError.empty;
 
-    if (value.replaceAll(RegExp(r'[^0-9]'), '').length != phoneNumberLength) {
+    if (!value.replaceAll(RegExp(r'[^0-9]'), '').startsWith('5')) {
       return PhoneNumberError.invalidFormat;
+    }
+    if (value.replaceAll(RegExp(r'[^0-9]'), '').length < phoneNumberLength) {
+      return PhoneNumberError.length;
     }
 
     // Additional validation if necessary, e.g., to check if it contains only digits.

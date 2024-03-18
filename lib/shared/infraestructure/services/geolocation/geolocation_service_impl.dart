@@ -22,9 +22,8 @@ class GeolocationImpl extends GeolocationService {
   }
 
   @override
-  Future getLastKnownPosition() {
-    // TODO: implement getLastKnownPosition
-    throw UnimplementedError();
+  Future getLastKnownPosition() async{
+     return await Geolocator.getLastKnownPosition();
   }
 
   @override

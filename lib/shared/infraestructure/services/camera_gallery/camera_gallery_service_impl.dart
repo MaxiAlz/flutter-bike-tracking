@@ -1,4 +1,4 @@
-import 'package:app_ciudadano_vc/shared/infraestructure/services/camera_gallery_service.dart';
+import 'package:app_ciudadano_vc/shared/infraestructure/services/camera_gallery/camera_gallery_service.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CameraGalleryServiceImpl extends CameraGalleryService {

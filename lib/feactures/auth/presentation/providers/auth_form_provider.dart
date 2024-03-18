@@ -1,16 +1,17 @@
+// import 'package:app_ciudadano_vc/config/config.dart';
+import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/inputs/inputs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 
 // #3 crear instancia del proveedor para usarlo en el widget
 final authFormProvider =
-    StateNotifierProvider.autoDispose<AuthFormNotifier, AuthFormState>((ref) {
-// usar esto y pasar como argumento cuadno se tenga la llamada a la api
-  // final authUserCallback = ref.watch(authProvider.notifier).loginUser;
+    StateNotifierProvider<AuthFormNotifier, AuthFormState>((ref) {
+  final loginUSerCallback = ref.watch(authProvider.notifier).loginUSer;
 
-  return AuthFormNotifier();
+  return AuthFormNotifier(loginUserCallback: loginUSerCallback);
 });
 
 // #1 Definir el estado del formulario:
@@ -34,8 +35,7 @@ class AuthFormState {
     this.isPhoneNumberValid = false,
     this.isVerificationCodeValid = false,
     this.errorMessage,
-    // this.phoneNumber = const PhoneNumber.pure(),
-    PhoneNumber? phoneNumber,
+    PhoneNumber? phoneNumber = const PhoneNumber.pure(),
     this.verificationCode = const ValidateCode.pure(),
   }) : phoneNumber = phoneNumber ?? PhoneNumber.withDefaultCountryCode();
 
@@ -66,14 +66,14 @@ class AuthFormState {
 
 // #2 notificador del estado del formualrio
 class AuthFormNotifier extends StateNotifier<AuthFormState> {
-  // final Function(String, String) authUserCallback;
-  // AuthFormNotifier(/* {required this.authUserCallback} */)
-  //     : super(AuthFormState());
-  AuthFormNotifier()
-      : super(AuthFormState(phoneNumber: const PhoneNumber.pure()));
+  // enlazo el provider de riverpod con el login form
+  final Function(String) loginUserCallback;
+
+  AuthFormNotifier({required this.loginUserCallback}) : super(AuthFormState());
 
   onPhoneNumberChange(String value) {
     final newPhoneNumber = PhoneNumber.dirty(value);
+
     state = state.copyWith(
         phoneNumber: newPhoneNumber,
         isPhoneNumberValid:
@@ -83,21 +83,20 @@ class AuthFormNotifier extends StateNotifier<AuthFormState> {
   onSubmitPhoneNumber(BuildContext context) async {
     _touchedPhoneNumberField();
     if (!state.isPhoneNumberValid) return;
+
     final phoneNumberWithoutMask =
         state.phoneNumber.value.replaceAll(RegExp(r'[^0-9]'), '');
-    context.push('/enter-code');
 
-    print('====maskFormatter====>>>>>>>>>>> $phoneNumberWithoutMask), ' ')}');
+    await loginUserCallback(phoneNumberWithoutMask);
   }
 
   _touchedPhoneNumberField() {
     final phoneNumber = PhoneNumber.dirty(state.phoneNumber.value);
-
+    print('====maskFormatter====>>>>>>>>>>> $phoneNumber), ' ')}');
     state = state.copyWith(
         isLoading: false,
         isPhoneNumberSubmitted: true,
         phoneNumber: phoneNumber,
-        errorMessage: '',
         isPhoneNumberValid: Formz.validate(
           [phoneNumber],
         ));

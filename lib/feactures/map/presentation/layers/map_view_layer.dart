@@ -1,4 +1,5 @@
 // import 'package:app_ciudadano_vc/shared/infraestructure/services/geolocation/geolocation_service_impl.dart';
+import 'package:app_ciudadano_vc/feactures/map/presentation/layers/marker_dialog_hub.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/services/geolocation/markers_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -12,14 +13,14 @@ class MapViewLayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    final markerDialogHub = MarkerDialogHub();
+
 
     return FlutterMap(
       mapController: MapController(),
       options: const MapOptions(
         initialZoom: 13,
         initialCenter: LatLng(-28.460501, -65.780756),
-
         // initialCameraFit: CameraFit.coordinates(coordinates: )
       ),
       children: [
@@ -38,17 +39,16 @@ class MapViewLayer extends StatelessWidget {
           ],
         ),
         MarkerLayer(
-          markers: marcadores
+          markers: marcadoresData
               .map(
-                (e) => Marker(
-                  point: e,
-                  width: 50.0, // Use double for width and height
-                  height: 50.0,
-                  child: Icon(
-                    Icons.location_on,
-                    color: colors.primary,
-                  ),
-                ),
+                (marker) => Marker(
+                    point: marker.position,
+                    width: 50.0, // Use double for width and height
+                    height: 50.0,
+                    child: IconButton.filled(
+                        onPressed: () =>
+                            markerDialogHub.onMarkerTap(context, marker),
+                        icon: const Icon(Icons.store_mall_directory))),
               )
               .toList(),
         ),
@@ -56,58 +56,3 @@ class MapViewLayer extends StatelessWidget {
     );
   }
 }
-
-// class MapViewLayer extends StatefulWidget {
-//   const MapViewLayer({super.key});
-
-//   @override
-//   State<MapViewLayer> createState() => _MapViewLayerState();
-// }
-
-// class _MapViewLayerState extends State<MapViewLayer> {
-//   final geolocalizationServiceImpl = GeolocationImpl();
-//   late Future<Position> _initialLocation;
-
-//   @override
-//   void initState() {
-//     super.initState();
-
-//     _initialLocation = geolocalizationServiceImpl
-//         .getCurrentLocation(); // Call your service here
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // final colors = Theme.of(context).colorScheme;
-
-//     return FutureBuilder<Position>(
-//       future: _initialLocation,
-//       builder: (context, snapshot) {
-//         if (snapshot.hasData) {
-//           // Use the retrieved location to set initialCenter
-//           return FlutterMap(
-//             mapController: MapController(),
-//             options: MapOptions(
-//               initialZoom: 13.0,
-//               initialCenter:
-//                   LatLng(snapshot.data!.latitude, snapshot.data!.longitude),
-//             ),
-//             children: [
-//               TileLayer(
-//                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-//                 userAgentPackageName: 'dev.fleaflet.flutter_map.example',
-//               ),
-//               // ... rest of your layers (CircleLayer, MarkerLayer)
-//             ],
-//           );
-//         } else if (snapshot.hasError) {
-//           print(snapshot.error); // Handle location errors
-//           return Center(child: Text('Error getting location'));
-//         }
-
-//         // Show a loading indicator while location is being fetched
-//         return Center(child: CircularProgressIndicator());
-//       },
-//     );
-//   }
-// }
