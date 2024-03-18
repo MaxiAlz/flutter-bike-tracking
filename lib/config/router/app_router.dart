@@ -10,7 +10,7 @@ final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
 
   return GoRouter(
-    initialLocation: '/checking-status',
+    initialLocation: /* '/checking-status' */ '/welcome',
     refreshListenable: goRouterNotifier,
     routes: [
       ///* Auth Routes
@@ -62,29 +62,29 @@ final goRouterProvider = Provider((ref) {
 =>> authStatus: $authStatus
 ''');
 
-      if (isGoingTo == '/checking-status' &&
-          authStatus == AuthStatus.checking) {
-        return null;
-      }
+      // if (isGoingTo == '/checking-status' &&
+      //     authStatus == AuthStatus.checking) {
+      //   return null;
+      // }
 
-      if (authStatus == AuthStatus.notAuthenticated) {
-        if (isGoingTo == '/auth' || isGoingTo == '/register') return null;
+      // if (authStatus == AuthStatus.notAuthenticated) {
+      //   if (isGoingTo == '/auth' || isGoingTo == '/register') return null;
 
-        return '/auth';
-      }
+      //   return '/auth';
+      // }
 
-      if (authStatus == AuthStatus.authenticated) {
-        // if (isGoingTo == '/my-account') return null;
+      // if (authStatus == AuthStatus.authenticated) {
+      //   // if (isGoingTo == '/my-account') return null;
 
-        if (isGoingTo == '/auth' ||
-                isGoingTo ==
-                    '/register' /* ||
-            isGoingTo == '/checking-status' */
-            ) {
-          return '/home';
-        }
-        return null;
-      }
+      //   if (isGoingTo == '/auth' ||
+      //           isGoingTo ==
+      //               '/register' /* ||
+      //       isGoingTo == '/checking-status' */
+      //       ) {
+      //     return '/home';
+      //   }
+      //   return null;
+      // }
 
       return null;
     },
