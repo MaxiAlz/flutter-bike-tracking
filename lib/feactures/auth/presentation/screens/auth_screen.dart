@@ -4,6 +4,7 @@ import 'package:app_ciudadano_vc/feactures/auth/presentation/widgets/info_text.d
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 // import 'package:go_router/go_router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:flutter/material.dart';
@@ -78,8 +79,9 @@ class _SendPhoneNumberButton extends ConsumerWidget {
     return CustomFilledButtom(
       text: 'Solicitar codigo',
       onPressed: () {
-        ref.read(authFormProvider.notifier).onSubmitPhoneNumber(context);
-        focusNode.unfocus();
+        // ref.read(authFormProvider.notifier).onSubmitPhoneNumber(context);
+        // focusNode.unfocus();
+        context.push('/enter-code');
       },
     );
   }

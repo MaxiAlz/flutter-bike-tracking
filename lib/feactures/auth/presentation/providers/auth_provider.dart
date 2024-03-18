@@ -6,6 +6,7 @@ import 'package:app_ciudadano_vc/shared/infraestructure/services/shared_preferen
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+  
   final authRepository = AuthRepositoryImpl();
   final keyValueStorageService = KeyValueStorageImpl();
 
@@ -98,4 +99,4 @@ class AuthState {
           authStatus: authStatus ?? this.authStatus,
           errorMessage: errorMessage ?? this.errorMessage,
           user: user ?? this.user);
-}
+} 
