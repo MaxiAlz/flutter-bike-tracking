@@ -10,7 +10,7 @@ final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
 
   return GoRouter(
-    initialLocation: /* '/checking-status' */ '/welcome',
+    initialLocation: /* '/checking-status' */ '/home',
     refreshListenable: goRouterNotifier,
     routes: [
       ///* Auth Routes
