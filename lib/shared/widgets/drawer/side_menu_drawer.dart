@@ -142,7 +142,8 @@ class _LogoutButton extends ConsumerWidget {
     // final authnotifier = ref.watch(authProvider);
     return FilledButton.icon(
         onPressed: () {
-          ref.watch(authProvider.notifier).logout;
+          // ref.watch(authProvider.notifier).logout;
+          context.push('/welcome');
         },
         icon: const Icon(Icons.close),
         label: const Text('Cerrar sesion'));
