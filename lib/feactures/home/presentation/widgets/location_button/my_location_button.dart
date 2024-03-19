@@ -7,7 +7,11 @@ import 'package:latlong2/latlong.dart';
 class MyLocationButton extends ConsumerWidget {
   final MapController mapController;
   final MapSettingState mapSetting;
-  const MyLocationButton( {required this.mapController, super.key, required this.mapSetting,});
+  const MyLocationButton({
+    required this.mapController,
+    super.key,
+    required this.mapSetting,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,7 +20,7 @@ class MyLocationButton extends ConsumerWidget {
 
     print('mapSetting.userPosition: ${mapSetting.userPosition}');
 
-    return IconButton.outlined(
+    return IconButton.filledTonal(
         onPressed: () async {
           await ref.read(mapSettingProvider.notifier).updateLocation();
           final position = mapSetting.userPosition;
