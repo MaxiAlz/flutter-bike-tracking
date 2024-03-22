@@ -1,3 +1,4 @@
+import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/register_form_provider.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -13,13 +14,15 @@ class PersonalInformationForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final registerForm = ref.watch(registerFormProvider);
 
+    final smallTextStyle = Theme.of(context).textTheme.titleSmall;
+
     final birthDaymaskFormatter = MaskTextInputFormatter(
         mask: '## / ## / ####',
         filter: {"#": RegExp(r'[0-9]')},
         type: MaskAutoCompletionType.eager);
     final titleStyle = Theme.of(context).textTheme.titleLarge;
     final dateOfBirthController = TextEditingController();
-   
+
     setDateOfBirth() {
       String withoutMask = birthDaymaskFormatter.getUnmaskedText();
       ref.read(registerFormProvider.notifier).onDateOfBirthChange(withoutMask);
@@ -31,12 +34,16 @@ class PersonalInformationForm extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            'Ingresa tus datos',
+            'Registrarse',
             style: titleStyle,
           ),
           const SizedBox(
             height: 20,
           ),
+          InfoText(
+              subTitleStyle: smallTextStyle,
+              text:
+                  '¡Necesitaremos algunos de tus datos para crear tu cuenta!'),
           VBCustomTextInput(
             // controller: textController,
             // focusNode: focusNode,
