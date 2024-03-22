@@ -10,8 +10,7 @@ class GeolocationImpl extends GeolocationService {
       if (permission == LocationPermission.denied) {
         return Future.error('Location permissions are denied');
       }
-    }
-    print('permission>>>>>: $permission');
+    };
     return permission;
   }
 

@@ -20,7 +20,10 @@ class MapViewLayer extends ConsumerWidget {
     final markerDialogHub = MarkerDialogHub();
     final mapController = MapController();
 
-    print('cambio posicion =>>> ${mapSettings}');
+    // getUserPosition() {
+    //   final position = ref.read(mapSettingProvider.notifier).getUserPosition();
+    //   print('&&&position&&& : $position');
+    // }
 
     return FlutterMap(
       mapController: mapController,
