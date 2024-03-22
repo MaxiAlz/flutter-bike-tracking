@@ -1,8 +1,9 @@
+import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/register_form_provider.dart';
+import 'package:app_ciudadano_vc/shared/infraestructure/share_infraestructure.dart';
 import 'package:app_ciudadano_vc/shared/widgets/inputs/custom_text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class NumberIdentificationForm extends ConsumerWidget {
   const NumberIdentificationForm({
@@ -12,18 +13,14 @@ class NumberIdentificationForm extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final registerForm = ref.watch(registerFormProvider);
-    final dniMaskFormatter = MaskTextInputFormatter(
-        mask: '##.###.###',
-        filter: {"#": RegExp(r'[0-9]')},
-        type: MaskAutoCompletionType.lazy);
     final titleStyle = Theme.of(context).textTheme.titleLarge;
-    final subtitleStyle = Theme.of(context).textTheme.titleMedium;
 
     final textController = TextEditingController();
     final focusNode = FocusNode();
 
     setDateOfBirth() {
-      String withoutMask = dniMaskFormatter.getUnmaskedText();
+      String withoutMask = InputMaskFormated.getMask(maskType: MaskType.dniMask)
+          .getUnmaskedText();
       ref
           .read(registerFormProvider.notifier)
           .onIdentificationNumberChange(withoutMask);
@@ -38,22 +35,33 @@ class NumberIdentificationForm extends ConsumerWidget {
             'Necesitaras tu DNI',
             style: titleStyle,
           ),
-          Text(
-            'Ingresa tus datos para hacer la verificacion digital',
-            style: subtitleStyle,
-          ),
+          const SmallInfoText(
+              text:
+                  'Necesitaras tu DNI y telefono celular para realizar la validacion digital'),
           VBCustomTextInput(
             hintText: '12.345.678',
             controller: textController,
             focusNode: focusNode,
             labelText: 'DNI',
             keyboardType: TextInputType.number,
-            inputFormatters: [dniMaskFormatter],
+            inputFormatters: [
+              InputMaskFormated.getMask(maskType: MaskType.dniMask)
+            ],
             onEditingComplete: () {
               setDateOfBirth();
             },
             errorMessage: registerForm.identificationNumber.errorMessage,
           ),
+          const SizedBox(
+            height: 20,
+          ),
+          VBCustomTextInput(
+              inputFormatters: [
+                InputMaskFormated.getMask(maskType: MaskType.phoneNumberMask)
+              ],
+              keyboardType: TextInputType.phone,
+              hintText: '(383) 412-345',
+              labelText: 'Telefono celular'),
           const SizedBox(
             height: 20,
           ),

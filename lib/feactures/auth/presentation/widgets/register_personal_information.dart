@@ -1,9 +1,9 @@
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/register_form_provider.dart';
+import 'package:app_ciudadano_vc/shared/infraestructure/masks/input_masks.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class PersonalInformationForm extends ConsumerWidget {
   const PersonalInformationForm({
@@ -16,15 +16,13 @@ class PersonalInformationForm extends ConsumerWidget {
 
     final smallTextStyle = Theme.of(context).textTheme.titleSmall;
 
-    final birthDaymaskFormatter = MaskTextInputFormatter(
-        mask: '## / ## / ####',
-        filter: {"#": RegExp(r'[0-9]')},
-        type: MaskAutoCompletionType.eager);
     final titleStyle = Theme.of(context).textTheme.titleLarge;
     final dateOfBirthController = TextEditingController();
 
     setDateOfBirth() {
-      String withoutMask = birthDaymaskFormatter.getUnmaskedText();
+      String withoutMask =
+          InputMaskFormated.getMask(maskType: MaskType.dateOfBirthMask)
+              .getUnmaskedText();
       ref.read(registerFormProvider.notifier).onDateOfBirthChange(withoutMask);
     }
 
@@ -72,7 +70,9 @@ class PersonalInformationForm extends ConsumerWidget {
             height: 20,
           ),
           TextFormField(
-            inputFormatters: [birthDaymaskFormatter],
+            inputFormatters: [
+              InputMaskFormated.getMask(maskType: MaskType.dateOfBirthMask)
+            ],
             keyboardType: TextInputType.phone,
             onTapOutside: (event) {
               setDateOfBirth();
