@@ -1,6 +1,7 @@
 import 'package:app_ciudadano_vc/feactures/home/presentation/home_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/map/presentation/map_presentation.dart';
 import 'package:app_ciudadano_vc/shared/widgets/drawer/side_menu_drawer.dart';
+import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -14,6 +15,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
         body: const SafeArea(child: _HomeView()),
         appBar: AppBar(
+          // backgroundColor: Colors.transparent,
           title: Row(children: [
             const Text(
               '¡Hola',
@@ -52,6 +54,16 @@ class _HomeView extends StatelessWidget {
     // final diviceData = MediaQuery.of(context);
     return Stack(children: [
       const MapViewLayer(),
+      const CustomGradient(
+        bottom: 0,
+        top: 700,
+        left: 0,
+        right: 0,
+        width: 10,
+        height: 10,
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+      ),
       Container(
         alignment: Alignment.bottomLeft,
         child: Image.asset(
