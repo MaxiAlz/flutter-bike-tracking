@@ -1,5 +1,5 @@
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
-import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/register_form_provider.dart';
+// import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/register_form_provider.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/share_infraestructure.dart';
 import 'package:app_ciudadano_vc/shared/widgets/inputs/custom_text_input.dart';
 import 'package:flutter/material.dart';
@@ -12,19 +12,28 @@ class NumberIdentificationForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final registerForm = ref.watch(registerFormProvider);
+    // final registerForm = ref.watch(registerFormProvider);
     final titleStyle = Theme.of(context).textTheme.titleLarge;
 
     final textController = TextEditingController();
     final focusNode = FocusNode();
 
-    setDateOfBirth() {
-      String withoutMask = InputMaskFormated.getMask(maskType: MaskType.dniMask)
-          .getUnmaskedText();
-      ref
-          .read(registerFormProvider.notifier)
-          .onIdentificationNumberChange(withoutMask);
-    }
+    // void setDateOfBirth(String value) {
+    //   print('==>>>>>>>>>>>> $value');
+    //   String withoutMask = InputMaskFormated.getMask(maskType: MaskType.dniMask)
+    //       .getUnmaskedText();
+    //   // ref
+    //   //     .read(registerFormProvider.notifier)
+    //   //     .onIdentificationNumberChange(withoutMask);
+    // }
+
+    // void setPhoneNumber() {
+    //   String withoutMask =
+    //       InputMaskFormated.getMask(maskType: MaskType.phoneNumberMask)
+    //           .getUnmaskedText();
+
+    //   // ref.read(registerFormProvider.notifier).onPhoneNumberChange(withoutMask);
+    // }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -47,15 +56,17 @@ class NumberIdentificationForm extends ConsumerWidget {
             inputFormatters: [
               InputMaskFormated.getMask(maskType: MaskType.dniMask)
             ],
-            onEditingComplete: () {
-              setDateOfBirth();
-            },
-            errorMessage: registerForm.identificationNumber.errorMessage,
+
+            // onEditingComplete: () {
+            //   setDateOfBirth(textController.text);
+            // },
+            // errorMessage: registerForm.identificationNumber.errorMessage,
           ),
           const SizedBox(
             height: 20,
           ),
           VBCustomTextInput(
+              // onEditingComplete: setPhoneNumber,
               inputFormatters: [
                 InputMaskFormated.getMask(maskType: MaskType.phoneNumberMask)
               ],
@@ -110,9 +121,9 @@ class _GenderDropdown extends ConsumerWidget {
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
           onChanged: (value) {
-            ref.read(registerFormProvider.notifier).onGenderChange(value);
+            // ref.read(registerFormProvider.notifier).onGenderChange(value);
           },
-          value: ref.watch(registerFormProvider).gender.value,
+          // value: ref.watch(registerFormProvider).gender.value,
           items: genders,
           isExpanded: true,
           hint: const Text('Seleccione un género'),
