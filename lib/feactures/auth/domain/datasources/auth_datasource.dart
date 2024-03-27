@@ -11,17 +11,19 @@ abstract class AuthDatasource {
 
 class UserRegistrationData {
   final String name;
-  final String fullName;
+  final String lastName;
   final String email;
-  final DateTime birthDay;
+  // final DateTime birthDay;
   final int dni;
   final Gender gender;
+  final int phoneNumber;
 
   UserRegistrationData(
       {required this.name,
-      required this.fullName,
+      required this.phoneNumber,
+      required this.lastName,
       required this.email,
-      required this.birthDay,
+      // required this.birthDay,
       required this.dni,
       required this.gender});
 }
