@@ -1,7 +1,5 @@
 import 'package:app_ciudadano_vc/config/router/app_router_notifier.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
-import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
-import 'package:app_ciudadano_vc/feactures/auth/presentation/screens/check_auth_status_screen.dart';
 import 'package:app_ciudadano_vc/feactures/user/user_settings.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +8,7 @@ final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
 
   return GoRouter(
-    initialLocation: /* '/checking-status' */ '/home',
+    initialLocation: /* '/checking-status' */ '/welcome',
     refreshListenable: goRouterNotifier,
     routes: [
       ///* Auth Routes
@@ -35,6 +33,10 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: '/register',
         builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: '/file-register',
+        builder: (context, state) => const UploadFiles(),
       ),
 
       GoRoute(
