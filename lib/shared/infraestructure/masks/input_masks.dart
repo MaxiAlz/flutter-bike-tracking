@@ -8,8 +8,8 @@ class InputMaskFormated {
       case MaskType.dniMask:
         return MaskTextInputFormatter(
           mask: '##.###.###',
-          filter: {"#": RegExp(r'[0-9]')},
-          type: MaskAutoCompletionType.lazy,
+          // filter: {"#": RegExp(r'[0-9]')},
+          // type: MaskAutoCompletionType.lazy,
         );
 
       case MaskType.phoneNumberMask:
@@ -21,9 +21,10 @@ class InputMaskFormated {
 
       case MaskType.dateOfBirthMask:
         return MaskTextInputFormatter(
-            mask: '## / ## / ####',
-            filter: {"#": RegExp(r'[0-9]')},
-            type: MaskAutoCompletionType.eager);
+          mask: '##/##/####',
+          // filter: {"#": RegExp(r'[0-9]')},
+          // type: MaskAutoCompletionType.eager,
+        );
     }
   }
 }

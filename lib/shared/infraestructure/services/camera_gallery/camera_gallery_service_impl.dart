@@ -6,10 +6,7 @@ class CameraGalleryServiceImpl extends CameraGalleryService {
   @override
   Future<String?> selectPhoto() async {
     final XFile? photo = await _picker.pickImage(source: ImageSource.gallery);
-
     if (photo == null) return null;
-
-    print('Tenermos imagen =>>>>>>>> ${photo.path}');
     return photo.path;
   }
 
@@ -17,10 +14,7 @@ class CameraGalleryServiceImpl extends CameraGalleryService {
   Future<String?> takePhoto() async {
     final XFile? photo = await _picker.pickImage(
         source: ImageSource.camera, preferredCameraDevice: CameraDevice.rear);
-
     if (photo == null) return null;
-
-    print('Tenermos imagen =>>>>>>>> ${photo.path}');
     return photo.path;
   }
 }
