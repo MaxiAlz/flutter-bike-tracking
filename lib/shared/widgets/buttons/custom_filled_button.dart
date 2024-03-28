@@ -8,7 +8,8 @@ class CustomFilledButtom extends StatelessWidget {
   final MaterialStatesController? statesController;
 
   const CustomFilledButtom(
-      {Key? key,
+      {
+        Key? key,
       required this.text,
       required this.onPressed,
       this.color,

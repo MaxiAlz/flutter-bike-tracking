@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomOutlineButtom extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final void Function()? onPressed;
   final Color? color;
   final Color? textColor;
 
@@ -24,7 +24,7 @@ class CustomOutlineButtom extends StatelessWidget {
         TextStyle(fontWeight: FontWeight.normal, fontSize: 20);
 
     return OutlinedButton(
-      onPressed: onPressed,
+      onPressed: () => onPressed,
       style: buttonStyles,
       child: Text(
         text,
