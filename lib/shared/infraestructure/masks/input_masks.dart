@@ -1,6 +1,6 @@
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-enum MaskType { dniMask, phoneNumberMask, dateOfBirthMask }
+enum MaskType { dniMask, phoneNumberMask, dateOfBirthMask, verificationCode }
 
 class InputMaskFormated {
   MaskTextInputFormatter getMask({required MaskType maskType}) {
@@ -25,6 +25,12 @@ class InputMaskFormated {
           filter: {"#": RegExp(r'[0-9]')},
           type: MaskAutoCompletionType.eager,
         );
+      case MaskType.verificationCode:
+        return MaskTextInputFormatter(
+          mask: '# # # #',
+          filter: {"#": RegExp(r'[0-9]')},
+          type: MaskAutoCompletionType.eager,
+        );
     }
   }
 
@@ -34,6 +40,7 @@ class InputMaskFormated {
       case MaskType.dniMask:
       case MaskType.phoneNumberMask:
       case MaskType.dateOfBirthMask:
+      case MaskType.verificationCode:
         return maskedValue.replaceAll(RegExp(r'[^\d]'), '');
     }
   }

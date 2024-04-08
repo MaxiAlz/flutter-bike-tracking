@@ -1,3 +1,5 @@
+export 'package:app_ciudadano_vc/shared/infraestructure/masks/input_masks.dart';
+
 export 'package:app_ciudadano_vc/shared/widgets/notifications/show_snackbar.dart';
 
 export 'package:app_ciudadano_vc/shared/widgets/loaders/full_loader.dart';
