@@ -1,3 +1,5 @@
+export 'package:app_ciudadano_vc/shared/widgets/loaders/full_loader.dart';
+
 export 'package:app_ciudadano_vc/shared/widgets/buttons/custom_outline_button.dart';
 export 'package:app_ciudadano_vc/shared/widgets/gradiente/custom_gradient.dart';
 export 'package:app_ciudadano_vc/shared/widgets/inputs/custom_text_input.dart';

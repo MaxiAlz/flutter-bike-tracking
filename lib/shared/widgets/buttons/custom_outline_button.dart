@@ -5,13 +5,17 @@ class CustomOutlineButtom extends StatelessWidget {
   final void Function()? onPressed;
   final Color? color;
   final Color? textColor;
+  final MaterialStatesController? statesController;
+  final Icon? icon;
 
   const CustomOutlineButtom(
       {Key? key,
       required this.text,
       required this.onPressed,
       this.color,
-      this.textColor})
+      this.textColor,
+      this.statesController,
+      this.icon})
       : super(key: key);
 
   @override
@@ -24,11 +28,18 @@ class CustomOutlineButtom extends StatelessWidget {
         TextStyle(fontWeight: FontWeight.normal, fontSize: 20);
 
     return OutlinedButton(
-      onPressed: () => onPressed,
+      onPressed: onPressed,
+      statesController: statesController,
       style: buttonStyles,
-      child: Text(
-        text,
-        style: textStylesButton,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) icon!,
+          Text(
+            text,
+            style: textStylesButton,
+          ),
+        ],
       ),
     );
   }
