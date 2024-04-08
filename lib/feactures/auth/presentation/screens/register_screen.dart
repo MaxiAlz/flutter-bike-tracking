@@ -26,10 +26,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             Image.asset('assets/images/vamos-en-bici-01.png', width: 250),
             PersonalInformationForm(),
-
-            // _NavigateButtons(
-            //     currentPageIndex: currentPageIndex,
-            //     pageController: pageController),
           ],
         ),
       ),
@@ -37,67 +33,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
-// class _NavigateButtons extends ConsumerWidget {
-//   const _NavigateButtons({
-//     required this.currentPageIndex,
-//     required this.pageController,
-//   });
 
-//   final int currentPageIndex;
-//   final PageController pageController;
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     return Container(
-//       alignment: Alignment.bottomCenter / 1.1,
-//       child: Row(
-//         // mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           Expanded(
-//             child: ElevatedButton(
-//               onPressed: currentPageIndex > 0
-//                   ? () {
-//                       pageController.previousPage(
-//                           duration: const Duration(milliseconds: 300),
-//                           curve: Curves.ease);
-//                     }
-//                   : null,
-//               child: const Row(
-//                   children: [Icon(Icons.arrow_back), Text('Anterior')]),
-//             ),
-//           ),
-//           const SizedBox(width: 16), // Espacio entre botones
-//           Expanded(
-//               flex: 1,
-//               child: currentPageIndex < 2
-//                   ? ElevatedButton(
-//                       autofocus: true,
-//                       onPressed: currentPageIndex < 2
-//                           ? () {
-//                               pageController.nextPage(
-//                                   duration: const Duration(milliseconds: 300),
-//                                   curve: Curves.ease);
-//                             }
-//                           : null,
-//                       child: const Row(
-//                           mainAxisAlignment: MainAxisAlignment.end,
-//                           children: [
-//                             Text('Siguiente'),
-//                             Icon(Icons.arrow_forward)
-//                           ]),
-//                     )
-//                   : FilledButton(
-//                       onPressed: () {
-//                         ref
-//                             .read(registerFormProvider.notifier)
-//                             .onSubmittRegisterForm(context);
-//                       },
-//                       child: const Row(
-//                           mainAxisAlignment: MainAxisAlignment.end,
-//                           children: [Text('Finalizar'), Icon(Icons.check)]),
-//                     )),
-//         ],
-//       ),
-//     );
-//   }
-// }
