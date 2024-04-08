@@ -27,9 +27,8 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    limpiarSharedPreferences();
+    // limpiarSharedPreferences();
     final appRouterProvider = ref.watch(goRouterProvider);
-
     final authprovider = ref.watch(authProvider);
     final formprovider = ref.watch(authFormProvider);
 
