@@ -1,36 +1,37 @@
 import 'package:app_ciudadano_vc/feactures/auth/domain/auth_domain.dart';
 import 'package:app_ciudadano_vc/feactures/auth/domain/repositories/auth_repository.dart';
 import 'package:app_ciudadano_vc/feactures/auth/infraestructure/auth_infraestructure.dart';
+import 'package:app_ciudadano_vc/feactures/auth/infraestructure/errors/auth_errors.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/services/shared_preferences/key_value_storage_impl.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/services/shared_preferences/key_value_storage_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  
-  final authRepository = AuthRepositoryImpl();
+  // final authRepository = AuthRepositoryImpl(datasource: );
   final keyValueStorageService = KeyValueStorageImpl();
 
   return AuthNotifier(
-      authRepository: authRepository,
+      // authRepository: authRepository,
       keyValueStorageService: keyValueStorageService);
 });
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  final AuthRepository authRepository;
+  // final AuthRepository authRepository;
   final KeyValueStorageService keyValueStorageService;
 
-  AuthNotifier(
-      {required this.keyValueStorageService, required this.authRepository})
-      : super(AuthState(errorMessage: ''));
+  AuthNotifier({
+    required this.keyValueStorageService,
+    /* this.authRepository */
+  }) : super(AuthState(errorMessage: ''));
 
   Future<void> loginUSer(String identifier) async {
     await Future.delayed(const Duration(milliseconds: 500));
 
     try {
       state = state.copyWith(authStatus: AuthStatus.checking);
-      final user = await authRepository.sendPhoneNumber(identifier);
+      // final user = await authRepository.sendPhoneNumber(identifier);
 
-      _setLogUSer(user);
+      // _setLogUSer(user);
     } on WrongCredentials {
       logout(errorMessage: 'Crendeciales invalidas');
     } catch (e) {
@@ -69,15 +70,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
     // }
   }
 
-  void _setLogUSer(User user) async {
-    await keyValueStorageService.setKeyValue('token', user.token);
+  // void _setLogUSer(User user) async {
+  //   await keyValueStorageService.setKeyValue('token', user.token);
 
-    state = state.copyWith(
-      authStatus: AuthStatus.authenticated,
-      user: user,
-      errorMessage: '',
-    );
-  }
+  //   state = state.copyWith(
+  //     authStatus: AuthStatus.authenticated,
+  //     user: user,
+  //     errorMessage: '',
+  //   );
+  // }
 }
 
 enum AuthStatus { checking, authenticated, notAuthenticated }
@@ -99,4 +100,4 @@ class AuthState {
           authStatus: authStatus ?? this.authStatus,
           errorMessage: errorMessage ?? this.errorMessage,
           user: user ?? this.user);
-} 
+}

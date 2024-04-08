@@ -9,6 +9,7 @@ import 'package:formz/formz.dart';
 // #3 crear instancia del proveedor para usarlo en el widget
 final authFormProvider =
     StateNotifierProvider<AuthFormNotifier, AuthFormState>((ref) {
+      
   final loginUSerCallback = ref.watch(authProvider.notifier).loginUSer;
 
   return AuthFormNotifier(loginUserCallback: loginUSerCallback);
@@ -35,9 +36,10 @@ class AuthFormState {
     this.isPhoneNumberValid = false,
     this.isVerificationCodeValid = false,
     this.errorMessage,
-    PhoneNumber? phoneNumber = const PhoneNumber.pure(),
+    // PhoneNumber? phoneNumber = const PhoneNumber.pure(),
+    this.phoneNumber = const PhoneNumber.pure(),
     this.verificationCode = const ValidateCode.pure(),
-  }) : phoneNumber = phoneNumber ?? PhoneNumber.withDefaultCountryCode();
+  }) /* : phoneNumber = phoneNumber ?? PhoneNumber.withDefaultCountryCode(); */;
 
   AuthFormState copyWith({
     bool? isLoading,
