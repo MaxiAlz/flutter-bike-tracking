@@ -57,22 +57,6 @@ class _UploadFilesView extends ConsumerWidget {
     const textStylesButton =
         TextStyle(fontWeight: FontWeight.normal, fontSize: 20);
 
-    void showRegistrationSuccessSnackbar(
-        {required BuildContext context,
-        required String label,
-        required Color color}) {
-      final snackBar = SnackBar(
-        content: Text(label),
-        backgroundColor: color,
-        action: SnackBarAction(
-          label: 'Cerrar',
-          onPressed: () {},
-        ),
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-
     void onPressRegisterUser(context) async {
       ref.watch(isLoadingProvider.notifier).update((state) => true);
 
@@ -81,16 +65,16 @@ class _UploadFilesView extends ConsumerWidget {
             files: fileRegisterForm, userData: registerForm);
 
         if (serviceResponse.statusCode == 201) {
-          showRegistrationSuccessSnackbar(
+          ShowCustomSnackbar().show(
               context: context,
-              color: Colors.green,
-              label: '¡Registro exitoso!');
+              label: '¡Registro exitoso!',
+              color: Colors.green);
           routerProvider.push('/auth');
           // context.push(location)
         }
       } catch (e) {
-        showRegistrationSuccessSnackbar(
-            context: context, color: Colors.red, label: 'Error al registrarse');
+        ShowCustomSnackbar().show(
+            context: context, label: 'Error al registrarse', color: Colors.red);
         Exception(e);
       }
       ref.read(goRouterProvider).push('/auth');
