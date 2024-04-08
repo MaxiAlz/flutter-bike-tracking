@@ -1,5 +1,5 @@
+import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
-// import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_form_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/register_form_provider.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/masks/input_masks.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
@@ -19,19 +19,24 @@ class PersonalInformationForm extends ConsumerWidget {
   final TextEditingController pgenderController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+
   PersonalInformationForm({
     super.key,
   });
 
+  bool isValidEmail(String value) {
+    final RegExp emailRegExp = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    );
+    return emailRegExp.hasMatch(value);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // bool buttonPressed = false;
     final gender = ref.watch(genderProvider);
-    // final registerForm = ref.watch(registerFormProvider);
-
     final smallTextStyle = Theme.of(context).textTheme.titleSmall;
     final colors = Theme.of(context).colorScheme;
-
+    final maskFormated = InputMaskFormated();
     final titleStyle = Theme.of(context).textTheme.titleLarge;
 
     return Padding(
@@ -66,17 +71,11 @@ class PersonalInformationForm extends ConsumerWidget {
                       if (value!.isEmpty) return "Campo requerido";
                       return null;
                     },
-                    // onChanged:
-                    //     ref.read(registerFormProvider.notifier).onNameChange,
                   ),
                   VBCustomTextInput(
                     controller: lastNameController,
                     hintText: 'Apellido',
                     labelText: 'Apellido',
-                    // errorMessage: registerForm.lastName.errorMessage,
-                    onSaved: (value) {
-                      // ref.read(registerFormProvider.notifier).onLastNameChange;
-                    },
                     validator: (value) {
                       if (value!.isEmpty) return "Campo requerido";
                       return null;
@@ -84,21 +83,21 @@ class PersonalInformationForm extends ConsumerWidget {
                   ),
                   VBCustomTextInput(
                     controller: phoneNumberController,
+                    inputFormatters: [
+                      maskFormated.getMask(maskType: MaskType.phoneNumberMask)
+                      // InputMaskFormated.getMask(
+                      //     maskType: MaskType.phoneNumberMask)
+                    ],
                     hintText: '(383) 412-345',
                     labelText: 'Telefono celular',
                     keyboardType: TextInputType.phone,
-                    onSaved: (value) {
-                      // ref
-                      //     .read(registerFormProvider.notifier)
-                      //     .onPhoneNumberChange;
-                    },
+                    onSaved: (value) {},
                     validator: (value) {
                       if (value!.isEmpty) return "Campo requerido";
                       return null;
                     },
                   ),
                   VBCustomTextInput(
-                    // focusNode: focusNode,
                     controller: emailController,
                     hintText: 'Correo electronico',
                     labelText: 'Correo electronico',
@@ -109,6 +108,7 @@ class PersonalInformationForm extends ConsumerWidget {
                     },
                     validator: (value) {
                       if (value!.isEmpty) return "Campo requerido";
+                      if (!isValidEmail(value)) return "Formato invalido";
                       return null;
                     },
                     // onChanged:
@@ -117,7 +117,7 @@ class PersonalInformationForm extends ConsumerWidget {
                   VBCustomTextInput(
                     controller: dniController,
                     inputFormatters: [
-                      InputMaskFormated.getMask(maskType: MaskType.dniMask)
+                      maskFormated.getMask(maskType: MaskType.dniMask)
                     ],
                     hintText: '12.345.678',
                     labelText: 'DNI',
@@ -138,8 +138,7 @@ class PersonalInformationForm extends ConsumerWidget {
                   TextFormField(
                     controller: dateOfBirthController,
                     inputFormatters: [
-                      InputMaskFormated.getMask(
-                          maskType: MaskType.dateOfBirthMask)
+                      maskFormated.getMask(maskType: MaskType.dateOfBirthMask)
                     ],
                     onSaved: (newValue) {
                       // ref
@@ -175,14 +174,16 @@ class PersonalInformationForm extends ConsumerWidget {
                   Row(children: [
                     // 'Masculino', 'M', gender, ref, context
                     _buildGenderButton(
-                        label: ' Masculino',
+                        label: ' M',
+                        icon: const Icon(Icons.male),
                         context: context,
                         ref: ref,
                         selectedGender: gender,
                         value: 'M'),
                     const SizedBox(width: 10), // Espaciado entre botones
                     _buildGenderButton(
-                      label: ' Femenino',
+                      label: ' F',
+                      icon: const Icon(Icons.female),
                       value: 'F',
                       context: context,
                       ref: ref,
@@ -190,6 +191,7 @@ class PersonalInformationForm extends ConsumerWidget {
                     ),
                     const SizedBox(width: 10), // Espaciado entre botones
                     _buildGenderButton(
+                      icon: const Icon(Icons.transgender),
                       label: 'Otro',
                       value: 'X',
                       context: context,
@@ -208,6 +210,14 @@ class PersonalInformationForm extends ConsumerWidget {
                           ref
                               .read(registerFormProvider.notifier)
                               .setUserDataState(
+                                identificationNumberUnmasked:
+                                    maskFormated.getUnmaskedValue(
+                                        maskedValue: dniController.text,
+                                        maskType: MaskType.dniMask),
+                                phoneNumberUnmasked:
+                                    maskFormated.getUnmaskedValue(
+                                        maskedValue: phoneNumberController.text,
+                                        maskType: MaskType.phoneNumberMask),
                                 name: nameController.text,
                                 lastName: lastNameController.text,
                                 email: emailController.text,
@@ -216,13 +226,9 @@ class PersonalInformationForm extends ConsumerWidget {
                                 phoneNumber: phoneNumberController.text,
                                 gender: gender as String,
                               );
+                          ref.read(goRouterProvider).push('/file-register');
                         }
                       }),
-                  OutlinedButton(
-                      onPressed: () {
-                        ref.read(registerFormProvider.notifier).printState();
-                      },
-                      child: Text('printState')),
                   const SizedBox(
                     height: 40,
                   ),
@@ -236,6 +242,7 @@ class PersonalInformationForm extends ConsumerWidget {
 
 Widget _buildGenderButton(
     {required String label,
+    required Icon icon,
     required String value,
     required String? selectedGender,
     required WidgetRef ref,
@@ -254,12 +261,17 @@ Widget _buildGenderButton(
         borderRadius: BorderRadius.circular(10), // Borde redondeado del botón
       ),
     ),
-    child: Text(
-      label,
-      style: const TextStyle(
-        // fontSize: 16,
-        fontWeight: FontWeight.bold,
-      ),
+    child: Row(
+      children: [
+        icon,
+        Text(
+          label,
+          style: const TextStyle(
+            // fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     ),
   );
 }

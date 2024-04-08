@@ -1,7 +1,3 @@
-// aca es donde tengo los datos:
-// ref.read(filesRegisterFormProvider.notifier).printState();
-//       ref.read(registerFormProvider.notifier).printState();
-
 import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:dio/dio.dart';
 
@@ -42,6 +38,7 @@ class RegisterServices {
 
       return response;
     } catch (e) {
+      Exception(e);
       print("Error en el registro: $e");
     }
   }
@@ -54,6 +51,7 @@ class RegisterServices {
       final response = await dio.post("/upload", data: formData);
       return response;
     } catch (e) {
+      Exception(e);
       print("Error uploading file: $e");
     }
   }
