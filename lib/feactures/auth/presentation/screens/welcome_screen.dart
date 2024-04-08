@@ -40,9 +40,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             CustomFilledButtom(
-              text: 'Comenzar',
-              onPressed: () => context.push('/auth'),
-            ),
+                text: 'Comenzar', onPressed: () => context.push('/auth')),
             const SizedBox(height: 20),
             InfoText(
                 subTitleStyle: subTitleStyle,
