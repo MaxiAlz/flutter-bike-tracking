@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final registerFormProvider =
     StateNotifierProvider<RegisterFormNotifier, RegisterFormState>((ref) {
+  // final registerUserCallback = ref.watch(registe)
   return RegisterFormNotifier();
 });
 
@@ -13,10 +14,14 @@ class RegisterFormState {
   final String email;
   final String dateOfBirth;
   final String identificationNumber;
-  final String gender;
+  final String identificationNumberUnmasked;
   final String phoneNumber;
+  final String phoneNumberUnmasked;
+  final String gender;
 
   RegisterFormState({
+    this.identificationNumberUnmasked = '',
+    this.phoneNumberUnmasked = '',
     this.name = '',
     this.lastName = '',
     this.email = '',
@@ -32,10 +37,15 @@ class RegisterFormState {
     String? email,
     String? dateOfBirth,
     String? identificationNumber,
-    String? gender,
+    String? identificationNumberUnmasked,
     String? phoneNumber,
+    String? phoneNumberUnmasked,
+    String? gender,
   }) {
     return RegisterFormState(
+      identificationNumberUnmasked:
+          identificationNumberUnmasked ?? this.identificationNumberUnmasked,
+      phoneNumberUnmasked: phoneNumberUnmasked ?? this.phoneNumberUnmasked,
       name: name ?? this.name,
       lastName: lastName ?? this.lastName,
       email: email ?? this.email,
@@ -73,8 +83,10 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
     required String lastName,
     required String email,
     required String dateOfBirth,
-    required String identificationNumber,
-    required String phoneNumber,
+    required String? identificationNumber,
+    required String? identificationNumberUnmasked,
+    required String? phoneNumber,
+    required String? phoneNumberUnmasked,
     required String gender,
   }) {
     state = state.copyWith(
@@ -84,8 +96,12 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
         dateOfBirth: dateOfBirth,
         identificationNumber: identificationNumber,
         phoneNumber: phoneNumber,
+        identificationNumberUnmasked: identificationNumberUnmasked,
+        phoneNumberUnmasked: phoneNumberUnmasked,
         gender: gender);
 
     print(state.toString());
   }
+
+  Future<void> submitRegisterUSer() async {}
 }

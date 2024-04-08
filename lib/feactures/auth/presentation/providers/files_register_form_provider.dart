@@ -35,6 +35,14 @@ class FilesRegisterState {
             isFilesPathsCompleted ?? this.isFilesPathsCompleted);
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'photoDniBackPath': photoDniBackPath,
+      'photoDniFrontPath': photoDniFrontPath,
+      'photoUserPath': photoUserPath,
+    };
+  }
+
   @override
   String toString() {
     return ''' 

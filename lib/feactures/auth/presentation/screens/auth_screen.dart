@@ -14,7 +14,6 @@ class AuthScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final titleStyle = Theme.of(context).textTheme.titleLarge;
     final subTitleStyle = Theme.of(context).textTheme.titleMedium;
-    final temrsStyle = Theme.of(context).textTheme.titleSmall;
 
     final textController = TextEditingController();
     final focusNode = FocusNode();
@@ -44,13 +43,8 @@ class AuthScreen extends ConsumerWidget {
               textController: textController,
               focusNode: focusNode, /*  maskFormatter: maskFormatter */
             ),
-            const SizedBox(height: 40),
-            InfoText(
-                subTitleStyle: temrsStyle,
-                text:
-                    'Al continuar estas de acuerdo con los terminos y condiciones vamos en bici'),
-            const SizedBox(height: 40),
-            _SendPhoneNumberButton(focusNode: focusNode),
+
+            // _SendPhoneNumberButton(focusNode: focusNode),
             const SizedBox(height: 40),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -76,32 +70,26 @@ class AuthScreen extends ConsumerWidget {
   }
 }
 
-class _SendPhoneNumberButton extends ConsumerWidget {
-  const _SendPhoneNumberButton({
-    required this.focusNode,
-  });
+// class _SendPhoneNumberButton extends ConsumerWidget {
+//   const _SendPhoneNumberButton({
+//     required this.focusNode,
+//   });
 
-  final FocusNode focusNode;
+//   final FocusNode focusNode;
 
-  @override
-  Widget build(BuildContext context, ref) {
-    return CustomFilledButtom(
-      text: /* 'Solicitar codigo' */ 'Siguiente',
-      onPressed: () {
-        // ref.read(authFormProvider.notifier).onSubmitPhoneNumber(context);
-        // focusNode.unfocus();
-        ref.read(goRouterProvider).push('/enter-code');
-        // context.push('/enter-code');
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context, ref) {
+//     return
+//   }
+// }
 
 class _InputPhoneNumber extends ConsumerWidget {
+  final formKey = GlobalKey<FormState>();
+
   final TextEditingController textController;
   final FocusNode focusNode;
 
-  const _InputPhoneNumber({
+  _InputPhoneNumber({
     required this.textController,
     required this.focusNode,
   });
@@ -115,6 +103,8 @@ class _InputPhoneNumber extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final authForm = ref.watch(authFormProvider);
+    final maskFormated = InputMaskFormated();
+    final temrsStyle = Theme.of(context).textTheme.titleSmall;
 
     ref.listen(authProvider, (previous, next) {
       if (next.errorMessage.isEmpty) return;
@@ -130,33 +120,58 @@ class _InputPhoneNumber extends ConsumerWidget {
       }
     });
 
-    return GestureDetector(
+    return Form(
+      key: formKey,
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
-        child: TextFormField(
-          inputFormatters: [
-            InputMaskFormated.getMask(maskType: MaskType.phoneNumberMask)
-          ],
-          onTapOutside: (e) {
-            focusNode.unfocus();
-          },
-          controller: textController,
-          focusNode: focusNode,
-          keyboardType: TextInputType.phone,
-          onChanged: ref.read(authFormProvider.notifier).onPhoneNumberChange,
-          onFieldSubmitted: (value) {},
-          decoration: InputDecoration(
-            errorText: authForm.isPhoneNumberSubmitted
-                ? authForm.phoneNumber.errorMessage
-                : null,
-            hintText: '(383) 412-3456',
-            prefixIcon: const Icon(Icons.phone),
-            hintStyle: const TextStyle(fontSize: 18),
-            labelText: 'Ingrese su numero',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
+        child: Column(
+          children: [
+            TextFormField(
+              inputFormatters: [
+                maskFormated.getMask(maskType: MaskType.phoneNumberMask)
+              ],
+              onTapOutside: (e) {
+                focusNode.unfocus();
+              },
+              onSaved: (newValue) {},
+              controller: textController,
+              focusNode: focusNode,
+              keyboardType: TextInputType.phone,
+              // onChanged: ref.read(authFormProvider.notifier).onPhoneNumberChange,
+              onFieldSubmitted: (value) {},
+              decoration: InputDecoration(
+                errorText: authForm.isPhoneNumberSubmitted
+                    ? authForm.phoneNumber.errorMessage
+                    : null,
+                hintText: '(383) 412-3456',
+                prefixIcon: const Icon(Icons.phone),
+                hintStyle: const TextStyle(fontSize: 18),
+                labelText: 'Ingrese su numero',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
             ),
-          ),
+            const SizedBox(height: 40),
+            InfoText(
+                subTitleStyle: temrsStyle,
+                text:
+                    'Al continuar estas de acuerdo con los terminos y condiciones vamos en bici'),
+            const SizedBox(height: 40),
+            CustomFilledButtom(
+              text: /* 'Solicitar codigo' */ 'Siguiente',
+              onPressed: () async {
+                if (formKey.currentState!.validate()) {
+                  formKey.currentState?.save();
+                  //TODO: guardar el numero y usarlo pa algo
+                }
+                // ref.read(authFormProvider.notifier).onSubmitPhoneNumber(context);
+                // focusNode.unfocus();
+                ref.read(goRouterProvider).push('/enter-code');
+                // context.push('/enter-code');
+              },
+            )
+          ],
         ),
       ),
     );
