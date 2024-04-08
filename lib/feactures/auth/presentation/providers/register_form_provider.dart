@@ -74,10 +74,6 @@ class RegisterFormState {
 class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
   RegisterFormNotifier() : super(RegisterFormState());
 
-  void printState() {
-    print(state.toString());
-  }
-
   void setUserDataState({
     required String name,
     required String lastName,

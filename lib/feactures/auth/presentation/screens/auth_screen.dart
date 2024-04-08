@@ -70,19 +70,6 @@ class AuthScreen extends ConsumerWidget {
   }
 }
 
-// class _SendPhoneNumberButton extends ConsumerWidget {
-//   const _SendPhoneNumberButton({
-//     required this.focusNode,
-//   });
-
-//   final FocusNode focusNode;
-
-//   @override
-//   Widget build(BuildContext context, ref) {
-//     return
-//   }
-// }
-
 class _InputPhoneNumber extends ConsumerWidget {
   final formKey = GlobalKey<FormState>();
 
@@ -102,7 +89,7 @@ class _InputPhoneNumber extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final authForm = ref.watch(authFormProvider);
+    // final authForm = ref.watch(authFormProvider);
     final maskFormated = InputMaskFormated();
     final temrsStyle = Theme.of(context).textTheme.titleSmall;
 
@@ -133,16 +120,20 @@ class _InputPhoneNumber extends ConsumerWidget {
               onTapOutside: (e) {
                 focusNode.unfocus();
               },
-              onSaved: (newValue) {},
+              onSaved: (newValue) {
+                ref
+                    .read(authFormProvider.notifier)
+                    .setPhoneNumber(newPhoneNumber: newValue as String);
+              },
+              validator: (value) {
+                if (value!.isEmpty) return "Campo requerido";
+                if (value.length < 14) return "Fomato invalido";
+                return null;
+              },
               controller: textController,
               focusNode: focusNode,
               keyboardType: TextInputType.phone,
-              // onChanged: ref.read(authFormProvider.notifier).onPhoneNumberChange,
-              onFieldSubmitted: (value) {},
               decoration: InputDecoration(
-                errorText: authForm.isPhoneNumberSubmitted
-                    ? authForm.phoneNumber.errorMessage
-                    : null,
                 hintText: '(383) 412-3456',
                 prefixIcon: const Icon(Icons.phone),
                 hintStyle: const TextStyle(fontSize: 18),
@@ -159,16 +150,12 @@ class _InputPhoneNumber extends ConsumerWidget {
                     'Al continuar estas de acuerdo con los terminos y condiciones vamos en bici'),
             const SizedBox(height: 40),
             CustomFilledButtom(
-              text: /* 'Solicitar codigo' */ 'Siguiente',
+              text: 'Siguiente',
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
                   formKey.currentState?.save();
-                  //TODO: guardar el numero y usarlo pa algo
+                  ref.read(goRouterProvider).push('/enter-code');
                 }
-                // ref.read(authFormProvider.notifier).onSubmitPhoneNumber(context);
-                // focusNode.unfocus();
-                ref.read(goRouterProvider).push('/enter-code');
-                // context.push('/enter-code');
               },
             )
           ],

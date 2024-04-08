@@ -1,10 +1,10 @@
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_form_provider.dart';
-import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/enter_code_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/widgets/Info_text.dart';
+import 'package:app_ciudadano_vc/shared/infraestructure/share_infraestructure.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
 
 class EnterCodeScreen extends ConsumerWidget {
   const EnterCodeScreen({super.key});
@@ -17,10 +17,17 @@ class EnterCodeScreen extends ConsumerWidget {
     final subTitleStyle = Theme.of(context).textTheme.titleMedium;
     final textController = TextEditingController();
     final focusNode = FocusNode();
-    final maskFormatter = MaskTextInputFormatter(
-        mask: '##-##-##-##',
-        filter: {"#": RegExp(r'[0-9]')},
-        type: MaskAutoCompletionType.lazy);
+
+    void submitPhoneAndCode() {
+      print(
+          '===>::{phoneNumberUnmasked.}::==> ${authForm.phoneNumberUnmasked}');
+      print(
+          '===>::{verificationCodeUnmasked.}::==> ${authForm.verificationCodeUnmasked}');
+    }
+
+    // TODO: Crear el service aqui para logearse
+
+    ;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 231, 237, 243),
@@ -43,33 +50,16 @@ class EnterCodeScreen extends ConsumerWidget {
                 text: 'Escribe el codigo que recibiste por SMS a:'),
             const SizedBox(height: 10),
             Text(
-              authForm.phoneNumber.value,
+              authForm.phoneNumber,
               style: subTitleStyle?.copyWith(
                   fontWeight: FontWeight.normal, fontSize: 20),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             _InputVerificationCode(
-                maskFormatter: maskFormatter,
+                submitPhoneAndCode: submitPhoneAndCode,
                 focusNode: focusNode,
                 textController: textController),
-            const SizedBox(height: 40),
-            InfoText(
-                subTitleStyle: subTitleStyle,
-                text:
-                    '¿No recibiste ningun codigo? Vuelve a escribir tu numero'),
-            const SizedBox(height: 40),
-            CustomFilledButtom(
-                text: 'Validar mi codigo',
-                onPressed: () {
-                  ref
-                      .read(enterCodePRovider.notifier)
-                      .onSubmitValidateCode(context);
-                }),
-            // FilledButton(
-            //     onPressed:
-            //         ref.read(enterCodePRovider.notifier).onSubmitValidateCode,
-            //     child: Text('maver'))
           ],
         ),
       ),
@@ -80,45 +70,81 @@ class EnterCodeScreen extends ConsumerWidget {
 class _InputVerificationCode extends ConsumerWidget {
   final TextEditingController textController;
   final FocusNode focusNode;
-  final MaskTextInputFormatter? maskFormatter;
+  final formKey = GlobalKey<FormState>();
+  final void Function() submitPhoneAndCode;
 
-  const _InputVerificationCode({
+  _InputVerificationCode({
+    required this.submitPhoneAndCode,
     required this.textController,
     required this.focusNode,
-    this.maskFormatter,
   });
 
   @override
   Widget build(BuildContext context, ref) {
-    final enterCodeForm = ref.watch(enterCodePRovider);
+    final authProvider = ref.watch(authFormProvider);
+    final maskFormated = InputMaskFormated();
+    final subTitleStyle = Theme.of(context).textTheme.titleMedium;
 
-    return GestureDetector(
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.8,
-        child: TextFormField(
-          inputFormatters: [maskFormatter!],
-          onTapOutside: (e) {
-            focusNode.unfocus();
-          },
-          controller: textController,
-          focusNode: focusNode,
-          keyboardType: TextInputType.number,
-          onChanged: /*  (value) {}, */
-              // ref.read(authFormProvider.notifier).onVerificationCodeChange,
-              ref.read(enterCodePRovider.notifier).onChangeValidateCode,
-          onFieldSubmitted: (value) {
-            textController.clear();
-          },
-          decoration: InputDecoration(
-            errorText: enterCodeForm.isCodeSubmitted
-                ? enterCodeForm.validateCode.errorMessage
-                : null,
-            hintText: '_ _ - _ _ -  _ _',
-            prefixIcon: const Icon(Icons.numbers),
-            hintStyle: const TextStyle(fontSize: 18),
-            labelText: 'Ingrese su codigo',
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-          ),
+    return Form(
+      key: formKey,
+      child: GestureDetector(
+        child: Column(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: TextFormField(
+                inputFormatters: [
+                  maskFormated.getMask(maskType: MaskType.verificationCode)
+                ],
+                onTapOutside: (e) {
+                  focusNode.unfocus();
+                },
+                controller: textController,
+                focusNode: focusNode,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value!.isEmpty) return 'Campo requerido';
+                  if (value.length < 7) return 'formato invalido';
+                  return null;
+                },
+                onSaved: (newValue) {
+                  ref.read(authFormProvider.notifier).setVerificationCode(
+                      newVerificationCode: newValue as String);
+                },
+                decoration: InputDecoration(
+                  hintText: '_ _  _ _ ',
+                  prefixIcon: const Icon(Icons.numbers),
+                  hintStyle: const TextStyle(fontSize: 18),
+                  labelText: 'Ingrese su codigo',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
+            InfoText(
+                subTitleStyle: subTitleStyle,
+                text:
+                    '¿No recibiste ningun codigo? Vuelve a escribir tu numero'),
+            const SizedBox(height: 40),
+            CustomFilledButtom(
+              text: 'Validar mi codigo',
+              onPressed: () {
+                if (formKey.currentState!.validate()) {
+                  formKey.currentState?.save();
+                  ref.read(authFormProvider.notifier).setUnmaskedValues(
+                      phoneNumberUnmasked: maskFormated.getUnmaskedValue(
+                          maskedValue: authProvider.phoneNumber,
+                          maskType: MaskType.phoneNumberMask),
+                      verificationCodeUnmasked: maskFormated.getUnmaskedValue(
+                          maskedValue: authProvider.verificationCode,
+                          maskType: MaskType.verificationCode));
+
+                  submitPhoneAndCode();
+                }
+              },
+            ),
+          ],
         ),
       ),
     );
