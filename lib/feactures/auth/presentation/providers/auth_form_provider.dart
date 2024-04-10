@@ -48,11 +48,14 @@ class AuthFormNotifier extends StateNotifier<AuthFormState> {
     state = state.copyWith(verificationCode: newVerificationCode);
   }
 
-  void setUnmaskedValues(
-      {required String phoneNumberUnmasked,
-      required String verificationCodeUnmasked}) {
+  void setUnmaskedValues({
+    String? phoneNumberUnmasked,
+    String? verificationCodeUnmasked,
+  }) {
     state = state.copyWith(
-        verificationCodeUnmasked: verificationCodeUnmasked,
-        phoneNumberUnmasked: phoneNumberUnmasked);
+      phoneNumberUnmasked: phoneNumberUnmasked ?? state.phoneNumberUnmasked,
+      verificationCodeUnmasked:
+          verificationCodeUnmasked ?? state.verificationCodeUnmasked,
+    );
   }
 }

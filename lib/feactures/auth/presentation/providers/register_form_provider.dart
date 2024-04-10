@@ -99,5 +99,4 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
     print(state.toString());
   }
 
-  Future<void> submitRegisterUSer() async {}
 }
