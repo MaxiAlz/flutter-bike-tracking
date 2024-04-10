@@ -1,7 +1,11 @@
-
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final isLoadingProvider = StateProvider.autoDispose<bool>((ref) {
+  return false;
+});
 
 class FullLoader extends StatelessWidget {
   final String? label;

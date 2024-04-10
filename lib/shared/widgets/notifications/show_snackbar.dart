@@ -10,7 +10,9 @@ class ShowCustomSnackbar {
       backgroundColor: color,
       action: SnackBarAction(
         label: 'Cerrar',
-        onPressed: () {},
+        onPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
       ),
     );
 
