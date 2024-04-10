@@ -6,9 +6,9 @@ import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final isLoadingProvider = StateProvider.autoDispose<bool>((ref) {
-  return false;
-});
+// final isLoadingProvider = StateProvider.autoDispose<bool>((ref) {
+//   return false;
+// });
 
 class UploadFiles extends ConsumerWidget {
   const UploadFiles({

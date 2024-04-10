@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
-import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
+// import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,7 +12,7 @@ class CheckAuthStatus extends ConsumerWidget {
     // final colors = Theme.of(context).colorScheme;
     final subTitleStyle = Theme.of(context).textTheme.titleMedium;
 
-    ref.watch(authProvider.notifier).checkAuthStatus();
+    // ref.watch(authProvider.notifier).checkAuthStatus();
 
     return Scaffold(
       body: Center(

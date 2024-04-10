@@ -4,6 +4,8 @@ import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_prov
 import 'package:app_ciudadano_vc/feactures/auth/presentation/widgets/info_text.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/masks/input_masks.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
+import 'package:app_ciudadano_vc/shared/widgets/loaders/full_loader.dart';
+import 'package:app_ciudadano_vc/shared/widgets/notifications/show_snackbar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +22,10 @@ class AuthScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 231, 237, 243),
-      body: Center(
+      body: /* isloading
+          ? const FullLoader()
+          : */
+          Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -81,24 +86,13 @@ class _InputPhoneNumber extends ConsumerWidget {
     required this.focusNode,
   });
 
-  void showSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
-  }
-
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // final authForm = ref.watch(authFormProvider);
     final maskFormated = InputMaskFormated();
     final temrsStyle = Theme.of(context).textTheme.titleSmall;
 
-    ref.listen(authProvider, (previous, next) {
-      if (next.errorMessage.isEmpty) return;
-
-      showSnackbar(context, next.errorMessage);
-    });
-    // final ref = ProviderRef.of(context, listen: false);
+    final isloading = ref.watch(isLoadingProvider);
 
     textController.addListener(() {
       // Si el usuario borra todo el texto, vacía el campo de entrada.
@@ -106,6 +100,31 @@ class _InputPhoneNumber extends ConsumerWidget {
         textController.clear();
       }
     });
+
+    Future onPressSendPhone() async {
+      ref.read(isLoadingProvider.notifier).update((state) => true);
+      final phoneNumber = ref.watch(authFormProvider).phoneNumberUnmasked;
+      try {
+        final serviceResponse = await ref
+            .read(authProvider.notifier)
+            .sendPhoneToVerification(phoneNumber: phoneNumber);
+
+        if (serviceResponse.response.statusCode == 404) {
+          ref.read(goRouterProvider).push('/register');
+
+          // ignore: use_build_context_synchronously
+          ShowCustomSnackbar().show(
+              context: context,
+              label: 'No se encontro un usuario con este numero',
+              color: Colors.lightBlue);
+        }
+        return serviceResponse;
+      } catch (error) {
+        return error;
+      } finally {
+        ref.read(isLoadingProvider.notifier).update((state) => false);
+      }
+    }
 
     return Form(
       key: formKey,
@@ -124,6 +143,11 @@ class _InputPhoneNumber extends ConsumerWidget {
                 ref
                     .read(authFormProvider.notifier)
                     .setPhoneNumber(newPhoneNumber: newValue as String);
+
+                ref.read(authFormProvider.notifier).setUnmaskedValues(
+                    phoneNumberUnmasked: InputMaskFormated().getUnmaskedValue(
+                        maskedValue: newValue,
+                        maskType: MaskType.phoneNumberMask));
               },
               validator: (value) {
                 if (value!.isEmpty) return "Campo requerido";
@@ -149,15 +173,17 @@ class _InputPhoneNumber extends ConsumerWidget {
                 text:
                     'Al continuar estas de acuerdo con los terminos y condiciones vamos en bici'),
             const SizedBox(height: 40),
-            CustomFilledButtom(
-              text: 'Siguiente',
-              onPressed: () async {
-                if (formKey.currentState!.validate()) {
-                  formKey.currentState?.save();
-                  ref.read(goRouterProvider).push('/enter-code');
-                }
-              },
-            )
+            isloading
+                ? const LinearProgressIndicator()
+                : CustomFilledButtom(
+                    text: 'Siguiente',
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        formKey.currentState?.save();
+                        onPressSendPhone();
+                      }
+                    },
+                  )
           ],
         ),
       ),

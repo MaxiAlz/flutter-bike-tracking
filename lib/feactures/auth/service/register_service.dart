@@ -39,7 +39,6 @@ class RegisterServices {
       return response;
     } catch (e) {
       Exception(e);
-      print("Error en el registro: $e");
     }
   }
 
@@ -52,7 +51,6 @@ class RegisterServices {
       return response;
     } catch (e) {
       Exception(e);
-      print("Error uploading file: $e");
     }
   }
 }
