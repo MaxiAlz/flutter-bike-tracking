@@ -6,6 +6,7 @@ import 'package:app_ciudadano_vc/shared/infraestructure/masks/input_masks.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
 import 'package:app_ciudadano_vc/shared/widgets/loaders/full_loader.dart';
 import 'package:app_ciudadano_vc/shared/widgets/notifications/show_snackbar.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
@@ -101,6 +102,16 @@ class _InputPhoneNumber extends ConsumerWidget {
       }
     });
 
+    notifyUserBySnackbar({required String label, required Color color}) {
+      return Center(
+        child: ShowCustomSnackbar().show(
+          context: context,
+          label: label,
+          color: color,
+        ),
+      );
+    }
+
     Future onPressSendPhone() async {
       ref.read(isLoadingProvider.notifier).update((state) => true);
       final phoneNumber = ref.watch(authFormProvider).phoneNumberUnmasked;
@@ -109,17 +120,22 @@ class _InputPhoneNumber extends ConsumerWidget {
             .read(authProvider.notifier)
             .sendPhoneToVerification(phoneNumber: phoneNumber);
 
-        if (serviceResponse.response.statusCode == 404) {
+        if (serviceResponse?.statusCode == 201) {
+          ref.read(goRouterProvider).go('/enter-code');
+          return;
+        }
+
+        if (serviceResponse.statusCode == 404) {
           ref.read(goRouterProvider).push('/register');
 
-          // ignore: use_build_context_synchronously
-          ShowCustomSnackbar().show(
-              context: context,
+          notifyUserBySnackbar(
               label: 'No se encontro un usuario con este numero',
               color: Colors.lightBlue);
+
+          return;
         }
-        return serviceResponse;
-      } catch (error) {
+      }  on DioException catch (error) {
+        notifyUserBySnackbar(label: 'Ah ocurrido un error', color: Colors.red);
         return error;
       } finally {
         ref.read(isLoadingProvider.notifier).update((state) => false);

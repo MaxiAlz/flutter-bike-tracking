@@ -12,7 +12,7 @@ class AuthServices {
 
       return response;
     } on DioException catch (error) {
-      return error;
+      return error.response;
     }
   }
 }

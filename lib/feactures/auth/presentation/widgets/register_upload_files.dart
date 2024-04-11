@@ -76,8 +76,10 @@ class _UploadFilesView extends ConsumerWidget {
         ShowCustomSnackbar().show(
             context: context, label: 'Error al registrarse', color: Colors.red);
         Exception(e);
+      } finally {
+        ref.read(goRouterProvider).push('/auth');
+        ref.watch(isLoadingProvider.notifier).update((state) => true);
       }
-      ref.read(goRouterProvider).push('/auth');
     }
 
     return isLoading

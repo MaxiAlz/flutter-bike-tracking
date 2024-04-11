@@ -41,10 +41,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final serviceResponse = await authService.sendPhoneService(phoneNumber);
 
-      if (serviceResponse.response.data['statuscode'] == 404) {
+      if (serviceResponse.statusCode == 201) {
+        state = state.copyWith(authStatus: AuthStatus.registered);
+        return serviceResponse;
+      }
+
+      if (serviceResponse.statusCode == 404) {
         state = state.copyWith(authStatus: AuthStatus.notRegistered);
-        // TODO: Aqui hacer que lo lleve a la pestaña de registro si no se encuentra el usuario
-        return;
+        return serviceResponse;
       }
 
       return serviceResponse;
