@@ -27,7 +27,7 @@ class InputMaskFormated {
         );
       case MaskType.verificationCode:
         return MaskTextInputFormatter(
-          mask: '# # # #',
+          mask: '#-#-#-#',
           filter: {"#": RegExp(r'[0-9]')},
           type: MaskAutoCompletionType.eager,
         );

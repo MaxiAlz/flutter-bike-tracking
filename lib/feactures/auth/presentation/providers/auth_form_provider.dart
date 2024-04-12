@@ -22,7 +22,7 @@ class AuthFormState {
       {String? phoneNumber,
       String? verificationCode,
       String? phoneNumberUnmasked,
-      String? verificationCodeUnmasked}) {
+      String? verificationCodeUnmasked,}) {
     return AuthFormState(
       phoneNumber: phoneNumber ?? this.phoneNumber,
       verificationCode: verificationCode ?? this.verificationCode,
@@ -36,9 +36,6 @@ class AuthFormState {
 class AuthFormNotifier extends StateNotifier<AuthFormState> {
   AuthFormNotifier() : super(AuthFormState());
 
-  void printState() {
-    print(state.toString());
-  }
 
   void setPhoneNumber({required String newPhoneNumber}) {
     state = state.copyWith(phoneNumber: newPhoneNumber);

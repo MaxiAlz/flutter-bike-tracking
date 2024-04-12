@@ -1,10 +1,14 @@
+import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_form_provider.dart';
+import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/widgets/Info_text.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/share_infraestructure.dart';
+import 'package:app_ciudadano_vc/shared/providers/loading_provider.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
+import 'package:app_ciudadano_vc/shared/widgets/notifications/show_snackbar.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 
 class EnterCodeScreen extends ConsumerWidget {
   const EnterCodeScreen({super.key});
@@ -15,19 +19,8 @@ class EnterCodeScreen extends ConsumerWidget {
 
     final titleStyle = Theme.of(context).textTheme.titleLarge;
     final subTitleStyle = Theme.of(context).textTheme.titleMedium;
-    final textController = TextEditingController();
+    final codeTextController = TextEditingController();
     final focusNode = FocusNode();
-
-    void submitPhoneAndCode() {
-      print(
-          '===>::{phoneNumberUnmasked.}::==> ${authForm.phoneNumberUnmasked}');
-      print(
-          '===>::{verificationCodeUnmasked.}::==> ${authForm.verificationCodeUnmasked}');
-    }
-
-    // TODO: Crear el service aqui para logearse
-
-    ;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 231, 237, 243),
@@ -57,9 +50,9 @@ class EnterCodeScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             _InputVerificationCode(
-                submitPhoneAndCode: submitPhoneAndCode,
+                // submitPhoneAndCode: submitPhoneAndCode,
                 focusNode: focusNode,
-                textController: textController),
+                textController: codeTextController),
           ],
         ),
       ),
@@ -71,19 +64,61 @@ class _InputVerificationCode extends ConsumerWidget {
   final TextEditingController textController;
   final FocusNode focusNode;
   final formKey = GlobalKey<FormState>();
-  final void Function() submitPhoneAndCode;
 
   _InputVerificationCode({
-    required this.submitPhoneAndCode,
     required this.textController,
     required this.focusNode,
   });
 
   @override
   Widget build(BuildContext context, ref) {
-    final authProvider = ref.watch(authFormProvider);
+    // final authProvider = ref.watch(authFormProvider);
     final maskFormated = InputMaskFormated();
     final subTitleStyle = Theme.of(context).textTheme.titleMedium;
+    final isloading = ref.watch(isLoadingProvider);
+
+    Future submitPhoneAndCode() async {
+      ref.read(isLoadingProvider.notifier).update((state) => true);
+
+      final phoneNumber = ref.watch(authFormProvider).phoneNumberUnmasked;
+      final code = ref.watch(authFormProvider).verificationCode;
+
+      final codeUnmasked = maskFormated.getUnmaskedValue(
+          maskedValue: code, maskType: MaskType.phoneNumberMask);
+
+      try {
+        final serviceResponse = await ref
+            .read(authProvider.notifier)
+            .sendCodeToVerification(
+                phoneNumber: phoneNumber, code: codeUnmasked);
+
+        if (serviceResponse.statusCode == 400) {
+          // ignore: use_build_context_synchronously
+          ShowCustomSnackbar().show(
+              context: context,
+              label: 'Credenciales Invalidas',
+              color: Colors.red);
+          return;
+        }
+        if (serviceResponse.statusCode == 201) {
+          ref.read(goRouterProvider).go('/home');
+          // ignore: use_build_context_synchronously
+          ShowCustomSnackbar().show(
+              context: context, label: 'Hola pa', color: Colors.lightBlue);
+          return serviceResponse;
+        }
+
+        return serviceResponse;
+      } on DioException catch (e) {
+        // ignore: use_build_context_synchronously
+        ShowCustomSnackbar().show(
+            context: context, label: 'Ah ocurrido un error', color: Colors.red);
+
+        return e.response;
+      } finally {
+        ref.read(isLoadingProvider.notifier).update((state) => false);
+      }
+    }
 
     return Form(
       key: formKey,
@@ -110,9 +145,15 @@ class _InputVerificationCode extends ConsumerWidget {
                 onSaved: (newValue) {
                   ref.read(authFormProvider.notifier).setVerificationCode(
                       newVerificationCode: newValue as String);
+
+                  ref.read(authFormProvider.notifier).setUnmaskedValues(
+                      verificationCodeUnmasked: InputMaskFormated()
+                          .getUnmaskedValue(
+                              maskedValue: newValue,
+                              maskType: MaskType.verificationCode));
                 },
                 decoration: InputDecoration(
-                  hintText: '_ _  _ _ ',
+                  hintText: '_-_-_-_ ',
                   prefixIcon: const Icon(Icons.numbers),
                   hintStyle: const TextStyle(fontSize: 18),
                   labelText: 'Ingrese su codigo',
@@ -127,23 +168,17 @@ class _InputVerificationCode extends ConsumerWidget {
                 text:
                     '¿No recibiste ningun codigo? Vuelve a escribir tu numero'),
             const SizedBox(height: 40),
-            CustomFilledButtom(
-              text: 'Validar mi codigo',
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  formKey.currentState?.save();
-                  ref.read(authFormProvider.notifier).setUnmaskedValues(
-                      phoneNumberUnmasked: maskFormated.getUnmaskedValue(
-                          maskedValue: authProvider.phoneNumber,
-                          maskType: MaskType.phoneNumberMask),
-                      verificationCodeUnmasked: maskFormated.getUnmaskedValue(
-                          maskedValue: authProvider.verificationCode,
-                          maskType: MaskType.verificationCode));
-
-                  submitPhoneAndCode();
-                }
-              },
-            ),
+            isloading
+                ? const LinearProgressIndicator()
+                : CustomFilledButtom(
+                    text: 'Validar mi codigo',
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        formKey.currentState?.save();
+                        submitPhoneAndCode();
+                      }
+                    },
+                  ),
           ],
         ),
       ),
