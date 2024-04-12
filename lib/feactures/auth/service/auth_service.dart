@@ -15,4 +15,19 @@ class AuthServices {
       return error.response;
     }
   }
+
+  Future verifyCodeService({required String phoneNumber, required String code}) async {
+    final Map<String, dynamic> vorifyCodeData = {
+      "numero": phoneNumber,
+      "codigo": code
+    };
+
+    try {
+      final verifyCodeSericeResponse =
+          await dio.post('/auth/verificacion_codigo', data: vorifyCodeData);
+      return verifyCodeSericeResponse;
+    } on DioException catch (error) {
+      return error.response;
+    }
+  }
 }
