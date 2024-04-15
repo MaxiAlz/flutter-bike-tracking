@@ -16,18 +16,34 @@ class AuthServices {
     }
   }
 
-  Future verifyCodeService({required String phoneNumber, required String code}) async {
-    final Map<String, dynamic> vorifyCodeData = {
+  Future verifyCodeService(
+      {required String phoneNumber, required String code}) async {
+    final Map<String, dynamic> verifyCodeData = {
       "numero": phoneNumber,
       "codigo": code
     };
 
     try {
       final verifyCodeSericeResponse =
-          await dio.post('/auth/verificacion_codigo', data: vorifyCodeData);
+          await dio.post('/auth/verificacion_codigo', data: verifyCodeData);
       return verifyCodeSericeResponse;
     } on DioException catch (error) {
       return error.response;
+    }
+  }
+
+  Future checkAuthStatusService(String token) async {
+    try {
+      final response = await dio.get('/auth/perfil',
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+          }));
+
+      return response;
+    } on DioException catch (error) {
+      if (error.response?.statusCode == 401) throw Exception('Token no valido');
+    } catch (error) {
+      throw Exception(error);
     }
   }
 }

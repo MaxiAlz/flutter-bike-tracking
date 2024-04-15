@@ -89,7 +89,7 @@ class _InputVerificationCode extends ConsumerWidget {
       try {
         final serviceResponse = await ref
             .read(authProvider.notifier)
-            .sendCodeToVerification(
+            .loginUser(
                 phoneNumber: phoneNumber, code: codeUnmasked);
 
         if (serviceResponse.statusCode == 400) {
