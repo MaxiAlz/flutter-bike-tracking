@@ -1,9 +1,11 @@
 import 'package:app_ciudadano_vc/config/config.dart';
+import 'package:app_ciudadano_vc/feactures/auth/domain/auth_domain.dart';
 import 'package:dio/dio.dart';
 
 final Dio dio = Dio(BaseOptions(baseUrl: Enviroments.apiUrl));
 
-class RegisterServices {
+class RegisterServices extends RegisterServiceDomain {
+  @override
   Future registerUser({required files, required userData}) async {
     List<Map<String, dynamic>> responsesUrls = [];
 

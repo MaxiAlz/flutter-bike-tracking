@@ -1,9 +1,11 @@
 import 'package:app_ciudadano_vc/config/constants/enviroments.dart';
+import 'package:app_ciudadano_vc/feactures/auth/domain/auth_domain.dart';
 import 'package:dio/dio.dart';
 
 final Dio dio = Dio(BaseOptions(baseUrl: Enviroments.apiUrl));
 
-class AuthServices {
+class AuthServices extends AuthServicesDomain {
+  @override
   Future sendPhoneService(String phoneNumber) async {
     final Map<String, dynamic> phoneData = {"numero": phoneNumber};
     try {
@@ -16,6 +18,7 @@ class AuthServices {
     }
   }
 
+  @override
   Future verifyCodeService(
       {required String phoneNumber, required String code}) async {
     final Map<String, dynamic> verifyCodeData = {
@@ -32,6 +35,7 @@ class AuthServices {
     }
   }
 
+  @override
   Future checkAuthStatusService(String token) async {
     try {
       final response = await dio.get('/auth/perfil',
