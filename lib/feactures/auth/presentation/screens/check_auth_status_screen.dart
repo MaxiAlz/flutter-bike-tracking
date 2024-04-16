@@ -31,7 +31,7 @@ class CheckAuthStatus extends ConsumerWidget {
           ),
           Flash(
               curve: Curves.linear,
-              duration: Duration(milliseconds: 4000),
+              duration: Duration(milliseconds: 3000),
               infinite: true,
               child: InfoText(
                 text: 'Cargando...',

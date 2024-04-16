@@ -52,8 +52,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final serviceResponse = await authService.sendPhoneService(phoneNumber);
 
       if (serviceResponse.statusCode == 201) {
-        state = state.copyWith(authStatus: AuthStatus.registered);
-
+        state = state.copyWith(authStatus: AuthStatus.notAuthenticated);
         return serviceResponse;
       }
 

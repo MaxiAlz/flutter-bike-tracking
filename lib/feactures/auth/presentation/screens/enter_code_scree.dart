@@ -76,7 +76,7 @@ class _InputVerificationCode extends ConsumerWidget {
     final maskFormated = InputMaskFormated();
     final subTitleStyle = Theme.of(context).textTheme.titleMedium;
     final isloading = ref.watch(isLoadingProvider);
-
+    
     Future submitPhoneAndCode() async {
       ref.read(isLoadingProvider.notifier).update((state) => true);
 
@@ -89,8 +89,7 @@ class _InputVerificationCode extends ConsumerWidget {
       try {
         final serviceResponse = await ref
             .read(authProvider.notifier)
-            .loginUser(
-                phoneNumber: phoneNumber, code: codeUnmasked);
+            .loginUser(phoneNumber: phoneNumber, code: codeUnmasked);
 
         if (serviceResponse.statusCode == 400) {
           // ignore: use_build_context_synchronously
@@ -101,10 +100,10 @@ class _InputVerificationCode extends ConsumerWidget {
           return;
         }
         if (serviceResponse.statusCode == 201) {
-          ref.read(goRouterProvider).go('/home');
+          ref.read(goRouterProvider).push('/home');
           // ignore: use_build_context_synchronously
           ShowCustomSnackbar().show(
-              context: context, label: 'Hola pa', color: Colors.lightBlue);
+              context: context, label: 'Bienvenido', color: Colors.lightBlue);
           return serviceResponse;
         }
 
