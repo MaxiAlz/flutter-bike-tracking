@@ -1,10 +1,18 @@
-import 'package:app_ciudadano_vc/config/router/app_router.dart';
-import 'package:app_ciudadano_vc/config/theme/app_theme.dart';
+import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
+import 'package:shared_preferences/shared_preferences.dart';
+
+Future<void> limpiarSharedPreferences() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs
+      .clear(); // Limpia todas las variables guardadas en SharedPreferences
+}
+
+void main() async {
+  await Enviroments.initEnviroment();
+
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -12,13 +20,16 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // limpiarSharedPreferences();
+    final appRouterProvider = ref.watch(goRouterProvider);
+
     return MaterialApp.router(
-      routerConfig: appRouter,
+      routerConfig: appRouterProvider,
       debugShowCheckedModeBanner: false,
       theme: AppTheme().getTheme(),
     );

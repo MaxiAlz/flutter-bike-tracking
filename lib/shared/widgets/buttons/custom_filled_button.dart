@@ -5,13 +5,16 @@ class CustomFilledButtom extends StatelessWidget {
   final VoidCallback onPressed;
   final Color? color;
   final Color? textColor;
+  final MaterialStatesController? statesController;
 
   const CustomFilledButtom(
-      {Key? key,
+      {
+        Key? key,
       required this.text,
       required this.onPressed,
       this.color,
-      this.textColor})
+      this.textColor,
+      this.statesController})
       : super(key: key);
 
   @override
@@ -24,6 +27,7 @@ class CustomFilledButtom extends StatelessWidget {
         TextStyle(fontWeight: FontWeight.normal, fontSize: 20);
 
     return FilledButton(
+      statesController: statesController,
       onPressed: onPressed,
       style: buttonStyles,
       child: Text(

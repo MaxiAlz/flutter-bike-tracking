@@ -1,28 +1,19 @@
-import 'package:app_ciudadano_vc/feactures/auth/domain/entities/user.dart';
-import 'package:app_ciudadano_vc/feactures/auth/domain/repositories/auth_repository.dart';
+import 'package:app_ciudadano_vc/feactures/auth/domain/auth_domain.dart';
+import 'package:app_ciudadano_vc/feactures/auth/infraestructure/auth_infraestructure.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
+  final AuthDatasource datasource;
+
+  AuthRepositoryImpl({AuthDatasource? datasource})
+      : datasource = datasource ?? AuthDatasourceImpl();
+
+  @override
+  Future registerUser(UserRegistrationData userRegistrationData) {
+    return datasource.registerUser(userRegistrationData);
+  }
+
   @override
   Future<User> checkAuthStatus(String token) {
-    // TODO: implement checkAuthStatus
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<User> register(UserRegistrationData userRegistrationData) {
-    // TODO: implement register
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<User> sendPhoneNumber(int phoneNumber) {
-    // TODO: implement sendPhoneNumber
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<User> sendVerificationCode(int phoneNumber) {
-    // TODO: implement sendVerificationCode
-    throw UnimplementedError();
+    return datasource.checkAuthStatus(token);
   }
 }
