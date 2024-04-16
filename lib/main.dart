@@ -2,13 +2,7 @@ import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> limpiarSharedPreferences() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs
-      .clear(); // Limpia todas las variables guardadas en SharedPreferences
-}
 
 void main() async {
   await Enviroments.initEnviroment();
@@ -25,7 +19,6 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // limpiarSharedPreferences();
     final appRouterProvider = ref.watch(goRouterProvider);
 
     return MaterialApp.router(
