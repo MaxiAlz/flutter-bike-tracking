@@ -14,7 +14,7 @@ final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
 
   return GoRouter(
-    initialLocation: /* '/checking-status' */ '/welcome',
+    initialLocation: '/checking-status',
     refreshListenable: goRouterNotifier,
     routes: [
       ///* Auth Routes
@@ -64,31 +64,37 @@ final goRouterProvider = Provider((ref) {
       final isGoingTo = state.matchedLocation;
       final authStatus = goRouterNotifier.authStatus;
 
-      print('''
-=>> state: $state
-=>> isGoingTo: $isGoingTo
-=>> authStatus: $authStatus
-''');
+      if (isGoingTo == '/checking-status' &&
+          authStatus == AuthStatus.checking) {
+        return null;
+      }
 
-      // if (isGoingTo == '/checking-status' &&
-      //     authStatus == AuthStatus.checking) {
-      //   return null;
-      // }
+      if (authStatus == AuthStatus.notAuthenticated) {
+        if (isGoingTo == '/auth' ||
+            isGoingTo == '/register' ||
+            isGoingTo == '/enter-code' ||
+            isGoingTo == '/welcome') return null;
+        return '/welcome';
+      }
 
-      // if (authStatus == AuthStatus.notAuthenticated) {
-      //   if (isGoingTo == '/auth' || isGoingTo == '/register') return null;
-
-      //   return '/auth';
-      // }
+      if (authStatus == AuthStatus.authenticated) {
+        if (isGoingTo == '/auth' ||
+            isGoingTo == '/register' ||
+            isGoingTo == '/enter-code' ||
+            isGoingTo == '/welcome' ||
+            isGoingTo == '/checking-status') {
+          return '/home';
+        }
+        return null;
+      }
 
       // if (authStatus == AuthStatus.authenticated) {
       //   // if (isGoingTo == '/my-account') return null;
 
       //   if (isGoingTo == '/auth' ||
-      //           isGoingTo ==
-      //               '/register' /* ||
-      //       isGoingTo == '/checking-status' */
-      //       ) {
+      //       isGoingTo == '/register' ||
+      //       isGoingTo == '/enter-code' ||
+      //       isGoingTo == '/welcome') {
       //     return '/home';
       //   }
       //   return null;

@@ -1,5 +1,3 @@
-// import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
-// import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/shared/widgets/drawer/menu_items.dart';
 import 'package:flutter/material.dart';
@@ -80,13 +78,10 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
 }
 
 class _LogoutButton extends ConsumerWidget {
-  const _LogoutButton({
-    super.key,
-  });
+  const _LogoutButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final authnotifier = ref.watch(authProvider);
     return FilledButton.icon(
         onPressed: () {
           ref.read(authProvider.notifier).logoutUSer();
