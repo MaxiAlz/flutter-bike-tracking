@@ -26,16 +26,3 @@ class User {
   });
 }
 
-
-// {
-//     "nombre":"holaa",
-//     "apellido":"etc",
-//     "fecha_nacimiento":"31/12/2001",
-//     "numero_celular":"34234234",
-//     "documento_numero":"42519217",
-//     "foto":"www.google.com/url",
-//     "documento_frontal":"www.google.com/url",
-//     "documento_dorsal":"www.google.com/url",
-//     "email":"drober@hotmali.com",
-//     "genero":"M"
-// }
