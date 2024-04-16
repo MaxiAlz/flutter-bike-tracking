@@ -100,10 +100,10 @@ class _InputVerificationCode extends ConsumerWidget {
           return;
         }
         if (serviceResponse.statusCode == 201) {
+          // ShowCustomSnackbar().show(
+          //     context: context, label: 'Bienvenido', color: Colors.lightBlue);
           ref.read(goRouterProvider).push('/home');
           // ignore: use_build_context_synchronously
-          ShowCustomSnackbar().show(
-              context: context, label: 'Bienvenido', color: Colors.lightBlue);
           return serviceResponse;
         }
 
