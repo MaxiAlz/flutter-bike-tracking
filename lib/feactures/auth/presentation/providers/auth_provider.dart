@@ -1,7 +1,7 @@
 import 'package:app_ciudadano_vc/feactures/auth/domain/entities/auth_status.dart';
 import 'package:app_ciudadano_vc/feactures/auth/domain/entities/user.dart';
 import 'package:app_ciudadano_vc/feactures/auth/infraestructure/mappers/user_mapper.dart';
-import 'package:app_ciudadano_vc/feactures/auth/service/auth_service.dart';
+import 'package:app_ciudadano_vc/feactures/auth/infraestructure/service/auth_service.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/services/shared_preferences/key_value_storage_impl.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/services/shared_preferences/key_value_storage_service.dart';
 import 'package:dio/dio.dart';

@@ -1,7 +1,7 @@
 import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/files_register_form_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/register_form_provider.dart';
-import 'package:app_ciudadano_vc/feactures/auth/service/register_service.dart';
+import 'package:app_ciudadano_vc/feactures/auth/infraestructure/service/register_service.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
