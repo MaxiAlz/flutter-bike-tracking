@@ -58,7 +58,10 @@ class _SideMenuDrawerState extends State<SideMenuDrawer> {
             padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
             child: Divider(),
           ),
-          const _LogoutButton(),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: const _LogoutButton(),
+          ),
           const Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: Divider(),
