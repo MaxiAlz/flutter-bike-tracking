@@ -1,21 +1,18 @@
-import 'package:app_ciudadano_vc/feactures/auth/domain/auth_domain.dart';
+import 'package:app_ciudadano_vc/feactures/auth/domain/entities/user.dart';
 
 class UserMapper {
-
   static User userJsonToEntity(Map<String, dynamic> json) {
     return User(
-      id: json['user']['id'],
-      email: json['user']['email'],
-      name: json['user']['name'],
-      lastName: json['user']['lastName'],
-      token: json['jwt'],
-      gender: json['user']['gender'],
-      dni: json['user']['dni'],
-      isActive: json['user']['confirmed'],
-      phoneNumber: json['user']['phoneNumber'],
-      birthDay: json['user']['birthDay'],
+      name: json['nombre'] ?? '',
+      lastName: json['apellido'] ?? '',
+      dateOfBirth: json['fecha_nacimiento'] ?? '',
+      phoneNumber: json['numero_celular'] ?? '',
+      dniNumber: json['documento_numero'] ?? '',
+      photo: json['foto'] ?? '',
+      dniFront: json['documento_frontal'] ?? '',
+      dniBack: json['documento_dorsal'] ?? '',
+      email: json['email'] ?? '',
+      gender: json['genero'] ?? '',
     );
   }
 }
-// 
-// https://naranjax.udemy.com/course/flutter-cero-a-experto/learn/lecture/36924242#overview

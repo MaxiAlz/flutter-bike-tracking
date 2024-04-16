@@ -1,3 +1,4 @@
+import 'package:app_ciudadano_vc/feactures/auth/domain/entities/auth_status.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,7 +23,7 @@ class GoRouterNofier extends ChangeNotifier {
 // Constructor que esta pendiente de los estados, por eso el addListener
   GoRouterNofier(this._authNotifier) {
     _authNotifier.addListener((state) {
-      authStatus = state.authStatus!;
+      authStatus = state.authStatus;
     });
   }
 

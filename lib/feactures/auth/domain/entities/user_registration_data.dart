@@ -1,6 +1,4 @@
-
-
-class User {
+class UserRegistrationData {
   final String name;
   final String lastName;
   final String dateOfBirth;
@@ -12,7 +10,7 @@ class User {
   final String email;
   final String gender;
 
-  User({
+  UserRegistrationData({
     required this.name,
     required this.lastName,
     required this.dateOfBirth,
@@ -25,4 +23,3 @@ class User {
     required this.gender,
   });
 }
-

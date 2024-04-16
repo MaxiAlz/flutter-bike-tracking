@@ -30,7 +30,7 @@ class KeyValueStorageImpl extends KeyValueStorageService {
   }
 
   @override
-  Future<void> setKeyValue<T>(String key, T value) async {
+  Future<void> setAnyKeyValue<T>(String key, T value) async {
     final prefs = await getSahrePrefs();
 
     switch (T) {
@@ -45,5 +45,11 @@ class KeyValueStorageImpl extends KeyValueStorageService {
         throw UnimplementedError(
             '(no se hay seteo para este tipo de dato) =>set not implemented for type ${T.runtimeType}');
     }
+  }
+
+  @override
+  Future<void> setStringKeyValue(String key, String value) async {
+    final prefs = await getSahrePrefs();
+    prefs.setString(key, value);
   }
 }

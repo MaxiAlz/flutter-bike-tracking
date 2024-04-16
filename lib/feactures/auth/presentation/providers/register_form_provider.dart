@@ -1,137 +1,102 @@
-import 'package:app_ciudadano_vc/shared/infraestructure/inputs/inputs.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 final registerFormProvider =
-    StateNotifierProvider<RegisterFormNofier, RegisterFormState>((ref) {
-  return RegisterFormNofier();
+    StateNotifierProvider<RegisterFormNotifier, RegisterFormState>((ref) {
+  // final registerUserCallback = ref.watch(registe)
+  return RegisterFormNotifier();
 });
 
-class RegisterFormState {
-  final NameInput name;
-  final LastnameInput lastName;
-  final EmailInput email;
-  final DateOfBirth dateOfBirth;
-  final IdentificationNumber identificationNumber;
-  final GenderInput gender;
-  final FileInput profileImage;
-  final FileInput dniFrontImage;
-  final FileInput dniBackImage;
+// Estado del formulario
 
-  final String? errorMessage;
-  final bool isLoading;
-  final bool isFormSubmitted;
+class RegisterFormState {
+  final String name;
+  final String lastName;
+  final String email;
+  final String dateOfBirth;
+  final String identificationNumber;
+  final String identificationNumberUnmasked;
+  final String phoneNumber;
+  final String phoneNumberUnmasked;
+  final String gender;
 
   RegisterFormState({
-    this.name = const NameInput.pure(),
-    this.lastName = const LastnameInput.pure(),
-    this.email = const EmailInput.pure(),
-    this.dateOfBirth = const DateOfBirth.pure(),
-    this.identificationNumber = const IdentificationNumber.pure(),
-    this.gender = const GenderInput.pure(),
-    this.profileImage = const FileInput.pure(),
-    this.dniFrontImage = const FileInput.pure(),
-    this.dniBackImage = const FileInput.pure(),
-    this.errorMessage,
-    this.isLoading = false,
-    this.isFormSubmitted = false,
+    this.identificationNumberUnmasked = '',
+    this.phoneNumberUnmasked = '',
+    this.name = '',
+    this.lastName = '',
+    this.email = '',
+    this.dateOfBirth = '',
+    this.identificationNumber = '',
+    this.gender = '',
+    this.phoneNumber = '',
   });
 
   RegisterFormState copyWith({
-    NameInput? name,
-    LastnameInput? lastName,
-    EmailInput? email,
-    DateOfBirth? dateOfBirth,
-    IdentificationNumber? identificationNumber,
-    GenderInput? gender,
-    FileInput? profileImage,
-    FileInput? dniFrontImage,
-    FileInput? dniBackImage,
-    String? errorMessage,
-    bool? isLoading,
-    bool? isFormSubmitted,
+    String? name,
+    String? lastName,
+    String? email,
+    String? dateOfBirth,
+    String? identificationNumber,
+    String? identificationNumberUnmasked,
+    String? phoneNumber,
+    String? phoneNumberUnmasked,
+    String? gender,
   }) {
     return RegisterFormState(
+      identificationNumberUnmasked:
+          identificationNumberUnmasked ?? this.identificationNumberUnmasked,
+      phoneNumberUnmasked: phoneNumberUnmasked ?? this.phoneNumberUnmasked,
       name: name ?? this.name,
       lastName: lastName ?? this.lastName,
       email: email ?? this.email,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       identificationNumber: identificationNumber ?? this.identificationNumber,
       gender: gender ?? this.gender,
-      profileImage: profileImage ?? this.profileImage,
-      dniFrontImage: dniFrontImage ?? this.dniFrontImage,
-      dniBackImage: dniBackImage ?? this.dniBackImage,
-      errorMessage: errorMessage ?? this.errorMessage,
-      isLoading: isLoading ?? this.isLoading,
-      isFormSubmitted: isFormSubmitted ?? this.isFormSubmitted,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
     );
   }
 
   @override
   String toString() {
     return ''' 
-        LoginFormState:
+        RegisterForm state:
         name: $name
         lastName: $lastName
         email: $email
         dateOfBirth: $dateOfBirth
         identificationNumber: $identificationNumber
+        phoneNumber: $phoneNumber
         gender: $gender
         ''';
   }
 }
 
-class RegisterFormNofier extends StateNotifier<RegisterFormState> {
-  RegisterFormNofier() : super(RegisterFormState());
+class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
+  RegisterFormNotifier() : super(RegisterFormState());
 
-  onNameChange(String value) {
-    state = state.copyWith(name: NameInput.dirty(value));
-  }
-
-  void onLastNameChange(String value) {
-    state = state.copyWith(lastName: LastnameInput.dirty(value));
-  }
-
-  void onEmailChange(String value) {
-    state = state.copyWith(email: EmailInput.dirty(value));
-  }
-
-  void onDateOfBirthChange(String value) {
-    state = state.copyWith(dateOfBirth: DateOfBirth.dirty(value));
-  }
-
-  void onIdentificationNumberChange(String value) {
-    state =
-        state.copyWith(identificationNumber: IdentificationNumber.dirty(value));
-  }
-
-  void onGenderChange(String value) {
-    state = state.copyWith(gender: GenderInput.dirty(value));
-  }
-
-  void onFrontDNIPictureChange(String value) {
-   
-    state = state.copyWith(dniFrontImage: FileInput.dirty(value));
-  }
-
-  onSubmittRegisterForm(BuildContext context) {
-    // -_validateForm();
+  void setUserDataState({
+    required String name,
+    required String lastName,
+    required String email,
+    required String dateOfBirth,
+    required String? identificationNumber,
+    required String? identificationNumberUnmasked,
+    required String? phoneNumber,
+    required String? phoneNumberUnmasked,
+    required String gender,
+  }) {
+    state = state.copyWith(
+        name: name,
+        lastName: lastName,
+        email: email,
+        dateOfBirth: dateOfBirth,
+        identificationNumber: identificationNumber,
+        phoneNumber: phoneNumber,
+        identificationNumberUnmasked: identificationNumberUnmasked,
+        phoneNumberUnmasked: phoneNumberUnmasked,
+        gender: gender);
 
     print(state.toString());
-
-    context.push('/waiting-validation');
   }
 
-  _validateForm() {
-    if (state.name.value.isEmpty) {
-      state = state.copyWith(errorMessage: 'El nombre es obligatorio');
-      return;
-    }
-
-    // Otras validaciones para los demás campos del formulario...
-
-    // Si todas las validaciones pasan, establece el estado de éxito
-    state = state.copyWith(errorMessage: null, isFormSubmitted: true);
-  }
 }

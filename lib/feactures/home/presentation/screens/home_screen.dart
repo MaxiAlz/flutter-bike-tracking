@@ -1,21 +1,22 @@
+import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/feactures/home/presentation/home_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/map/presentation/map_presentation.dart';
-import 'package:app_ciudadano_vc/shared/widgets/drawer/side_menu_drawer.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
-    const String name = 'Jose';
+    final userDataAuthenticated = ref.watch(authProvider).user;
+
     final scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
         body: const SafeArea(child: _HomeView()),
         appBar: AppBar(
-          // backgroundColor: Colors.transparent,
           title: Row(children: [
             const Text(
               '¡Hola',
@@ -26,7 +27,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Text(
-              ', $name!',
+              ', ${userDataAuthenticated?.name.toUpperCase()}!',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.normal,
@@ -39,7 +40,6 @@ class HomeScreen extends StatelessWidget {
             IconButton(onPressed: () {}, icon: const Icon(Icons.notifications))
           ],
         ),
-        // floatingActionButton: Icon(Icons.menu_book_outlined),
         drawer: SideMenuDrawer(
           scaffoldKey: scaffoldKey,
         ));

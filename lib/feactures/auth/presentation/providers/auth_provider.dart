@@ -1,102 +1,122 @@
-import 'package:app_ciudadano_vc/feactures/auth/domain/auth_domain.dart';
-import 'package:app_ciudadano_vc/feactures/auth/domain/repositories/auth_repository.dart';
-import 'package:app_ciudadano_vc/feactures/auth/infraestructure/auth_infraestructure.dart';
+import 'package:app_ciudadano_vc/feactures/auth/domain/entities/auth_status.dart';
+import 'package:app_ciudadano_vc/feactures/auth/domain/entities/user.dart';
+import 'package:app_ciudadano_vc/feactures/auth/infraestructure/mappers/user_mapper.dart';
+import 'package:app_ciudadano_vc/feactures/auth/infraestructure/service/auth_service.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/services/shared_preferences/key_value_storage_impl.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/services/shared_preferences/key_value_storage_service.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  
-  final authRepository = AuthRepositoryImpl();
-  final keyValueStorageService = KeyValueStorageImpl();
+  final authServices = AuthServices();
+  final setKeyValue = KeyValueStorageImpl();
 
-  return AuthNotifier(
-      authRepository: authRepository,
-      keyValueStorageService: keyValueStorageService);
+  return AuthNotifier(authService: authServices, keyValueStorage: setKeyValue);
 });
 
-class AuthNotifier extends StateNotifier<AuthState> {
-  final AuthRepository authRepository;
-  final KeyValueStorageService keyValueStorageService;
+class AuthState {
+  final User? user;
+  final String errorMessage;
+  final AuthStatus authStatus;
 
-  AuthNotifier(
-      {required this.keyValueStorageService, required this.authRepository})
-      : super(AuthState(errorMessage: ''));
+  AuthState(
+      {this.user,
+      this.errorMessage = '',
+      this.authStatus = AuthStatus.checking});
 
-  Future<void> loginUSer(String identifier) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    try {
-      state = state.copyWith(authStatus: AuthStatus.checking);
-      final user = await authRepository.sendPhoneNumber(identifier);
-
-      _setLogUSer(user);
-    } on WrongCredentials {
-      logout(errorMessage: 'Crendeciales invalidas');
-    } catch (e) {
-      logout(errorMessage: '¡Error!');
-    }
-  }
-
-  Future<void> logout({String? errorMessage}) async {
-    await keyValueStorageService.removeKey('token');
-    state = state.copyWith(
-        authStatus: AuthStatus.notAuthenticated,
-        user: null,
-        errorMessage: errorMessage);
-
-    print('Tokenn =>>>>> $keyValueStorageService');
-  }
-
-  void checkAuthStatus() async {
-    final token = await keyValueStorageService.getKeyValue<String>('token');
-
-    print('Tokenn =>>>>> $token');
-
-    if (token == null) return logout();
-    if (token.isNotEmpty) {
-      state = state.copyWith(
-        authStatus: AuthStatus.authenticated,
-        errorMessage: '',
-      );
-    }
-    // try {
-    //   // final user = await authRepository.checkAuthStatus(token);
-
-    //   _setLogUSer(user);
-    // } catch (e) {
-    //   throw Exception();
-    // }
-  }
-
-  void _setLogUSer(User user) async {
-    await keyValueStorageService.setKeyValue('token', user.token);
-
-    state = state.copyWith(
-      authStatus: AuthStatus.authenticated,
-      user: user,
-      errorMessage: '',
+  AuthState copyWith({
+    User? user,
+    String? errorMessage,
+    AuthStatus? authStatus,
+  }) {
+    return AuthState(
+      user: user ?? this.user,
+      errorMessage: errorMessage ?? this.errorMessage,
+      authStatus: authStatus ?? this.authStatus,
     );
   }
 }
 
-enum AuthStatus { checking, authenticated, notAuthenticated }
+class AuthNotifier extends StateNotifier<AuthState> {
+  final AuthServices authService;
+  final KeyValueStorageService keyValueStorage;
 
-// Estado de la peticion
-class AuthState {
-  final AuthStatus? authStatus;
-  final User? user;
-  final String errorMessage;
+  AuthNotifier({required this.authService, required this.keyValueStorage})
+      : super(AuthState()) {
+    checkAuthStatus();
+  }
 
-  AuthState(
-      {this.authStatus = AuthStatus.checking,
-      this.user,
-      required this.errorMessage});
+  Future sendPhoneToVerification({required String phoneNumber}) async {
+    state = state.copyWith(authStatus: AuthStatus.checking);
+    try {
+      final serviceResponse = await authService.sendPhoneService(phoneNumber);
 
-  AuthState copyWith(
-          {AuthStatus? authStatus, User? user, String? errorMessage}) =>
-      AuthState(
-          authStatus: authStatus ?? this.authStatus,
-          errorMessage: errorMessage ?? this.errorMessage,
-          user: user ?? this.user);
-} 
+      if (serviceResponse.statusCode == 201) {
+        state = state.copyWith(authStatus: AuthStatus.notAuthenticated);
+        return serviceResponse;
+      }
+
+      if (serviceResponse.statusCode == 404) {
+        state = state.copyWith(authStatus: AuthStatus.notRegistered);
+        return serviceResponse;
+      }
+
+      return serviceResponse;
+    } on DioException catch (error) {
+      return error;
+    }
+  }
+
+  Future loginUser({
+    required String phoneNumber,
+    required String code,
+  }) async {
+    state = state.copyWith(authStatus: AuthStatus.checking);
+    try {
+      final serviceResponse = await authService.verifyCodeService(
+          phoneNumber: phoneNumber, code: code);
+
+      if (serviceResponse.statusCode == 201) {
+        final token = serviceResponse.headers['authorization'][0];
+        final userJson = serviceResponse.data as Map<String, dynamic>;
+        final User user = UserMapper.userJsonToEntity(userJson);
+        await keyValueStorage.setStringKeyValue('userToken', token);
+        state =
+            state.copyWith(authStatus: AuthStatus.authenticated, user: user);
+        return serviceResponse;
+      }
+
+      if (serviceResponse.statusCode == 404) {
+        state = state.copyWith(authStatus: AuthStatus.notAuthenticated);
+        return serviceResponse;
+      }
+
+      return serviceResponse;
+    } on DioException catch (error) {
+      return error;
+    }
+  }
+
+  Future<void> logoutUSer() async {
+    await keyValueStorage.removeKey('userToken');
+    state = state.copyWith(authStatus: AuthStatus.notAuthenticated, user: null);
+  }
+
+  void checkAuthStatus() async {
+    final userToken = await keyValueStorage.getKeyValue<String>('userToken');
+    if (userToken == null) return logoutUSer();
+
+    try {
+      final serviceResponse =
+          await authService.checkAuthStatusService(userToken);
+      final user = UserMapper.userJsonToEntity(serviceResponse.data);
+
+      final newToken =
+          serviceResponse.headers['authorization'][0].replaceAll('Bearer ', '');
+      await keyValueStorage.setStringKeyValue('userToken', newToken);
+      state = state.copyWith(authStatus: AuthStatus.authenticated, user: user);
+    } catch (e) {
+      logoutUSer();
+    }
+  }
+}

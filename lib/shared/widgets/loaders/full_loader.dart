@@ -1,19 +1,19 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
-// import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CheckAuthStatus extends ConsumerWidget {
-  const CheckAuthStatus({super.key});
+final isLoadingProvider = StateProvider.autoDispose<bool>((ref) {
+  return false;
+});
+
+class FullLoader extends StatelessWidget {
+  final String? label;
+  const FullLoader({super.key, this.label});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // final colors = Theme.of(context).colorScheme;
+  Widget build(BuildContext context) {
     final subTitleStyle = Theme.of(context).textTheme.titleMedium;
-
-    // ref.watch(authProvider.notifier).checkAuthStatus();
-
     return Scaffold(
       body: Center(
           child: Column(
@@ -22,7 +22,7 @@ class CheckAuthStatus extends ConsumerWidget {
         children: [
           Flash(
             curve: Curves.linear,
-            duration: Duration(milliseconds: 4000),
+            duration: const Duration(milliseconds: 4000),
             infinite: true,
             child: Image.asset(
               'assets/images/vamos-en-bici-01.png',
@@ -31,10 +31,10 @@ class CheckAuthStatus extends ConsumerWidget {
           ),
           Flash(
               curve: Curves.linear,
-              duration: Duration(milliseconds: 3000),
+              duration: const Duration(milliseconds: 2000),
               infinite: true,
               child: InfoText(
-                text: 'Cargando...',
+                text: label ?? 'Cargando...',
                 subTitleStyle: subTitleStyle,
               )),
         ],
