@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 enum MaskType { dniMask, phoneNumberMask, dateOfBirthMask, verificationCode }
@@ -43,5 +44,14 @@ class InputMaskFormated {
       case MaskType.verificationCode:
         return maskedValue.replaceAll(RegExp(r'[^\d]'), '');
     }
+  }
+
+  String applyMask({required String value, required MaskType maskType}) {
+    MaskTextInputFormatter maskFormatter = getMask(maskType: maskType);
+    TextEditingValue textEditingValue = maskFormatter.formatEditUpdate(
+      TextEditingValue.empty,
+      TextEditingValue(text: value),
+    );
+    return textEditingValue.text;
   }
 }
