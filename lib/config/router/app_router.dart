@@ -1,6 +1,8 @@
 import 'package:app_ciudadano_vc/config/router/app_router_notifier.dart';
 import 'package:app_ciudadano_vc/feactures/auth/domain/entities/auth_status.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
+import 'package:app_ciudadano_vc/feactures/notifications/notifications.dart';
+import 'package:app_ciudadano_vc/feactures/trips/trips.dart';
 import 'package:app_ciudadano_vc/feactures/user/user_settings.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -52,12 +54,20 @@ final goRouterProvider = Provider((ref) {
 
       /// Home Routes
       GoRoute(
-        path: '/home',
+        path: '/',
         builder: (context, state) => const HomeScreen(),
       ),
       GoRoute(
         path: '/my-account',
         builder: (context, state) => const UserProfile(),
+      ),
+      GoRoute(
+        path: '/my-trips',
+        builder: (context, state) => const MyTripsSCreen(),
+      ),
+      GoRoute(
+        path: '/notifications',
+        builder: (context, state) => const NotificationsScreen(),
       ),
     ],
     redirect: (context, state) {
@@ -83,22 +93,10 @@ final goRouterProvider = Provider((ref) {
             isGoingTo == '/enter-code' ||
             isGoingTo == '/welcome' ||
             isGoingTo == '/checking-status') {
-          return '/home';
+          return '/';
         }
         return null;
       }
-
-      // if (authStatus == AuthStatus.authenticated) {
-      //   // if (isGoingTo == '/my-account') return null;
-
-      //   if (isGoingTo == '/auth' ||
-      //       isGoingTo == '/register' ||
-      //       isGoingTo == '/enter-code' ||
-      //       isGoingTo == '/welcome') {
-      //     return '/home';
-      //   }
-      //   return null;
-      // }
 
       return null;
     },

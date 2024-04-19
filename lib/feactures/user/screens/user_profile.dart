@@ -1,5 +1,6 @@
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/masks/input_masks.dart';
+import 'package:app_ciudadano_vc/shared/widgets/headers/custom_top_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,7 +13,6 @@ class UserProfile extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final subtitlesStyle = Theme.of(context).textTheme.titleMedium;
     return Scaffold(
-      body: const _UserInformation(),
       appBar: AppBar(
         iconTheme: const IconThemeData(
           color: Colors.white, // Color blanco para el icono de retroceso
@@ -24,6 +24,7 @@ class UserProfile extends StatelessWidget {
           style: subtitlesStyle!.copyWith(fontSize: 18, color: Colors.white),
         ),
       ),
+      body: const _UserInformation(),
       // drawer: SideMenuDrawer(scaffoldKey: scaffoldKey)
     );
   }
@@ -35,8 +36,6 @@ class _UserInformation extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userData = ref.watch(authProvider).user;
-    final subtitlesStyle = Theme.of(context).textTheme.titleMedium;
-    final colors = Theme.of(context).colorScheme;
 
     final mask = InputMaskFormated();
 
@@ -47,47 +46,10 @@ class _UserInformation extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              decoration: BoxDecoration(
-                // color: Colors.white,
-                color: colors.primary,
-
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20.0),
-                  bottomRight: Radius.circular(20.0),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    blurRadius: 8.0,
-                    spreadRadius: 2.0,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(userData?.photo ??
-                        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    '${userData?.name.toUpperCase()} ${userData?.lastName.toUpperCase()}',
-                    style: subtitlesStyle!.copyWith(
-                        fontSize: 24,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.white),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
+            CustomTopHeader(
+              titleHeader:
+                  '${userData?.name.toUpperCase()} ${userData?.lastName.toUpperCase()}',
+              urlPhotoAvatar: userData?.photo,
             ),
 
             Container(
@@ -133,8 +95,8 @@ class _UserInformation extends ConsumerWidget {
             // GlassmorphicContainer(),
             OutlinedButton.icon(
                 onPressed: () {},
-                icon: Icon(Icons.edit_outlined),
-                label: Text('Editar perfil'))
+                icon: const Icon(Icons.edit_outlined),
+                label: const Text('Editar perfil'))
           ],
         ),
       ),

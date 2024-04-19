@@ -1,3 +1,4 @@
+import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/feactures/home/presentation/home_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/map/presentation/map_presentation.dart';
@@ -17,6 +18,7 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
         body: const SafeArea(child: _HomeView()),
         appBar: AppBar(
+          centerTitle: true,
           title: Row(children: [
             const Text(
               '¡Hola',
@@ -37,7 +39,11 @@ class HomeScreen extends ConsumerWidget {
             ),
           ]),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.notifications))
+            IconButton(
+                onPressed: () {
+                  ref.read(goRouterProvider).push('/notifications');
+                },
+                icon: const Icon(Icons.notifications))
           ],
         ),
         drawer: SideMenuDrawer(
