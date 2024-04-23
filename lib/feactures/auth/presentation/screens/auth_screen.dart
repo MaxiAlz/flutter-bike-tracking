@@ -23,10 +23,7 @@ class AuthScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 231, 237, 243),
-      body: /* isloading
-          ? const FullLoader()
-          : */
-          Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -134,7 +131,7 @@ class _InputPhoneNumber extends ConsumerWidget {
 
           return;
         }
-      }  on DioException catch (error) {
+      } on DioException catch (error) {
         notifyUserBySnackbar(label: 'Ah ocurrido un error', color: Colors.red);
         return error;
       } finally {
