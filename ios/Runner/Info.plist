@@ -15,6 +15,11 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Necesitamos acceder a la ubicacion de tu dispositivo</string>
 
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs camera access to scan QR codes</string>
+
 
 
 	<key>CFBundleDevelopmentRegion</key>
