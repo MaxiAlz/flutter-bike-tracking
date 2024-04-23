@@ -17,7 +17,7 @@ El proyecto sigue una arquitectura de codigo limpio ( Clean Arquitecture) basado
 - mask_text_input_formatter : https://pub.dev/packages/mask_text_input_formatter
 - image_picker: https://pub.dev/packages/image_picker
 - riverpod: https://riverpod.dev/
-- 
+- qr_code_scanner: https://pub.dev/packages/qr_code_scanner
 
 ## Paleta de colores
 
@@ -33,7 +33,7 @@ Esta paleta de colores esta bazada en el logo
 
 ## Notas:
 
-Otras librerias:
+Otras librerias sin uso:
 selector de pais: https://pub.dev/packages/country_calling_code_picker
 
 ## Mapa
