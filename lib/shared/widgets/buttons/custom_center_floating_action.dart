@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CustomCenterFloatingActionButton extends StatelessWidget {
   final IconData icon;
   final String? text;
-  final VoidCallback onPressed;
+  final  void Function()? onPressed;
   final double sizeIcon;
   final double widthButton;
 
@@ -24,7 +24,7 @@ class CustomCenterFloatingActionButton extends StatelessWidget {
       // height: 80.0,
       child: FittedBox(
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed:onPressed,
           backgroundColor: colors.primary,
           tooltip: "Escanea tu bici",
           child: Icon(
