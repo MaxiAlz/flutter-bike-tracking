@@ -44,7 +44,7 @@ class MapSettingNotifier extends StateNotifier<MapSettingState> {
   MapSettingNotifier() : super(MapSettingState(userPosition: position));
 
   Future<void> updateLocation() async {
-    print('coso');
+
     final Position position = await GeolocationImpl().determinePosition();
     state = state.copyWith(userPosition: position);
   }
@@ -53,10 +53,4 @@ class MapSettingNotifier extends StateNotifier<MapSettingState> {
     return await GeolocationImpl().getCurrentLocation();
   }
 
-  // Future<void> checkPermission() async {
-  //   final permissions = await GeolocationImpl().checkPermission();
-  //   print(permissions);
-  //   return;
-  //   // state = state.copyWith(isLocationServiceEnabled:permissions);
-  // }
 }
