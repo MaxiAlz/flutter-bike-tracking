@@ -21,12 +21,7 @@ class MapViewLayer extends ConsumerWidget {
     final mapController = MapController();
     final hubList = ref.watch(hubListProvider);
 
-    print('===>::hubList::==> $hubList');
 
-    // getUserPosition() {
-    //   final position = ref.read(mapSettingProvider.notifier).getUserPosition();
-    //   print('&&&position&&& : $position');
-    // }
 
     return hubList.when(
       data: (listOfHubs) => FlutterMap(
