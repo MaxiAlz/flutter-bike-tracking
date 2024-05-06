@@ -7,22 +7,23 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 
-class MapView extends StatelessWidget {
+class MapView extends ConsumerWidget {
   const MapView({
     super.key,
     required this.mapController,
-    required this.mapSettings,
     required this.hubList,
     required this.markerDialogHub,
   });
 
   final MapController mapController;
-  final MapSettingState mapSettings;
+
   final AsyncValue<List<Hub>> hubList;
   final MarkerDialogHub markerDialogHub;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mapSettings = ref.watch(mapSettingProvider);
+
     return FlutterMap(
       mapController: mapController,
       options: const MapOptions(
@@ -35,34 +36,18 @@ class MapView extends StatelessWidget {
           userAgentPackageName: 'dev.fleaflet.flutter_map.example',
           // Plenty of other options available!
         ),
-        // const CircleLayer(
-        //   circles: [
-        //     CircleMarker(
-        //         point: LatLng(-28.476765, -65.787757),
-        //         radius: 30,
-        //         useRadiusInMeter: true,
-        //         color: Color.fromARGB(139, 33, 149, 243)),
-        //   ],
-        // ),
         Container(
           alignment: Alignment.topRight,
-          child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 35),
-              child: MyLocationButton(
-                mapController: mapController,
-                mapSetting: mapSettings,
-              )),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            width: 48,
+            height: 48,
+            child: MyLocationButton(
+              mapController: mapController,
+              mapSetting: mapSettings,
+            ),
+          ),
         ),
-        MarkerLayer(markers: [
-          Marker(
-              point: LatLng(mapSettings.userPosition.latitude,
-                  mapSettings.userPosition.longitude),
-              child: const Icon(
-                Icons.location_on,
-                color: Colors.red,
-              ))
-        ]),
-
         MarkerLayer(
           markers: hubList.value!
               .map(
@@ -77,6 +62,22 @@ class MapView extends StatelessWidget {
               )
               .toList(),
         ),
+        MarkerLayer(markers: [
+          Marker(
+            point: LatLng(mapSettings.userPosition.latitude,
+                mapSettings.userPosition.longitude),
+            width: 50.0, // Use double for width and height
+            height: 50.0,
+            child: IconButton(
+                color: Colors.red,
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.location_on,
+                  size: 40,
+                  shadows: [Shadow(blurRadius: 10)],
+                )),
+          )
+        ]),
       ],
     );
   }
