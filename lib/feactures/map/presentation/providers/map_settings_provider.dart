@@ -44,7 +44,6 @@ class MapSettingNotifier extends StateNotifier<MapSettingState> {
   MapSettingNotifier() : super(MapSettingState(userPosition: position));
 
   Future<void> updateLocation() async {
-
     final Position position = await GeolocationImpl().determinePosition();
     state = state.copyWith(userPosition: position);
   }
@@ -52,5 +51,4 @@ class MapSettingNotifier extends StateNotifier<MapSettingState> {
   Future getUserPosition() async {
     return await GeolocationImpl().getCurrentLocation();
   }
-
 }
