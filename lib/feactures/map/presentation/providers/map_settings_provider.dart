@@ -59,4 +59,8 @@ class MapSettingNotifier extends StateNotifier<MapSettingState> {
         state.copyWith(userPosition: userPosition, isLoadingPositions: false);
     return userPosition;
   }
+
+  Future<Position> getInitialValues() async {
+    return initialPosition;
+  }
 }

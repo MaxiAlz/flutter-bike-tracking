@@ -38,14 +38,24 @@ class MapView extends ConsumerWidget {
         ),
         Container(
           alignment: Alignment.topRight,
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            width: 48,
-            height: 48,
-            child: MyLocationButton(
-              mapController: mapController,
-              mapSetting: mapSettings,
-            ),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                width: 48,
+                height: 48,
+                child: MyLocationButton(
+                  mapController: mapController,
+                  mapSetting: mapSettings,
+                ),
+              ),
+              Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  width: 48,
+                  height: 48,
+                  child: CenterMapButton(mapController: mapController)),
+            ],
           ),
         ),
         MarkerLayer(

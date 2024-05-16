@@ -28,6 +28,11 @@ class MyLocationButton extends ConsumerWidget {
               ref.read(mapSettingProvider).copyWith(userPosition: position);
               mapController.move(
                   LatLng(position.latitude, position.longitude), 15);
+
+              // mapController.move(
+              //   LatLng(-28.460501, -65.780756),
+              //   12.5,
+              // );
             },
       icon: mapSetting.isLoadingPositions
           ? const CircularProgressIndicator()
