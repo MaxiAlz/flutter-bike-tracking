@@ -16,19 +16,25 @@ class MyLocationButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
-    // final mapSetting = ref.watch(mapSettingProvider);
-
-    print('mapSetting.userPosition: ${mapSetting.userPosition}');
+    final mapSetting = ref.watch(mapSettingProvider);
 
     return IconButton.filledTonal(
-        onPressed: () async {
-          await ref.read(mapSettingProvider.notifier).updateLocation();
-          final position = mapSetting.userPosition;
-          mapController.move(LatLng(position.latitude, position.longitude), 20);
-        },
-        icon: Icon(
-          Icons.my_location,
-          color: colors.primary,
-        ));
+      onPressed: mapSetting.isLoadingPositions
+          ? null
+          : () async {
+              final position =
+                  await ref.read(mapSettingProvider.notifier).getUserPosition();
+
+              ref.read(mapSettingProvider).copyWith(userPosition: position);
+              mapController.move(
+                  LatLng(position.latitude, position.longitude), 15);
+            },
+      icon: mapSetting.isLoadingPositions
+          ? const CircularProgressIndicator()
+          : Icon(
+              Icons.my_location,
+              color: colors.primary,
+            ),
+    );
   }
 }

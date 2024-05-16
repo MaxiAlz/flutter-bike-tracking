@@ -16,16 +16,21 @@ class HomeScreen extends ConsumerWidget {
 
     final scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
+        extendBodyBehindAppBar: true,
         body: const SafeArea(child: _HomeView()),
         appBar: AppBar(
+          backgroundColor: colors.primary,
+          iconTheme: IconThemeData(color: Colors.amber.shade300),
+          elevation: 0,
           centerTitle: true,
           title: Row(children: [
-            const Text(
+            Text(
               '¡Hola',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 25,
+                color: colors.surface,
               ),
             ),
             Text(
@@ -33,7 +38,7 @@ class HomeScreen extends ConsumerWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.normal,
-                color: colors.primary,
+                color: colors.surface,
                 fontSize: 25,
               ),
             ),
