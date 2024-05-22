@@ -17,6 +17,8 @@ class HomeScreen extends ConsumerWidget {
     final scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
         extendBodyBehindAppBar: true,
+        // Para quitar el appbar y que se vea el mapa toda la pantalla
+        // Expanded((child: _HomeView())
         body: const SafeArea(child: _HomeView()),
         appBar: AppBar(
           backgroundColor: colors.primary,

@@ -37,36 +37,41 @@ class MapView extends ConsumerWidget {
           userAgentPackageName: 'dev.fleaflet.flutter_map.example',
           // Plenty of other options available!
         ),
-        Container(
-          alignment: Alignment.topRight,
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                width: 48,
-                height: 48,
-                child: MyLocationButton(
-                  mapController: mapController,
-                  mapSetting: mapSettings,
-                ),
-              ),
-              Container(
+        Padding(
+          padding: const EdgeInsets.only(top: 50),
+          child: Container(
+            alignment: AlignmentDirectional.bottomEnd,
+            child: Column(
+              children: [
+                Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   width: 48,
                   height: 48,
-                  child: CenterMapButton(mapController: mapController)),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                width: 48,
-                height: 48,
-                child: IconButton.filled(
-                    onPressed: () {
-                      context.push('/trip-in-progress');
-                    },
-                    icon: Icon(Icons.pedal_bike)),
-              )
-            ],
+                  child: MyLocationButton(
+                    mapController: mapController,
+                    mapSetting: mapSettings,
+                  ),
+                ),
+                Container(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    width: 48,
+                    height: 48,
+                    child: CenterMapButton(mapController: mapController)),
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  width: 48,
+                  height: 48,
+                  child: IconButton.filled(
+                      onPressed: () {
+                        context.push('/trip-in-progress');
+                      },
+                      icon: const Icon(Icons.pedal_bike)),
+                )
+              ],
+            ),
           ),
         ),
         MarkerLayer(

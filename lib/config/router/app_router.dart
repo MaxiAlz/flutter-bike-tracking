@@ -81,7 +81,7 @@ final goRouterProvider = Provider((ref) {
       ),
       GoRoute(
         path: '/trip-in-progress',
-        builder: (context, state) =>  TripInProgressScreen(),
+        builder: (context, state) =>  const TripInProgressScreen(),
       ),
     ],
     redirect: (context, state) {
