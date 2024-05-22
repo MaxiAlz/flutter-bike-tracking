@@ -5,6 +5,7 @@ import 'package:app_ciudadano_vc/feactures/map/presentation/providers/map_settin
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 
 class MapView extends ConsumerWidget {
@@ -55,6 +56,16 @@ class MapView extends ConsumerWidget {
                   width: 48,
                   height: 48,
                   child: CenterMapButton(mapController: mapController)),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                width: 48,
+                height: 48,
+                child: IconButton.filled(
+                    onPressed: () {
+                      context.push('/trip-in-progress');
+                    },
+                    icon: Icon(Icons.pedal_bike)),
+              )
             ],
           ),
         ),

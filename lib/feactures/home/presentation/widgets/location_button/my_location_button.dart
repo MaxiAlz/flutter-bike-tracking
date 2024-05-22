@@ -16,7 +16,7 @@ class MyLocationButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
-    final mapSetting = ref.watch(mapSettingProvider);
+    // final mapSetting = ref.watch(mapSettingProvider);
 
     return IconButton.filledTonal(
       onPressed: mapSetting.isLoadingPositions
@@ -28,11 +28,6 @@ class MyLocationButton extends ConsumerWidget {
               ref.read(mapSettingProvider).copyWith(userPosition: position);
               mapController.move(
                   LatLng(position.latitude, position.longitude), 15);
-
-              // mapController.move(
-              //   LatLng(-28.460501, -65.780756),
-              //   12.5,
-              // );
             },
       icon: mapSetting.isLoadingPositions
           ? const CircularProgressIndicator()
