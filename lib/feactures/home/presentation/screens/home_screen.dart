@@ -13,8 +13,20 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
     final userDataAuthenticated = ref.watch(authProvider).user;
-
     final scaffoldKey = GlobalKey<ScaffoldState>();
+    final alerDilaog = CustomDialog();
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      if (userDataAuthenticated != null) {
+        alerDilaog.showUnderageDialog(
+            context: context,
+            ref: ref,
+            title: 'Hola pendejo',
+            icondata: Icons.info_outline,
+            dialogContent: Text('subi documentacion'));
+      }
+    });
+
     return Scaffold(
         extendBodyBehindAppBar: true,
         // Para quitar el appbar y que se vea el mapa toda la pantalla
@@ -65,6 +77,7 @@ class _HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final diviceData = MediaQuery.of(context);
+
     return Stack(children: [
       const MapViewLayer(),
       const CustomGradient(
