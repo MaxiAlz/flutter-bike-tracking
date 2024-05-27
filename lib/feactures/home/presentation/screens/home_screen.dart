@@ -1,4 +1,5 @@
 import 'package:app_ciudadano_vc/config/config.dart';
+import 'package:app_ciudadano_vc/feactures/auth/domain/entities/user.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/feactures/home/infraestructure/infraestructure.dart';
 import 'package:app_ciudadano_vc/feactures/home/presentation/home_presentation.dart';
@@ -20,18 +21,7 @@ class HomeScreen extends ConsumerWidget {
     final messages = ErrorMessages();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (userDataAuthenticated!.documentStatus != 'APROBADO') {
-        alerDilaog.showUnderageDialog(
-            context: context,
-            ref: ref,
-            icondata: Icons.info_outline,
-            title: messages
-                .documentAlertMessages(userDataAuthenticated.documentStatus)
-                .title,
-            dialogContent: Text(messages
-                .documentAlertMessages(userDataAuthenticated.documentStatus)
-                .detail));
-      }
+      _showDialog(userDataAuthenticated, alerDilaog, context, ref, messages);
     });
 
     return Scaffold(
@@ -112,5 +102,21 @@ class _HomeView extends StatelessWidget {
         ),
       ),
     ]);
+  }
+}
+
+void _showDialog(User? userDataAuthenticated, CustomDialog alerDilaog,
+    BuildContext context, WidgetRef ref, ErrorMessages messages) {
+  if (userDataAuthenticated!.documentStatus != 'APROBADO') {
+    alerDilaog.showUnderageDialog(
+        context: context,
+        ref: ref,
+        icondata: Icons.info_outline,
+        title: messages
+            .documentAlertMessages(userDataAuthenticated.documentStatus)
+            .title,
+        dialogContent: Text(messages
+            .documentAlertMessages(userDataAuthenticated.documentStatus)
+            .detail));
   }
 }
