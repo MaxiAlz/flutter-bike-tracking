@@ -79,6 +79,10 @@ final goRouterProvider = Provider((ref) {
         path: '/test',
         builder: (context, state) => const TestProvider(),
       ),
+      GoRoute(
+        path: '/trip-in-progress',
+        builder: (context, state) =>  const TripInProgressScreen(),
+      ),
     ],
     redirect: (context, state) {
       final isGoingTo = state.matchedLocation;

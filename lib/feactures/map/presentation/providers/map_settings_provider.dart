@@ -7,7 +7,7 @@ final mapSettingProvider =
   return MapSettingNotifier();
 });
 
-final position = Position(
+final initialPosition = Position(
     longitude: 0,
     latitude: 0,
     timestamp: DateTime(0),
@@ -22,8 +22,10 @@ final position = Position(
 class MapSettingState {
   final Position userPosition;
   final bool isLocationServiceEnabled;
+  final bool isLoadingPositions;
 
   MapSettingState({
+    this.isLoadingPositions = false,
     required this.userPosition,
     this.isLocationServiceEnabled = false,
   });
@@ -31,9 +33,11 @@ class MapSettingState {
   MapSettingState copyWith({
     Position? userPosition,
     bool? isLocationServiceEnabled,
+    bool? isLoadingPositions,
   }) {
     return MapSettingState(
       userPosition: userPosition ?? this.userPosition,
+      isLoadingPositions: isLoadingPositions ?? this.isLoadingPositions,
       isLocationServiceEnabled:
           isLocationServiceEnabled ?? this.isLocationServiceEnabled,
     );
@@ -41,22 +45,22 @@ class MapSettingState {
 }
 
 class MapSettingNotifier extends StateNotifier<MapSettingState> {
-  MapSettingNotifier() : super(MapSettingState(userPosition: position));
+  MapSettingNotifier() : super(MapSettingState(userPosition: initialPosition));
 
   Future<void> updateLocation() async {
-    print('coso');
     final Position position = await GeolocationImpl().determinePosition();
     state = state.copyWith(userPosition: position);
   }
 
   Future getUserPosition() async {
-    return await GeolocationImpl().getCurrentLocation();
+    state = state.copyWith(isLoadingPositions: true);
+    final userPosition = await GeolocationImpl().getCurrentLocation();
+    state =
+        state.copyWith(userPosition: userPosition, isLoadingPositions: false);
+    return userPosition;
   }
 
-  // Future<void> checkPermission() async {
-  //   final permissions = await GeolocationImpl().checkPermission();
-  //   print(permissions);
-  //   return;
-  //   // state = state.copyWith(isLocationServiceEnabled:permissions);
-  // }
+  Future<Position> getInitialValues() async {
+    return initialPosition;
+  }
 }

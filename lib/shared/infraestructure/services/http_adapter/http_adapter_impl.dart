@@ -1,19 +1,33 @@
 import 'package:app_ciudadano_vc/config/constants/enviroments.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/services/http_adapter/http_adapter.dart';
+import 'package:app_ciudadano_vc/shared/infraestructure/services/shared_preferences/key_value_storage_impl.dart';
 import 'package:dio/dio.dart';
 
 final Dio dio = Dio(BaseOptions(baseUrl: Enviroments.apiUrl));
 
-class HttpAdapterImpl extends HttpAdapter {
+class Api extends HttpAdapter {
+  final setKeyValue = KeyValueStorageImpl();
+
   @override
-  Future<void> deleteHttp() {
-    // TODO: implement deleteHttp
-    throw UnimplementedError();
+  Future getHttp({required String path}) async {
+    final userToken = await setKeyValue.getKeyValue<String>('userToken');
+    try {
+      final response = await dio.get(path,
+          options: Options(headers: {
+            'Authorization': 'Bearer $userToken',
+          }));
+
+      return response;
+    } on DioException catch (dioError) {
+      return dioError.response;
+    } catch (error) {
+      return error;
+    }
   }
 
   @override
-  Future<void> getHttp({required String path}) {
-    // TODO: implement getHttp
+  Future<void> deleteHttp() {
+    // TODO: implement deleteHttp
     throw UnimplementedError();
   }
 

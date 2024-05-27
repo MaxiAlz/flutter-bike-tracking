@@ -13,6 +13,8 @@ class UserMapper {
       dniBack: json['documento_dorsal'] ?? '',
       email: json['email'] ?? '',
       gender: json['genero'] ?? '',
+      documentStatus: json['estado_documentacion'] ?? '',
+      isActive: json['is_active'],
     );
   }
 }

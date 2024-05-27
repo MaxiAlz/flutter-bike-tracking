@@ -5,3 +5,9 @@ enum AuthStatus {
   notRegistered,
   registered
 }
+
+enum UserDocumentationStatus {
+  pendingByAdmin,
+  pendingByUser,
+  approved,
+}

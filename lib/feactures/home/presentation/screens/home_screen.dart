@@ -1,5 +1,7 @@
 import 'package:app_ciudadano_vc/config/config.dart';
+import 'package:app_ciudadano_vc/feactures/auth/domain/entities/user.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
+import 'package:app_ciudadano_vc/feactures/home/infraestructure/infraestructure.dart';
 import 'package:app_ciudadano_vc/feactures/home/presentation/home_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/map/presentation/map_presentation.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
@@ -13,19 +15,33 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
     final userDataAuthenticated = ref.watch(authProvider).user;
-
     final scaffoldKey = GlobalKey<ScaffoldState>();
+    final alerDilaog = CustomDialog();
+
+    final messages = ErrorMessages();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showDialog(userDataAuthenticated, alerDilaog, context, ref, messages);
+    });
+
     return Scaffold(
+        extendBodyBehindAppBar: true,
+        // Para quitar el appbar y que se vea el mapa toda la pantalla
+        // Expanded((child: _HomeView())
         body: const SafeArea(child: _HomeView()),
         appBar: AppBar(
+          backgroundColor: colors.primary,
+          iconTheme: IconThemeData(color: Colors.amber.shade300),
+          elevation: 0,
           centerTitle: true,
           title: Row(children: [
-            const Text(
+            Text(
               '¡Hola',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.normal,
                 fontSize: 25,
+                color: colors.surface,
               ),
             ),
             Text(
@@ -33,7 +49,7 @@ class HomeScreen extends ConsumerWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.normal,
-                color: colors.primary,
+                color: colors.surface,
                 fontSize: 25,
               ),
             ),
@@ -58,6 +74,7 @@ class _HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final diviceData = MediaQuery.of(context);
+
     return Stack(children: [
       const MapViewLayer(),
       const CustomGradient(
@@ -85,5 +102,21 @@ class _HomeView extends StatelessWidget {
         ),
       ),
     ]);
+  }
+}
+
+void _showDialog(User? userDataAuthenticated, CustomDialog alerDilaog,
+    BuildContext context, WidgetRef ref, ErrorMessages messages) {
+  if (userDataAuthenticated!.documentStatus != 'APROBADO') {
+    alerDilaog.showUnderageDialog(
+        context: context,
+        ref: ref,
+        icondata: Icons.info_outline,
+        title: messages
+            .documentAlertMessages(userDataAuthenticated.documentStatus)
+            .title,
+        dialogContent: Text(messages
+            .documentAlertMessages(userDataAuthenticated.documentStatus)
+            .detail));
   }
 }

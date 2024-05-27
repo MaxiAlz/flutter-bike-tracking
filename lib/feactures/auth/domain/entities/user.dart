@@ -1,5 +1,3 @@
-
-
 class User {
   final String name;
   final String lastName;
@@ -11,8 +9,12 @@ class User {
   final String dniBack;
   final String email;
   final String gender;
+  final String documentStatus;
+  final bool isActive;
 
   User({
+    required this.documentStatus,
+    required this.isActive,
     required this.name,
     required this.lastName,
     required this.dateOfBirth,
@@ -25,4 +27,3 @@ class User {
     required this.gender,
   });
 }
-

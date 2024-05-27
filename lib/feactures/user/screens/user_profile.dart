@@ -36,7 +36,6 @@ class _UserInformation extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userData = ref.watch(authProvider).user;
-
     final mask = InputMaskFormated();
 
 // userdata.
@@ -87,6 +86,14 @@ class _UserInformation extends ConsumerWidget {
                     ),
                     leading: const Icon(Icons.boy_outlined),
                     subtitle: const Text('Genero'),
+                  ),
+                  const Divider(),
+                  ListTile(
+                    title: Text(
+                      '${userData?.gender} ',
+                    ),
+                    leading: const Icon(Icons.file_copy_sharp),
+                    subtitle: const Text('Documentacion '),
                   ),
                   const Divider(),
                 ],
