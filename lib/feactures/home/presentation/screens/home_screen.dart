@@ -1,5 +1,6 @@
 import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
+import 'package:app_ciudadano_vc/feactures/home/infraestructure/infraestructure.dart';
 import 'package:app_ciudadano_vc/feactures/home/presentation/home_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/map/presentation/map_presentation.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
@@ -16,14 +17,20 @@ class HomeScreen extends ConsumerWidget {
     final scaffoldKey = GlobalKey<ScaffoldState>();
     final alerDilaog = CustomDialog();
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      if (userDataAuthenticated != null) {
+    final messages = ErrorMessages();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (userDataAuthenticated!.documentStatus != 'APROBADO') {
         alerDilaog.showUnderageDialog(
             context: context,
             ref: ref,
-            title: 'Hola pendejo',
             icondata: Icons.info_outline,
-            dialogContent: Text('subi documentacion'));
+            title: messages
+                .documentAlertMessages(userDataAuthenticated.documentStatus)
+                .title,
+            dialogContent: Text(messages
+                .documentAlertMessages(userDataAuthenticated.documentStatus)
+                .detail));
       }
     });
 
