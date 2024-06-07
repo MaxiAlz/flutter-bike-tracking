@@ -2,7 +2,6 @@ import 'package:app_ciudadano_vc/config/router/app_router_notifier.dart';
 import 'package:app_ciudadano_vc/feactures/auth/domain/entities/auth_status.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/notifications/notifications.dart';
-import 'package:app_ciudadano_vc/feactures/trips/presentation/screens/test_provider.dart';
 import 'package:app_ciudadano_vc/feactures/trips/presentation/screens/trip_screen.dart';
 import 'package:app_ciudadano_vc/feactures/trips/trips.dart';
 import 'package:app_ciudadano_vc/feactures/user/user_settings.dart';
@@ -76,12 +75,12 @@ final goRouterProvider = Provider((ref) {
         builder: (context, state) => const QRScannerScreen(),
       ),
       GoRoute(
-        path: '/test',
-        builder: (context, state) => const TestProvider(),
+        path: '/enter-bike-patent',
+        builder: (context, state) => const EnterBikePatentScreen(),
       ),
       GoRoute(
         path: '/trip-in-progress',
-        builder: (context, state) =>  const TripInProgressScreen(),
+        builder: (context, state) => const TripInProgressScreen(),
       ),
     ],
     redirect: (context, state) {

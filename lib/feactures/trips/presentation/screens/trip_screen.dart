@@ -1,5 +1,6 @@
 import 'dart:developer';
-import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/qr_form_provider.dart';
+import 'package:app_ciudadano_vc/config/config.dart';
+import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/locker_form_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -84,9 +85,15 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
                             future: controller?.getFlashStatus(),
                             builder: (context, snapshot) {
                               if (snapshot.data != null) {
-                                return snapshot.data as bool
-                                    ? const Icon(Icons.flash_off)
-                                    : const Icon(Icons.flash_on);
+                                return Column(
+                                  children: [
+                                    const SizedBox(height: 5),
+                                    snapshot.data as bool
+                                        ? const Icon(Icons.flash_off)
+                                        : const Icon(Icons.flash_on),
+                                    const Text('Flash'),
+                                  ],
+                                );
                               } else {
                                 return const Text('loading');
                               }
@@ -105,12 +112,34 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
                             future: controller?.getCameraInfo(),
                             builder: (context, snapshot) {
                               if (snapshot.data != null) {
-                                return const Icon(
-                                    Icons.flip_camera_ios_outlined);
+                                return const Column(
+                                  children: [
+                                    SizedBox(height: 5),
+                                    Icon(Icons.flip_camera_ios_outlined),
+                                    Text('Camara'),
+                                  ],
+                                );
                               } else {
                                 return const Text('loading');
                               }
                             },
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(8),
+                        child: FilledButton(
+                          onPressed: () async {
+                            ref
+                                .read(goRouterProvider)
+                                .push('/enter-bike-patent');
+                          },
+                          child: const Column(
+                            children: [
+                              SizedBox(height: 5),
+                              Icon(Icons.edit_outlined),
+                              Text('Escribir'),
+                            ],
                           ),
                         ),
                       ),
@@ -163,10 +192,8 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
       });
 
       if (scanData.code != null) {
-        ref.read(qrFormProvider.notifier).setQrValue(scanData.code);
-
+        ref.read(qrFormProvider.notifier).setLockerValue(scanData.code);
         context.push('/test');
-
         controller.dispose();
       }
     });
