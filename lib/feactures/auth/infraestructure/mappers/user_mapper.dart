@@ -3,6 +3,7 @@ import 'package:app_ciudadano_vc/feactures/auth/domain/entities/user.dart';
 class UserMapper {
   static User userJsonToEntity(Map<String, dynamic> json) {
     return User(
+      userId: json['id'] ?? '',
       name: json['nombre'] ?? '',
       lastName: json['apellido'] ?? '',
       dateOfBirth: json['fecha_nacimiento'] ?? '',
@@ -15,6 +16,7 @@ class UserMapper {
       gender: json['genero'] ?? '',
       documentStatus: json['estado_documentacion'] ?? '',
       isActive: json['is_active'],
+      isInTrip : json['en_viaje']
     );
   }
 }

@@ -1,4 +1,5 @@
 class User {
+  final int userId;
   final String name;
   final String lastName;
   final String dateOfBirth;
@@ -11,8 +12,10 @@ class User {
   final String gender;
   final String documentStatus;
   final bool isActive;
+  final bool isInTrip;
 
   User({
+    required this.userId,
     required this.documentStatus,
     required this.isActive,
     required this.name,
@@ -25,5 +28,6 @@ class User {
     required this.dniBack,
     required this.email,
     required this.gender,
+    required this.isInTrip,
   });
 }
