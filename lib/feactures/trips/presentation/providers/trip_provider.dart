@@ -5,25 +5,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum TripStatus { pending, inProgress, notTravelling, failed, finished }
 
-class TipData {
+class TripData {
   final int viajeId;
   final String estado;
 
-  TipData({this.viajeId = 1, this.estado = ""});
+  TripData({this.viajeId = 1, this.estado = ""});
 }
 
 // Proveedor de estado del viaje
 final tripNotifierProvider =
     StateNotifierProvider<TripNotifier, TripState>((ref) {
   final tripServices = TripServices();
-  final socketService = SocketService(channel: 'appViaje');
-  return TripNotifier(tripServices: tripServices, socket: socketService);
+
+  return TripNotifier(
+    tripServices: tripServices,
+  );
 });
 
 class TripState {
   final TripStatus tripStatus;
   final bool isTripInProgress;
-  final TipData? tripData;
+  final TripData? tripData;
 
   TripState({
     this.tripData,
@@ -32,7 +34,7 @@ class TripState {
   });
 
   TripState copyWith(
-      {TripStatus? tripStatus, bool? isTripInProgress, TipData? tripData}) {
+      {TripStatus? tripStatus, bool? isTripInProgress, TripData? tripData}) {
     return TripState(
         tripStatus: tripStatus ?? this.tripStatus,
         isTripInProgress: isTripInProgress ?? this.isTripInProgress,
@@ -43,26 +45,31 @@ class TripState {
 // Definición de TripNotifier
 class TripNotifier extends StateNotifier<TripState> {
   final TripServices tripServices;
-  final SocketService socket;
+  SocketService? socket;
 
-  TripNotifier({required this.tripServices, required this.socket})
-      : super(TripState()) {
-    socket.initialize();
-    socket.onStatusReceived = _handleSocketMessage;
-  }
+  TripNotifier({required this.tripServices}) : super(TripState());
 
   Future sendTripRequest({required String lockId, required int userId}) async {
     state = state.copyWith(tripStatus: TripStatus.pending);
 
     try {
       final serviceResponse = await tripServices.sendTravelRequestService(
-          lockId: lockId, userId: userId);
+        lockId: lockId,
+        userId: userId,
+      );
 
       if (serviceResponse?.statusCode == 201) {
+        final viajeId = serviceResponse.data['viaje_id'];
+        final estadoViaje = serviceResponse?.data["estado"];
+        final socketChanelTrip = 'appViaje/$viajeId';
+
         state = state.copyWith(
-            tripData: TipData(
-                estado: serviceResponse?.data["estado"],
-                viajeId: serviceResponse?.data["viaje_id"]));
+            tripData: TripData(
+          estado: estadoViaje,
+          viajeId: viajeId,
+        ));
+
+        _initializeSocket(channel: socketChanelTrip);
 
         return serviceResponse;
       }
@@ -77,6 +84,13 @@ class TripNotifier extends StateNotifier<TripState> {
     } on DioException catch (error) {
       return error;
     }
+  }
+
+  void _initializeSocket({required String channel}) {
+    socket?.dispose();
+    socket = SocketService(channel: channel);
+    socket!.initialize();
+    socket!.onStatusReceived = _handleSocketMessage;
   }
 
   void _handleSocketMessage(Map<String, dynamic> data) {
@@ -100,7 +114,7 @@ class TripNotifier extends StateNotifier<TripState> {
 
   @override
   void dispose() {
-    socket.dispose();
+    socket?.dispose();
     super.dispose();
   }
 }

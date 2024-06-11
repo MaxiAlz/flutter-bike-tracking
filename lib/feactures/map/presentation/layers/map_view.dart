@@ -66,7 +66,7 @@ class MapView extends ConsumerWidget {
                   height: 48,
                   child: IconButton.filled(
                       onPressed: () {
-                        context.push('/trip-in-progress');
+                        context.push('/enter-bike-patent');
                       },
                       icon: const Icon(Icons.pedal_bike)),
                 )

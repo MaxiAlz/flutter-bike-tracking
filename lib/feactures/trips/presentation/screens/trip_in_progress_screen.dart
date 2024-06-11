@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app_ciudadano_vc/feactures/map/presentation/screens/map_view_layer.dart';
 import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/trip_provider.dart';
+import 'package:app_ciudadano_vc/feactures/trips/trips.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,23 +26,21 @@ class TripInProgressScreen extends ConsumerWidget {
     // final colors = Theme.of(context).colorScheme;
     // final subtitlesStyle = Theme.of(context).textTheme.titleMedium;
     // final userDataAuthenticated = ref.watch(authProvider).user;
-    return Scaffold(
-      body: Center(
-        child: _buildContent(
-            tripStatus: tripProvider.tripStatus, tripProvider: tripProvider),
-      ),
-    );
+    return Scaffold(body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      return _buildContent(
+          tripStatus: tripProvider.tripStatus, tripProvider: tripProvider);
+    }));
   }
 
   Widget _buildContent({required TripStatus tripStatus, tripProvider}) {
     switch (tripStatus) {
       case TripStatus.inProgress:
-        return Text('Viej en progreso');
+        return _BodyTripInProgress();
       case TripStatus.finished:
-        return Text('Vieje terminado');
+        return Center(child: Text('Vieje terminado'));
       case TripStatus.pending:
-        return Text(
-            'Vieje  ${tripProvider.tripData.viajeId} pendiente ...'); // Opcional: muestra un indicador de carga mientras se espera el estado del viaje
+        return const TripPending(); // Opcional: muestra un indicador de carga mientras se espera el estado del viaje
       case TripStatus.failed:
         return Center(child: Text('El viaje ha fallado.'));
       case TripStatus.notTravelling:
