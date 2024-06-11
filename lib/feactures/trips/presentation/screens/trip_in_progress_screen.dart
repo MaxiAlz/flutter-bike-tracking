@@ -38,7 +38,7 @@ class TripInProgressScreen extends ConsumerWidget {
       case TripStatus.inProgress:
         return _BodyTripInProgress();
       case TripStatus.finished:
-        return Center(child: Text('Vieje terminado'));
+        return const TripEnded();
       case TripStatus.pending:
         return const TripPending(); // Opcional: muestra un indicador de carga mientras se espera el estado del viaje
       case TripStatus.failed:

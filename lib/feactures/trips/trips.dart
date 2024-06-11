@@ -1,4 +1,6 @@
 // #### Screens
+export 'package:app_ciudadano_vc/feactures/trips/presentation/widgets/trip_ended.dart';
+
 export 'package:app_ciudadano_vc/feactures/trips/presentation/widgets/trip_pending.dart';
 
 export 'package:app_ciudadano_vc/feactures/trips/presentation/screens/enter_bike_patent_screen.dart';
