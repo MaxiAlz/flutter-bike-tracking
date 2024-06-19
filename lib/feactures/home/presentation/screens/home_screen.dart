@@ -20,9 +20,17 @@ class HomeScreen extends ConsumerWidget {
 
     final messages = ErrorMessages();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showDialog(userDataAuthenticated, alerDilaog, context, ref, messages);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _showDialog(userDataAuthenticated, alerDilaog, context, ref, messages);
+    // });
+
+    void redirectIfIsuserInTrip() {
+      if (userDataAuthenticated!.isInTrip) {
+        ref.read(goRouterProvider).push('/trip-in-progress');
+      }
+    }
+
+    redirectIfIsuserInTrip();
 
     return Scaffold(
         extendBodyBehindAppBar: true,
