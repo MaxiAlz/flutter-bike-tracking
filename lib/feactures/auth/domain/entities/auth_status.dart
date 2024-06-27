@@ -3,7 +3,8 @@ enum AuthStatus {
   authenticated,
   notAuthenticated,
   notRegistered,
-  registered
+  registered,
+  error
 }
 
 enum UserDocumentationStatus {

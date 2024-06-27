@@ -1,4 +1,3 @@
-
 import 'package:app_ciudadano_vc/config/constants/app_constants.dart';
 import 'package:app_ciudadano_vc/feactures/auth/domain/entities/auth_status.dart';
 import 'package:app_ciudadano_vc/feactures/auth/domain/entities/user.dart';
@@ -8,7 +7,6 @@ import 'package:app_ciudadano_vc/shared/infraestructure/services/shared_preferen
 import 'package:app_ciudadano_vc/shared/infraestructure/services/shared_preferences/key_value_storage_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authServices = AuthServices();
@@ -49,7 +47,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
   final AuthServices authService;
   final KeyValueStorageService keyValueStorage;
   final AppConstants appConstants;
- 
 
   AuthNotifier({
     required this.authService,
@@ -72,6 +69,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
       if (serviceResponse.statusCode == 404) {
         state = state.copyWith(authStatus: AuthStatus.notRegistered);
         return serviceResponse;
+      }
+
+      if (serviceResponse == null) {
+        state = state.copyWith(authStatus: AuthStatus.error);
+        return;
       }
 
       return serviceResponse;
@@ -129,26 +131,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
           serviceResponse.headers['authorization'][0].replaceAll('Bearer ', '');
       await keyValueStorage.setStringKeyValue('userToken', newToken);
 
-      if (user.isInTrip) {
-       
-        // ref.read(goRouterProvider).push('/register');
-
-      }
       state = state.copyWith(authStatus: AuthStatus.authenticated, user: user);
     } catch (e) {
       logoutUSer();
     }
   }
-
-  // void toggleTripStatus() async {
-  //   final tripStatus =
-  //       await keyValueStorage.getKeyValue(appConstants.tripStatusKey);
-
-  //   switch (tripStatus) {
-  //     case 'EN_VIAJE':
-  //     state = state.copyWit(  )
-  //       break;
-  //     default:
-  //   }
-  // }
 }
