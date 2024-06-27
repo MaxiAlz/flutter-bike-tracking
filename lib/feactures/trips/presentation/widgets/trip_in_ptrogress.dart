@@ -1,30 +1,31 @@
+import 'package:app_ciudadano_vc/feactures/map/presentation/map_presentation.dart';
+import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/trip_provider.dart';
+import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 
-import 'package:app_ciudadano_vc/feactures/map/presentation/screens/map_view_layer.dart';
-import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
-import 'package:flutter/material.dart';
-
-class TripInProgress extends StatefulWidget {
-  const TripInProgress({
-    super.key,
-  });
+class TripInProgress extends ConsumerStatefulWidget {
+  const TripInProgress({Key? key}) : super(key: key);
 
   @override
   _TripInProgressState createState() => _TripInProgressState();
 }
 
-class _TripInProgressState extends State<TripInProgress> {
-  Duration tripDuration = const Duration();
+class _TripInProgressState extends ConsumerState<TripInProgress> {
   Timer? timer;
-  bool isPaused = false;
+  Duration tripDuration = const Duration();
 
   @override
   void initState() {
     super.initState();
     timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
-      if (!isPaused) {
+      final tripState = ref.read(tripNotifierProvider);
+      if (tripState.startTime.isNotEmpty) {
+        final startTime = DateTime.parse(tripState.startTime);
+        final now = DateTime.now();
         setState(() {
-          tripDuration += const Duration(seconds: 1);
+          tripDuration = now.difference(startTime);
         });
       }
     });
@@ -36,33 +37,25 @@ class _TripInProgressState extends State<TripInProgress> {
     super.dispose();
   }
 
-  void togglePause() {
-    setState(() {
-      isPaused = !isPaused;
-    });
-  }
-
-  void endTrip() {
-    timer?.cancel();
-    // Lógica para finalizar el viaje, por ejemplo, navegar a otra pantalla o guardar datos.
-  }
-
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    // final subtitlesStyle = Theme.of(context).textTheme.titleMedium;
+    final tripState = ref.read(tripNotifierProvider);
+    final formattedDuration = formatDuration(tripDuration);
+
     return Stack(
       children: [
         const MapViewLayer(),
         DraggableScrollableSheet(
           initialChildSize: 0.2,
           minChildSize: 0.2,
-          maxChildSize: 0.3,
+          maxChildSize: 0.35,
           builder: (BuildContext context, ScrollController scrollController) {
             return Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                color: Color.fromARGB(255, 241, 241, 241),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(20)),
+                color: const Color.fromARGB(255, 241, 241, 241),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.5),
@@ -78,21 +71,69 @@ class _TripInProgressState extends State<TripInProgress> {
                   Column(
                     children: [
                       Text(
-                        'Tu viaje esta en curso:',
+                        'Tu viaje está en curso:',
                         style: TextStyle(
-                            color: colors.primary,
-                            fontSize: 20,
-                            fontWeight: FontWeight.normal),
+                          color: colors.primary,
+                          fontSize: 20,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
-                      Text(
-                        "${tripDuration.inMinutes}:${(tripDuration.inSeconds % 60).toString().padLeft(2, '0')}",
-                        style: TextStyle(
-                            color: colors.primary,
-                            fontSize: 80,
-                            fontWeight: FontWeight.w100),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (int.parse(formattedDuration.hours) > 0)
+                            Column(
+                              children: [
+                                Text('Horas'),
+                                Text(
+                                  formattedDuration.hours + ':',
+                                  style: TextStyle(
+                                    color: colors.primary,
+                                    fontSize: 80,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Minutos'),
+                              Text(
+                                formattedDuration.minutes + ':',
+                                style: TextStyle(
+                                  color: colors.primary,
+                                  fontSize: 80,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('Segundos'),
+                              Text(
+                                formattedDuration.seconds,
+                                style: TextStyle(
+                                  color: colors.primary,
+                                  fontSize: 80,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       CustomFilledButtom(
-                          text: 'Solicitar ayuda', onPressed: () {})
+                        text: 'Solicitar ayuda',
+                        onPressed: () {},
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                          'Tu identificador de viaje es: N° ${tripState.tripData?.viajeId}')
                     ],
                   ),
                 ],
@@ -103,4 +144,28 @@ class _TripInProgressState extends State<TripInProgress> {
       ],
     );
   }
+}
+
+class TripDuration {
+  final String hours;
+  final String minutes;
+  final String seconds;
+
+  TripDuration({
+    required this.hours,
+    required this.minutes,
+    required this.seconds,
+  });
+}
+
+TripDuration formatDuration(Duration duration) {
+  final hours = duration.inHours.toString().padLeft(2, '0');
+  final minutes = (duration.inMinutes % 60).toString().padLeft(2, '0');
+  final seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
+
+  return TripDuration(
+    hours: hours,
+    minutes: minutes,
+    seconds: seconds,
+  );
 }

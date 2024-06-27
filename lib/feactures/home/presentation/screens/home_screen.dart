@@ -4,6 +4,7 @@ import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_prov
 import 'package:app_ciudadano_vc/feactures/home/infraestructure/infraestructure.dart';
 import 'package:app_ciudadano_vc/feactures/home/presentation/home_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/map/presentation/map_presentation.dart';
+import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/trip_provider.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,22 +16,38 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
     final userDataAuthenticated = ref.watch(authProvider).user;
+    final tripProvider = ref.read(tripNotifierProvider.notifier);
     final scaffoldKey = GlobalKey<ScaffoldState>();
-    final alerDilaog = CustomDialog();
 
-    final messages = ErrorMessages();
+    // final alerDilaog = CustomDialog();
+
+    // final messages = ErrorMessages();
 
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   _showDialog(userDataAuthenticated, alerDilaog, context, ref, messages);
     // });
 
-    void redirectIfIsuserInTrip() {
+    redirectBasedOnUserStatus() async {
       if (userDataAuthenticated!.isInTrip) {
+        final viajeId = userDataAuthenticated.tripData?.id;
+
+        await tripProvider.changeStatusToAnyState(
+            tripstatus: TripStatus.inProgress);
+
+        await tripProvider.conectToSocketChannel(
+            socketChannel: 'appViaje/$viajeId');
+
+        tripProvider.populateDataTrip(
+            dataTrip: userDataAuthenticated.tripData as Viaje);
+
         ref.read(goRouterProvider).push('/trip-in-progress');
+        return;
       }
     }
 
-    redirectIfIsuserInTrip();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      redirectBasedOnUserStatus();
+    });
 
     return Scaffold(
         extendBodyBehindAppBar: true,
