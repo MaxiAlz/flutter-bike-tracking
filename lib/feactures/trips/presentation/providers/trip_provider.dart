@@ -139,7 +139,7 @@ class TripNotifier extends StateNotifier<TripState> {
   //       await internalStorage.getKeyValue(appConstants.timeStartTripkey);
   // }
 
-  void populateDataTrip({required Viaje dataTrip}) {
+  populateDataTrip({required Viaje dataTrip}) {
     state = state.copyWith(
       tripData: TripData(
         estado: dataTrip.estado,

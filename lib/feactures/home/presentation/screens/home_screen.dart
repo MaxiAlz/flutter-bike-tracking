@@ -37,7 +37,7 @@ class HomeScreen extends ConsumerWidget {
         await tripProvider.conectToSocketChannel(
             socketChannel: 'appViaje/$viajeId');
 
-        tripProvider.populateDataTrip(
+        await tripProvider.populateDataTrip(
             dataTrip: userDataAuthenticated.tripData as Viaje);
 
         ref.read(goRouterProvider).push('/trip-in-progress');

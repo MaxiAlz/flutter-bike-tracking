@@ -2,6 +2,7 @@ import 'package:app_ciudadano_vc/config/router/app_router_notifier.dart';
 import 'package:app_ciudadano_vc/feactures/auth/domain/entities/auth_status.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/notifications/notifications.dart';
+import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/trip_provider.dart';
 import 'package:app_ciudadano_vc/feactures/trips/presentation/screens/trip_screen.dart';
 import 'package:app_ciudadano_vc/feactures/trips/trips.dart';
 import 'package:app_ciudadano_vc/feactures/user/user_settings.dart';
@@ -15,6 +16,7 @@ ref.read(goRouterProvider).push('/register');
 
 final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
+  final tripNotifier = ref.watch(tripNotifierProvider);
 
   return GoRouter(
     initialLocation: '/checking-status',
@@ -86,6 +88,13 @@ final goRouterProvider = Provider((ref) {
     redirect: (context, state) {
       final isGoingTo = state.matchedLocation;
       final authStatus = goRouterNotifier.authStatus;
+      final tripData = tripNotifier.tripData;
+
+      if (tripData != null &&
+          tripData.estado == "EN_VIAJE" &&
+          isGoingTo == '/') {
+        return '/trip-in-progress';
+      }
 
       if (isGoingTo == '/checking-status' &&
           authStatus == AuthStatus.checking) {

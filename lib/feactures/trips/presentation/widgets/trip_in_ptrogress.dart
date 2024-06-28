@@ -1,5 +1,6 @@
 import 'package:app_ciudadano_vc/feactures/map/presentation/map_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/trip_provider.dart';
+import 'package:app_ciudadano_vc/shared/infraestructure/share_infraestructure.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -127,7 +128,12 @@ class _TripInProgressState extends ConsumerState<TripInProgress> {
                       ),
                       CustomFilledButtom(
                         text: 'Solicitar ayuda',
-                        onPressed: () {},
+                        onPressed: () {
+                          final message =
+                              'Solicito ayuda en mi viaje con Identificador: ${tripState.tripData?.viajeId}';
+                          LaunchWspService().launchWhatsApp(
+                              message: message, context: context);
+                        },
                       ),
                       const SizedBox(
                         height: 10,
