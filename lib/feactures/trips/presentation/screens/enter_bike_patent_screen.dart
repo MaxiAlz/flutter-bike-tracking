@@ -64,15 +64,15 @@ class _FomEnterLocker extends ConsumerWidget {
       final lockerId = ref.watch(qrFormProvider).lockerValue;
       final userid = ref.watch(authProvider).user?.userId;
 
+      // tripProvider.changeStatusToAnyState(tripstatus: TripStatus.pending);
+
       try {
         final resp = await tripProvider.sendTripRequest(
             lockId: lockerId, userId: userid as int);
 
         if (resp?.statusCode == 201) {
           ref.read(isLoadingProvider.notifier).update((state) => false);
-          tripProvider.changeStatusToAnyState(
-              tripstatus: TripStatus.inProgress);
-          // return ref.read(goRouterProvider).go('/trip-in-progress');
+          tripProvider.changeStatusToAnyState(tripstatus: TripStatus.pending);
         }
 
         if (resp?.statusCode == 400) {
@@ -81,12 +81,12 @@ class _FomEnterLocker extends ConsumerWidget {
               tripstatus: TripStatus.inProgress);
         }
 
-        if (resp?.statusCode == 404) {
-          final Map<String, dynamic> responseBody = jsonDecode(resp.body);
-          ref.read(isLoadingProvider.notifier).update((state) => false);
-          tripProvider.changeStatusToAnyState(
-              tripstatus: TripStatus.notTravelling);
-        }
+        // if (resp?.statusCode == 404) {
+        //   final Map<String, dynamic> responseBody = jsonDecode(resp.body);
+        //   ref.read(isLoadingProvider.notifier).update((state) => false);
+        //   tripProvider.changeStatusToAnyState(
+        //       tripstatus: TripStatus.notTravelling);
+        // }
         ref.read(isLoadingProvider.notifier).update((state) => false);
       } catch (e) {
         print({'Error===>>>', e});

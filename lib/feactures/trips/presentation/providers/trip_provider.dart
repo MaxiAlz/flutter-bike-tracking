@@ -64,31 +64,23 @@ class TripNotifier extends StateNotifier<TripState> {
   KeyValueStorageImpl internalStorage;
   AppConstants appConstants;
 
-  TripNotifier(
-      {required this.tripServices,
-      required this.internalStorage,
-      required this.appConstants})
-      : super(TripState()) {
-    // checkIssocketChannerExist();
-  }
-
-  // Future conectToSocketChannel({String? socketChannel}) async {
-  //   if (socketChannel!.isNotEmpty) {
-  //     _initializeSocket(channel: socketChannel);
-  //   }
-  // }
+  TripNotifier({
+    required this.tripServices,
+    required this.internalStorage,
+    required this.appConstants,
+  }) : super(TripState());
 
   Future changeStatusToAnyState({required TripStatus tripstatus}) async {
     state = state.copyWith(tripStatus: tripstatus);
   }
 
   Future sendTripRequest({required String lockId, required int userId}) async {
-    try {
+   try {
       final serviceResponse = await tripServices.sendTravelRequestService(
         lockId: lockId,
         userId: userId,
       );
-      state = state.copyWith(tripStatus: TripStatus.pending);
+      // state = state.copyWith(tripStatus: TripStatus.pending);
 
       if (serviceResponse?.statusCode == 201) {
         // final startTime = DateTime.now().millisecondsSinceEpoch;
@@ -97,10 +89,9 @@ class TripNotifier extends StateNotifier<TripState> {
         final socketChanelTrip = 'appViaje/$viajeId';
 
         state = state.copyWith(
-            tripData: TripData(
-          estado: estadoViaje,
-          viajeId: viajeId,
-        ));
+          tripData: TripData(estado: estadoViaje, viajeId: viajeId),
+          tripStatus: _mapEstadoToTripStatus(estadoViaje),
+        );
 
         _initializeSocket(channel: socketChanelTrip);
 
@@ -109,7 +100,7 @@ class TripNotifier extends StateNotifier<TripState> {
 
       if (serviceResponse.statusCode == 400) {
         state = state.copyWith(
-            tripStatus: TripStatus.inProgress, isTripInProgress: true);
+             tripStatus: TripStatus.inProgress, isTripInProgress: true);
         return serviceResponse;
       }
 
@@ -125,6 +116,19 @@ class TripNotifier extends StateNotifier<TripState> {
     }
   }
 
+  TripStatus _mapEstadoToTripStatus(String estado) {
+    switch (estado) {
+      case 'PENDIENTE':
+        return TripStatus.pending;
+      case 'EN_VIAJE':
+        return TripStatus.inProgress;
+      case 'FINALIZADO':
+        return TripStatus.finished;
+      default:
+        return TripStatus.failed;
+    }
+  }
+
   // Future<void> _loadFromPrefs() async {
   //   // obtener estado de viaje de storage
   //   final tripStatusStorage =
@@ -133,16 +137,6 @@ class TripNotifier extends StateNotifier<TripState> {
   //   final startTimeStorage =
   //       await internalStorage.getKeyValue(appConstants.timeStartTripkey);
   // }
-
-  populateDataTrip({required Viaje dataTrip}) {
-    state = state.copyWith(
-      tripData: TripData(
-        estado: dataTrip.estado,
-        viajeId: dataTrip.id,
-      ),
-      startTime: dataTrip.fechaInicio,
-    );
-  }
 
   void _initializeSocket({required String channel}) {
     socket?.dispose();
@@ -153,26 +147,15 @@ class TripNotifier extends StateNotifier<TripState> {
 
   void _handleSocketMessage(Map<String, dynamic> data) async {
     final estado = data['estado'];
-    // setear el valor del estado en el store
-    // internalStorage.setStringKeyValue(appConstants.tripStatusKey, estado);
+    final tripStatus = _mapEstadoToTripStatus(estado);
 
-    if (estado == 'PENDIENTE') {
-      state = state.copyWith(tripStatus: TripStatus.pending);
-      return;
-    }
-
-    if (estado == 'EN_VIAJE') {
-      state = state.copyWith(
-          tripStatus: TripStatus.inProgress, isTripInProgress: true);
-      return;
-    }
-    if (estado == 'FINALIZADO') {
+    if (tripStatus == TripStatus.finished) {
       await internalStorage.removeKey(appConstants.socketChanelTrip);
-
-      state = state.copyWith(
-          tripStatus: TripStatus.finished, isTripInProgress: false);
-      return;
     }
+
+    state = state.copyWith(
+        tripStatus: tripStatus,
+        isTripInProgress: tripStatus == TripStatus.inProgress);
   }
 
   @override

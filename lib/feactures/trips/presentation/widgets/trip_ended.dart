@@ -47,6 +47,7 @@ class TripEnded extends ConsumerWidget {
                     .read(tripNotifierProvider.notifier)
                     .changeStatusToAnyState(
                         tripstatus: TripStatus.notTravelling);
+
                 ref.read(goRouterProvider).push('/');
               })
         ],

@@ -88,6 +88,7 @@ final goRouterProvider = Provider((ref) {
     redirect: (context, state) {
       final isGoingTo = state.matchedLocation;
       final authStatus = goRouterNotifier.authStatus;
+      final tripStatus = tripNotifier.tripStatus;
       // final tripData = tripNotifier.tripData;
 
       // if (tripData != null &&
@@ -102,21 +103,42 @@ final goRouterProvider = Provider((ref) {
       }
 
       if (authStatus == AuthStatus.notAuthenticated) {
-        if (isGoingTo == '/auth' ||
-            isGoingTo == '/register' ||
-            isGoingTo == '/enter-code' ||
-            isGoingTo == '/welcome') return null;
+        // if (isGoingTo == '/auth' ||
+        //     isGoingTo == '/register' ||
+        //     isGoingTo == '/enter-code' ||
+        //     isGoingTo == '/welcome') return null;
+        if (['/auth', '/register', '/enter-code', '/welcome']
+            .contains(isGoingTo)) {
+          return null;
+        }
         return '/welcome';
       }
 
+      // if (authStatus == AuthStatus.authenticated) {
+      //   if (isGoingTo == '/auth' ||
+      //       isGoingTo == '/register' ||
+      //       isGoingTo == '/enter-code' ||
+      //       isGoingTo == '/welcome' ||
+      //       isGoingTo == '/checking-status') {
+      //     return '/';
+      //   }
+      //   return null;
+      // }
+
       if (authStatus == AuthStatus.authenticated) {
-        if (isGoingTo == '/auth' ||
-            isGoingTo == '/register' ||
-            isGoingTo == '/enter-code' ||
-            isGoingTo == '/welcome' ||
-            isGoingTo == '/checking-status') {
+        if ([
+          '/auth',
+          '/register',
+          '/enter-code',
+          '/welcome',
+          '/checking-status'
+        ].contains(isGoingTo)) {
           return '/';
         }
+        // if (tripStatus == TripStatus.inProgress &&
+        //     isGoingTo != '/trip-in-progress') {
+        //   return '/trip-in-progress';
+        // }
         return null;
       }
 
