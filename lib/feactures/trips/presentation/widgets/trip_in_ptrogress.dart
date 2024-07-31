@@ -131,8 +131,8 @@ class _TripInProgressState extends ConsumerState<TripInProgress> {
                         onPressed: () {
                           final message =
                               'Solicito ayuda en mi viaje con Identificador: ${tripState.tripData?.viajeId}';
-                          LaunchWspService().launchWhatsApp(
-                              message: message, context: context);
+                          // LaunchWspService().launchWhatsApp(
+                          //     message: message, context: context);
                         },
                       ),
                       const SizedBox(

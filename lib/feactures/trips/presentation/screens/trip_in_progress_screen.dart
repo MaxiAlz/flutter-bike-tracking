@@ -4,7 +4,6 @@ import 'package:app_ciudadano_vc/feactures/trips/trips.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 class TripInProgressScreen extends ConsumerWidget {
   const TripInProgressScreen({super.key});
 
@@ -40,7 +39,7 @@ class TripInProgressScreen extends ConsumerWidget {
       case TripStatus.failed:
         return const Center(child: Text('El viaje ha fallado.'));
       case TripStatus.notTravelling:
-        return Center(child: Text('No esta viajando.'));
+        return const EnterBikePatentScreen();
       default:
         return const Center(
             child: Text('Ah ocurrido un error esperando el estado del viaje'));

@@ -23,10 +23,10 @@ class HubServices {
       if (apiResponse.statusCode == 200) {
         // Convertimos la respuesta JSON en una lista de hubs usando el método fromJson de la clase Hub
         final List<dynamic> hubDataList = apiResponse.data;
-        final List<Hub> hubs = hubDataList.map((hubData) => HubMapper.fromJson(hubData)).toList();
+        final List<Hub> hubs =
+            hubDataList.map((hubData) => HubMapper.fromJson(hubData)).toList();
         return hubs;
       } else {
-        // Si la respuesta no es exitosa, lanzamos una excepción o manejamos el error de acuerdo a tu lógica
         throw Exception('Failed to load hubs');
       }
     } catch (error) {

@@ -88,13 +88,13 @@ final goRouterProvider = Provider((ref) {
     redirect: (context, state) {
       final isGoingTo = state.matchedLocation;
       final authStatus = goRouterNotifier.authStatus;
-      final tripData = tripNotifier.tripData;
+      // final tripData = tripNotifier.tripData;
 
-      if (tripData != null &&
-          tripData.estado == "EN_VIAJE" &&
-          isGoingTo == '/') {
-        return '/trip-in-progress';
-      }
+      // if (tripData != null &&
+      //     tripData.estado == "EN_VIAJE" &&
+      //     isGoingTo == '/') {
+      //   return '/trip-in-progress';
+      // }
 
       if (isGoingTo == '/checking-status' &&
           authStatus == AuthStatus.checking) {

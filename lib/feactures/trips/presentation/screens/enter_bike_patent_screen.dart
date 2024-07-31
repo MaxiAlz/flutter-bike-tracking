@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/locker_form_provider.dart';
@@ -13,10 +12,7 @@ class EnterBikePatentScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final colors = Theme.of(context).colorScheme;
     final titlesStyles = Theme.of(context).textTheme;
-
-    // final qrStateValue = ref.watch(qrFormProvider);
     return Scaffold(
       body: Center(
         child: Column(
@@ -41,8 +37,8 @@ class EnterBikePatentScreen extends ConsumerWidget {
             CustomOutlineButtom(
                 text: 'Cancelar',
                 onPressed: () {
-                  ref.read(goRouterProvider).push('/');
                   ref.read(isLoadingProvider.notifier).update((state) => false);
+                  ref.read(goRouterProvider).push('/');
                 })
             // Text('qrState: ${qrStateValue.qrValue}')
           ],
@@ -59,57 +55,41 @@ class _FomEnterLocker extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final TextEditingController textController;
-    // final FocusNode focusNode;
     final formKey = GlobalKey<FormState>();
     final tripProvider = ref.read(tripNotifierProvider.notifier);
     final isLoading = ref.watch(isLoadingProvider);
 
-    Future submitTripRequest(context) async {
+    Future submitTripRequest() async {
       ref.read(isLoadingProvider.notifier).update((state) => true);
-      try {
-        final lockerId = ref.watch(qrFormProvider).lockerValue;
-        final userid = ref.watch(authProvider).user?.userId;
+      final lockerId = ref.watch(qrFormProvider).lockerValue;
+      final userid = ref.watch(authProvider).user?.userId;
 
+      try {
         final resp = await tripProvider.sendTripRequest(
             lockId: lockerId, userId: userid as int);
 
-        if (resp.statusCode == 201) {
-          ref.read(goRouterProvider).push('/trip-in-progress');
-          return;
+        if (resp?.statusCode == 201) {
+          ref.read(isLoadingProvider.notifier).update((state) => false);
+          tripProvider.changeStatusToAnyState(
+              tripstatus: TripStatus.inProgress);
+          // return ref.read(goRouterProvider).go('/trip-in-progress');
         }
 
-        if (resp.statusCode == 404) {
-          final Map<String, dynamic> responseBody = jsonDecode(resp.body);
-          final String errorMessage =
-              responseBody['message'] ?? 'Recurso no encontrado (404)';
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(errorMessage),
-              backgroundColor: Colors.red,
-            ),
-          );
+        if (resp?.statusCode == 400) {
+          ref.read(isLoadingProvider.notifier).update((state) => false);
+          tripProvider.changeStatusToAnyState(
+              tripstatus: TripStatus.inProgress);
         }
-      } catch (e) {
-        // final msg =
-        // Manejo de otras excepciones
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Row(
-              children: [
-                Icon(
-                  Icons.not_interested,
-                  color: Colors.white,
-                ),
-                SizedBox(width: 10),
-                Text('Ocurrió un error, vuelva a intentarlo'),
-              ],
-            ),
-            backgroundColor: Color.fromARGB(255, 172, 45, 36),
-          ),
-        );
-      } finally {
+
+        if (resp?.statusCode == 404) {
+          final Map<String, dynamic> responseBody = jsonDecode(resp.body);
+          ref.read(isLoadingProvider.notifier).update((state) => false);
+          tripProvider.changeStatusToAnyState(
+              tripstatus: TripStatus.notTravelling);
+        }
         ref.read(isLoadingProvider.notifier).update((state) => false);
+      } catch (e) {
+        print({'Error===>>>', e});
       }
     }
 
@@ -141,10 +121,10 @@ class _FomEnterLocker extends ConsumerWidget {
                   ? const LinearProgressIndicator()
                   : CustomFilledButtom(
                       text: 'Iniciar viaje',
-                      onPressed: () {
+                      onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           formKey.currentState?.save();
-                          submitTripRequest(context);
+                          submitTripRequest();
                         }
                       },
                     ),
