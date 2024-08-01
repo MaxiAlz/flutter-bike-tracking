@@ -88,7 +88,7 @@ final goRouterProvider = Provider((ref) {
     redirect: (context, state) {
       final isGoingTo = state.matchedLocation;
       final authStatus = goRouterNotifier.authStatus;
-      final tripStatus = tripNotifier.tripStatus;
+      // final tripStatus = tripNotifier.tripStatus;
       // final tripData = tripNotifier.tripData;
 
       // if (tripData != null &&
@@ -103,10 +103,6 @@ final goRouterProvider = Provider((ref) {
       }
 
       if (authStatus == AuthStatus.notAuthenticated) {
-        // if (isGoingTo == '/auth' ||
-        //     isGoingTo == '/register' ||
-        //     isGoingTo == '/enter-code' ||
-        //     isGoingTo == '/welcome') return null;
         if (['/auth', '/register', '/enter-code', '/welcome']
             .contains(isGoingTo)) {
           return null;

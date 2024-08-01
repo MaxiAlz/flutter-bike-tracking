@@ -13,36 +13,34 @@ class EnterBikePatentScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final titlesStyles = Theme.of(context).textTheme;
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/vamos-en-bici-01.png',
-              width: 250,
-            ),
-            Text(
-              'Ingresar identificacion',
-              style: titlesStyles.titleLarge,
-              textAlign: TextAlign.center,
-            ),
-            Text('Escribe la identificacion de la bicicleta',
-                style: titlesStyles.titleMedium),
-            Container(
-              margin: const EdgeInsets.all(20),
-              child: const _FomEnterLocker(),
-            ),
-            // const SizedBox(height: 15),
-            CustomOutlineButtom(
-                text: 'Cancelar',
-                onPressed: () {
-                  ref.read(isLoadingProvider.notifier).update((state) => false);
-                  ref.read(goRouterProvider).push('/');
-                })
-            // Text('qrState: ${qrStateValue.qrValue}')
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/images/vamos-en-bici-01.png',
+            width: 250,
+          ),
+          Text(
+            'Ingresar identificacion',
+            style: titlesStyles.titleLarge,
+            textAlign: TextAlign.center,
+          ),
+          Text('Escribe la identificacion de la bicicleta',
+              style: titlesStyles.titleMedium),
+          Container(
+            margin: const EdgeInsets.all(20),
+            child: const _FomEnterLocker(),
+          ),
+          // const SizedBox(height: 15),
+          CustomOutlineButtom(
+              text: 'Cancelar',
+              onPressed: () {
+                ref.read(isLoadingProvider.notifier).update((state) => false);
+                ref.read(goRouterProvider).push('/');
+              })
+          // Text('qrState: ${qrStateValue.qrValue}')
+        ],
       ),
     );
   }
