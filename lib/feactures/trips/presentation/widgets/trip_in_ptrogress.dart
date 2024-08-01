@@ -1,5 +1,6 @@
 import 'package:app_ciudadano_vc/feactures/map/presentation/map_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/trip_provider.dart';
+import 'package:app_ciudadano_vc/shared/infraestructure/services/url_launcher/url_launcher_service.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,19 +16,17 @@ class TripInProgress extends ConsumerStatefulWidget {
 class TripInProgressState extends ConsumerState<TripInProgress> {
   Timer? timer;
   Duration tripDuration = const Duration();
+  late DateTime startTime;
 
   @override
   void initState() {
     super.initState();
+    startTime = DateTime.now();
     timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
-      final tripState = ref.read(tripNotifierProvider);
-      if (tripState.startTime.isNotEmpty) {
-        final startTime = DateTime.parse(tripState.startTime);
-        final now = DateTime.now();
-        setState(() {
-          tripDuration = now.difference(startTime);
-        });
-      }
+      final now = DateTime.now();
+      setState(() {
+        tripDuration = now.difference(startTime);
+      });
     });
   }
 
@@ -42,6 +41,7 @@ class TripInProgressState extends ConsumerState<TripInProgress> {
     final colors = Theme.of(context).colorScheme;
     final tripState = ref.read(tripNotifierProvider);
     final formattedDuration = formatDuration(tripDuration);
+    final wspService = LaunchWspService();
 
     return Stack(
       children: [
@@ -128,10 +128,10 @@ class TripInProgressState extends ConsumerState<TripInProgress> {
                       CustomFilledButtom(
                         text: 'Solicitar ayuda',
                         onPressed: () {
-                          // final message =
-                          //     'Solicito ayuda en mi viaje con Identificador: ${tripState.tripData?.viajeId}';
-                          // LaunchWspService().launchWhatsApp(
-                          //     message: message, context: context);
+                          final message =
+                              'Solicito ayuda en mi viaje con Identificador: ${tripState.tripData?.viajeId}';
+                          wspService.launchWhatsApp(
+                              message: message, context: context);
                         },
                       ),
                       const SizedBox(

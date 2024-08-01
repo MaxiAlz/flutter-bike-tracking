@@ -2,7 +2,7 @@ import 'package:app_ciudadano_vc/config/router/app_router_notifier.dart';
 import 'package:app_ciudadano_vc/feactures/auth/domain/entities/auth_status.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/notifications/notifications.dart';
-import 'package:app_ciudadano_vc/feactures/trips/presentation/screens/trip_screen.dart';
+import 'package:app_ciudadano_vc/feactures/trips/presentation/screens/trip_qr_scaner_screen.dart';
 import 'package:app_ciudadano_vc/feactures/trips/trips.dart';
 import 'package:app_ciudadano_vc/feactures/user/user_settings.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -80,7 +80,7 @@ final goRouterProvider = Provider((ref) {
       ),
       GoRoute(
         path: '/trip-in-progress',
-        builder: (context, state) => const TripInProgressScreen(),
+        builder: (context, state) => const TripTrackingScreen(),
       ),
     ],
     redirect: (context, state) {

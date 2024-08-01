@@ -3,8 +3,8 @@ import 'package:app_ciudadano_vc/feactures/trips/trips.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TripInProgressScreen extends ConsumerWidget {
-  const TripInProgressScreen({super.key});
+class TripTrackingScreen extends ConsumerWidget {
+  const TripTrackingScreen({super.key});
 
   @override
   Widget build(BuildContext context, ref) {

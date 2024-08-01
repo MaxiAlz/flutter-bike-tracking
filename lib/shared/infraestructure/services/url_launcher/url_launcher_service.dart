@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LaunchWspService {
-  static Future<void> _sendMessage({required String message}) async {
+  static Future<void> sendMessage({required String message}) async {
     final phoneNumber = Enviroments.wathsAppNumber;
     final whatsappUrl = Uri.parse(
         "https://wa.me/$phoneNumber?text=${Uri.encodeComponent(message)}");
@@ -18,7 +18,7 @@ class LaunchWspService {
     required BuildContext context,
   }) async {
     try {
-      await _sendMessage(
+      await sendMessage(
         message: message,
       );
     } catch (e) {
