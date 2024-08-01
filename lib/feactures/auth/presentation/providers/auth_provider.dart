@@ -66,6 +66,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
         return serviceResponse;
       }
 
+      if (serviceResponse == null) {
+        print('ah ocurrido un error');
+      }
+
       if (serviceResponse.statusCode == 404) {
         state = state.copyWith(authStatus: AuthStatus.notRegistered);
         return serviceResponse;

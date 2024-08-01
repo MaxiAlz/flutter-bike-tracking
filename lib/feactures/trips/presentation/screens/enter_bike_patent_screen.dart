@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/locker_form_provider.dart';
@@ -47,9 +46,7 @@ class EnterBikePatentScreen extends ConsumerWidget {
 }
 
 class _FomEnterLocker extends ConsumerWidget {
-  const _FomEnterLocker({
-    super.key,
-  });
+  const _FomEnterLocker();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -79,15 +76,9 @@ class _FomEnterLocker extends ConsumerWidget {
               tripstatus: TripStatus.inProgress);
         }
 
-        // if (resp?.statusCode == 404) {
-        //   final Map<String, dynamic> responseBody = jsonDecode(resp.body);
-        //   ref.read(isLoadingProvider.notifier).update((state) => false);
-        //   tripProvider.changeStatusToAnyState(
-        //       tripstatus: TripStatus.notTravelling);
-        // }
         ref.read(isLoadingProvider.notifier).update((state) => false);
       } catch (e) {
-        print({'Error===>>>', e});
+        Exception(e);
       }
     }
 

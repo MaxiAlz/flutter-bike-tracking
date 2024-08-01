@@ -9,10 +9,10 @@ class TripInProgress extends ConsumerStatefulWidget {
   const TripInProgress({Key? key}) : super(key: key);
 
   @override
-  _TripInProgressState createState() => _TripInProgressState();
+  TripInProgressState createState() => TripInProgressState();
 }
 
-class _TripInProgressState extends ConsumerState<TripInProgress> {
+class TripInProgressState extends ConsumerState<TripInProgress> {
   Timer? timer;
   Duration tripDuration = const Duration();
 
@@ -87,9 +87,9 @@ class _TripInProgressState extends ConsumerState<TripInProgress> {
                           if (int.parse(formattedDuration.hours) > 0)
                             Column(
                               children: [
-                                Text('Horas'),
+                                const Text('Horas'),
                                 Text(
-                                  formattedDuration.hours + ':',
+                                  '${formattedDuration.hours}:',
                                   style: TextStyle(
                                     color: colors.primary,
                                     fontSize: 80,
@@ -100,9 +100,9 @@ class _TripInProgressState extends ConsumerState<TripInProgress> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('Minutos'),
+                              const Text('Minutos'),
                               Text(
-                                formattedDuration.minutes + ':',
+                                '${formattedDuration.minutes}:',
                                 style: TextStyle(
                                   color: colors.primary,
                                   fontSize: 80,
@@ -128,8 +128,8 @@ class _TripInProgressState extends ConsumerState<TripInProgress> {
                       CustomFilledButtom(
                         text: 'Solicitar ayuda',
                         onPressed: () {
-                          final message =
-                              'Solicito ayuda en mi viaje con Identificador: ${tripState.tripData?.viajeId}';
+                          // final message =
+                          //     'Solicito ayuda en mi viaje con Identificador: ${tripState.tripData?.viajeId}';
                           // LaunchWspService().launchWhatsApp(
                           //     message: message, context: context);
                         },
