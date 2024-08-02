@@ -9,10 +9,7 @@ class CheckAuthStatus extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final colors = Theme.of(context).colorScheme;
     final subTitleStyle = Theme.of(context).textTheme.titleMedium;
-
-    // ref.watch(authProvider.notifier).checkAuthStatus();
 
     return Scaffold(
       body: Center(

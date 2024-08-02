@@ -6,15 +6,15 @@ final qrFormProvider =
 });
 
 class QrFormState {
-  final String qrValue;
+  final String lockerValue;
 
-  QrFormState({this.qrValue = ""});
+  QrFormState({this.lockerValue = ""});
 
   QrFormState copyWith({
-    String? qrValue,
+    String? lockerValue,
   }) {
     return QrFormState(
-      qrValue: qrValue ?? this.qrValue,
+      lockerValue: lockerValue ?? this.lockerValue,
     );
   }
 }
@@ -22,7 +22,7 @@ class QrFormState {
 class QrFormNotifier extends StateNotifier<QrFormState> {
   QrFormNotifier() : super(QrFormState());
 
-  void setQrValue(String? qrValue) {
-    state = state.copyWith(qrValue: qrValue);
+  void setLockerValue(String? lockerValue) {
+    state = state.copyWith(lockerValue: lockerValue);
   }
 }

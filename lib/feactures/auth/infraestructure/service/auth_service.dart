@@ -19,8 +19,10 @@ class AuthServices extends AuthServicesDomain {
   }
 
   @override
-  Future verifyCodeService(
-      {required String phoneNumber, required String code}) async {
+  Future verifyCodeService({
+    required String phoneNumber,
+    required String code,
+  }) async {
     final Map<String, dynamic> verifyCodeData = {
       "numero": phoneNumber,
       "codigo": code

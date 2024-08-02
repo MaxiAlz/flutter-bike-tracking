@@ -1,3 +1,4 @@
+import 'package:app_ciudadano_vc/config/constants/app_constants.dart';
 import 'package:app_ciudadano_vc/feactures/auth/domain/entities/auth_status.dart';
 import 'package:app_ciudadano_vc/feactures/auth/domain/entities/user.dart';
 import 'package:app_ciudadano_vc/feactures/auth/infraestructure/mappers/user_mapper.dart';
@@ -10,8 +11,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authServices = AuthServices();
   final setKeyValue = KeyValueStorageImpl();
+  final appConstants = AppConstants();
 
-  return AuthNotifier(authService: authServices, keyValueStorage: setKeyValue);
+  return AuthNotifier(
+      authService: authServices,
+      keyValueStorage: setKeyValue,
+      appConstants: appConstants);
 });
 
 class AuthState {
@@ -19,10 +24,11 @@ class AuthState {
   final String errorMessage;
   final AuthStatus authStatus;
 
-  AuthState(
-      {this.user,
-      this.errorMessage = '',
-      this.authStatus = AuthStatus.checking});
+  AuthState({
+    this.user,
+    this.errorMessage = '',
+    this.authStatus = AuthStatus.checking,
+  });
 
   AuthState copyWith({
     User? user,
@@ -40,9 +46,13 @@ class AuthState {
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthServices authService;
   final KeyValueStorageService keyValueStorage;
+  final AppConstants appConstants;
 
-  AuthNotifier({required this.authService, required this.keyValueStorage})
-      : super(AuthState()) {
+  AuthNotifier({
+    required this.authService,
+    required this.keyValueStorage,
+    required this.appConstants,
+  }) : super(AuthState()) {
     checkAuthStatus();
   }
 
@@ -56,9 +66,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
         return serviceResponse;
       }
 
+      if (serviceResponse == null) {
+        print('ah ocurrido un error');
+      }
+
       if (serviceResponse.statusCode == 404) {
         state = state.copyWith(authStatus: AuthStatus.notRegistered);
         return serviceResponse;
+      }
+
+      if (serviceResponse == null) {
+        state = state.copyWith(authStatus: AuthStatus.error);
+        return;
       }
 
       return serviceResponse;
@@ -103,7 +122,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   void checkAuthStatus() async {
-    final userToken = await keyValueStorage.getKeyValue<String>('userToken');
+    final userToken =
+        await keyValueStorage.getKeyValue<String>(AppConstants().tokenKey);
     if (userToken == null) return logoutUSer();
 
     try {
@@ -114,6 +134,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final newToken =
           serviceResponse.headers['authorization'][0].replaceAll('Bearer ', '');
       await keyValueStorage.setStringKeyValue('userToken', newToken);
+
       state = state.copyWith(authStatus: AuthStatus.authenticated, user: user);
     } catch (e) {
       logoutUSer();

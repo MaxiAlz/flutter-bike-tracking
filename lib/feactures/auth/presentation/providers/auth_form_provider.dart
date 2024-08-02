@@ -36,7 +36,6 @@ class AuthFormState {
 class AuthFormNotifier extends StateNotifier<AuthFormState> {
   AuthFormNotifier() : super(AuthFormState());
 
-
   void setPhoneNumber({required String newPhoneNumber}) {
     state = state.copyWith(phoneNumber: newPhoneNumber);
   }

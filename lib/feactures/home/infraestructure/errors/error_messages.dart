@@ -12,7 +12,7 @@ class ErrorMessages {
         return PendingDocumentMsg(
             title: 'Usuario pendiente',
             detail:
-                'Estamos validando tus datos, para que puedas usar el servicio. Intentalo mas tarde');
+                'Estamos validando tus datos, para que puedas usar el servicio. ¡Pronto podras realizar viajes!');
       case 'PENDIENTE_USUARIO':
         return PendingDocumentMsg(
             title: 'Actualiza tu documentacion',

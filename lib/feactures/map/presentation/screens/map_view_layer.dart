@@ -14,7 +14,6 @@ class MapViewLayer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    
     final markerDialogHub = MarkerDialogHub();
     final mapController = MapController();
     final hubList = ref.watch(hubListProvider);
@@ -22,12 +21,13 @@ class MapViewLayer extends ConsumerWidget {
     return hubList.when(
       data: (listOfHubs) => MapView(
           mapController: mapController,
-          
           hubList: hubList,
           markerDialogHub: markerDialogHub),
       loading: () {
-        return const FullLoader(
-          label: 'Cargando mapa...',
+        return const Center(
+          child: FullLoader(
+            label: 'Cargando mapa...',
+          ),
         );
       },
       error: (error, stackTrace) {
