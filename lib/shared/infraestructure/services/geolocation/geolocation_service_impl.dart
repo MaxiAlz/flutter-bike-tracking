@@ -3,14 +3,14 @@ import 'package:geolocator/geolocator.dart';
 
 class GeolocationImpl extends GeolocationService {
   @override
-  Future<Position> checkPermission() async {
-    dynamic permission = await Geolocator.checkPermission();
+  Future<LocationPermission> checkPermission() async {
+    var permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         return Future.error('Location permissions are denied');
       }
-    };
+    }
     return permission;
   }
 
@@ -23,17 +23,13 @@ class GeolocationImpl extends GeolocationService {
   }
 
   @override
-  Future getLastKnownPosition() async {
+  Future<Position?> getLastKnownPosition() async {
     return await Geolocator.getLastKnownPosition();
   }
 
   @override
-  Future isLocationServiceEnabled() async {
-    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-    return serviceEnabled;
+  Future<bool> isLocationServiceEnabled() async {
+    return await Geolocator.isLocationServiceEnabled();
   }
 
   Future<Position> determinePosition() async {
@@ -42,12 +38,12 @@ class GeolocationImpl extends GeolocationService {
 
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    
+
     if (!serviceEnabled) {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
-      print('Guardaaaaa =>Location services are disabled.');
+      print(' =>Location services are disabled.');
       return Future.error('Location services are disabled.');
     }
 
@@ -74,5 +70,11 @@ class GeolocationImpl extends GeolocationService {
     // continue accessing the position of the device.
 
     return await Geolocator.getCurrentPosition();
+  }
+
+  @override
+  Stream<bool> getServiceStatusStream() {
+    return Geolocator.getServiceStatusStream()
+        .map((event) => event == ServiceStatus.enabled);
   }
 }
