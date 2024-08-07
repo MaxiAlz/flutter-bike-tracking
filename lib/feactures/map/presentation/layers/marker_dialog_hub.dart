@@ -35,7 +35,7 @@ class MarkerDialogHub {
               ),
               const SizedBox(
                 child: Divider(),
-              )
+              ),
             ],
           ),
           content: SingleChildScrollView(
@@ -45,30 +45,59 @@ class MarkerDialogHub {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.directions_bike),
+                    Icon(Icons.pedal_bike, color: colors.primary),
                     const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
                     Text(
-                        'Bicicletas disponibles: ${marker.cantidadBicicletas}'),
+                      'Bicicletas disponibles:',
+                      style: TextStyle(color: colors.primary),
+                    ),
                   ],
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20)),
+                    Text('Electricas: ${marker.cantidadElectrica}'),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20)),
+                    Text('Mecanicas: ${marker.cantidadMecanica}'),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 Row(
                   children: [
-                    const Icon(Icons.electric_bike_outlined),
+                    Icon(Icons.local_parking_rounded, color: colors.primary),
                     const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                    Text('Electricas: ${marker.capacidadElectrica}'),
+                    Text(
+                      'Capacidad total:',
+                      style: TextStyle(color: colors.primary),
+                    ),
                   ],
-                ),
-                const SizedBox(
-                  height: 10,
                 ),
                 Row(
                   children: [
-                    const Icon(Icons.pedal_bike_outlined),
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
-                    Text('Mecanicas: ${marker.capacidadMecanica}'),
+                    const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20)),
+                    Text('Electricas: ${marker.capacidadElectricas}'),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20)),
+                    Text('Mecanicas: ${marker.capacidadMecanicas}'),
                   ],
                 ),
               ],

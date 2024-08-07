@@ -4,17 +4,6 @@ import 'package:app_ciudadano_vc/shared/infraestructure/services/http_adapter/ht
 
 final api = Api();
 
-// class HubServices {
-//   Future getAvailableHubs() async {
-//     try {
-//       final apiResponse = api.getHttp(path: '/estacion');
-//       return apiResponse;
-//     } catch (error) {
-//       return error;
-//     }
-//   }
-// }
-
 class HubServices {
   Future<List<Hub>> getAvailableHubs() async {
     try {
