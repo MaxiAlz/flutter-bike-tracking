@@ -5,6 +5,7 @@ import 'package:app_ciudadano_vc/feactures/notifications/notifications.dart';
 import 'package:app_ciudadano_vc/feactures/trips/presentation/screens/trip_qr_scaner_screen.dart';
 import 'package:app_ciudadano_vc/feactures/trips/trips.dart';
 import 'package:app_ciudadano_vc/feactures/user/user_settings.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -52,11 +53,16 @@ final goRouterProvider = Provider((ref) {
         path: '/enter-code',
         builder: (context, state) => const EnterCodeScreen(),
       ),
-
-      /// Home Routes
       GoRoute(
         path: '/',
         builder: (context, state) => const HomeScreen(),
+        // builder: (context, state) {
+        //   return permissionsAsyncValue.when(
+        //     data: (_) => HomeScreen(),
+        //     loading: () => Text('cargando...'),
+        //     error: (err, stack) => Text('cargando... ${err.toString()}'),
+        //   );
+        // },
       ),
       GoRoute(
         path: '/my-account',

@@ -1,5 +1,3 @@
-// TODO: Crear aqui el provider de riverpod para manejar los estados de los permisos
-
 import 'package:app_ciudadano_vc/shared/infraestructure/services/geolocation/geolocation_service_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
