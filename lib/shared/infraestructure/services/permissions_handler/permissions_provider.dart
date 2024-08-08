@@ -61,11 +61,6 @@ class PermissionsNotifier extends StateNotifier<PermissionsState> {
 
   Future<void> checkGpsStatus() async {
     final isEnable = await geolocatorService.isLocationServiceEnabled();
-    // final permissionStatus = await geolocatorService.checkPermission();
-
-    // final isPermissionGranted =
-    //     permissionStatus == LocationPermission.whileInUse ||
-    //         permissionStatus == LocationPermission.always;
     final permissionStatus = await Permission.location.request();
 
     switch (permissionStatus) {
@@ -74,7 +69,6 @@ class PermissionsNotifier extends StateNotifier<PermissionsState> {
           isGpsEnabled: isEnable,
           isGpsPermissionGranted: true,
         );
-        // openAppSettings();
         break;
       case PermissionStatus.denied:
       case PermissionStatus.restricted:
@@ -88,8 +82,6 @@ class PermissionsNotifier extends StateNotifier<PermissionsState> {
         openAppSettings();
     }
   }
-
-  Future<void> askGpsAccess() async {}
 
   @override
   String toString() =>
