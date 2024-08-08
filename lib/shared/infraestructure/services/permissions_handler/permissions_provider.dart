@@ -1,6 +1,6 @@
 import 'package:app_ciudadano_vc/shared/infraestructure/services/geolocation/geolocation_service_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 final permissionsAppProvider =
     StateNotifierProvider<PermissionsNotifier, PermissionsState>((ref) {
@@ -52,24 +52,44 @@ class PermissionsNotifier extends StateNotifier<PermissionsState> {
   }
 
   Future<void> _initStream() async {
-    _checkGpsStatus();
+    checkGpsStatus();
     // Escuchar los cambios en el estado del servicio de ubicación
     geolocatorService.getServiceStatusStream().listen((isEnabled) {
       updateGpsPermissionStatus(isGpsEnabled: isEnabled);
     });
   }
 
-  Future<void> _checkGpsStatus() async {
+  Future<void> checkGpsStatus() async {
     final isEnable = await geolocatorService.isLocationServiceEnabled();
-    final permissionStatus = await geolocatorService.checkPermission();
-    final isPermissionGranted =
-        permissionStatus == LocationPermission.whileInUse ||
-            permissionStatus == LocationPermission.always;
-    updateGpsPermissionStatus(
-      isGpsEnabled: isEnable,
-      isGpsPermissionGranted: isPermissionGranted,
-    );
+    // final permissionStatus = await geolocatorService.checkPermission();
+
+    // final isPermissionGranted =
+    //     permissionStatus == LocationPermission.whileInUse ||
+    //         permissionStatus == LocationPermission.always;
+    final permissionStatus = await Permission.location.request();
+
+    switch (permissionStatus) {
+      case PermissionStatus.granted:
+        updateGpsPermissionStatus(
+          isGpsEnabled: isEnable,
+          isGpsPermissionGranted: true,
+        );
+        // openAppSettings();
+        break;
+      case PermissionStatus.denied:
+      case PermissionStatus.restricted:
+      case PermissionStatus.limited:
+      case PermissionStatus.permanentlyDenied:
+      case PermissionStatus.provisional:
+        updateGpsPermissionStatus(
+          isGpsEnabled: isEnable,
+          isGpsPermissionGranted: false,
+        );
+        openAppSettings();
+    }
   }
+
+  Future<void> askGpsAccess() async {}
 
   @override
   String toString() =>

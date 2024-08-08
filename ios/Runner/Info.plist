@@ -12,8 +12,16 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>we need acced to microfone if you want to rec videos.</string>
 
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Necesitamos acceder a la ubicacion de tu dispositivo</string>
+<!-- Permission options for the `location` group -->
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>Need location when in use</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>Always and when in use!</string>
+  <key>NSLocationUsageDescription</key>
+  <string>Older devices need location.</string>
+  <key>NSLocationAlwaysUsageDescription</key>
+  <string>Can I have location always?</string>
+
 
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
@@ -24,8 +32,6 @@
 
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>This app needs camera access to scan QR codes</string>
 
 
 

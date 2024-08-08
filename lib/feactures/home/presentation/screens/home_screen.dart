@@ -76,19 +76,36 @@ class _CheckPermissionsView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final systemPermisionProvier = ref.watch(permissionsAppProvider);
+    final titlesStyle = Theme.of(context).textTheme;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Center(
-          child: Text('Debe activar sus permisos de ubicacion'),
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Center(
+                child: Text(
+                  'Oops! :(',
+                  style: titlesStyle.titleLarge,
+                ),
+              ),
+            ),
+            Center(
+              child: Text(
+                'Debe activar sus permisos de ubicacion.',
+                style: titlesStyle.titleMedium,
+              ),
+            ),
+          ],
         ),
         const SizedBox(
           height: 20,
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(vertical: 20),
           child: Center(
             child: SvgPicture.asset(
               'assets/svg/undraw_my_location_re_r52x.svg',
@@ -96,16 +113,22 @@ class _CheckPermissionsView extends ConsumerWidget {
             ),
           ),
         ),
-        Text('isGpsEnabled:  ${systemPermisionProvier.isGpsEnabled}, '),
         Text(
-            'isGpsPermissionGranted:  ${systemPermisionProvier.isGpsPermissionGranted} '),
-        FilledButton(
-            onPressed: () {
-              ref
-                  .read(permissionsAppProvider.notifier)
-                  .updateGpsPermissionStatus(isGpsEnabled: true);
-            },
-            child: const Text('Camiar a true'))
+          'Localizacion:  ${systemPermisionProvier.isGpsEnabled ? 'Activada' : 'Desactivada'}',
+        ),
+        Text(
+          'Permisos de localizacion:  ${systemPermisionProvier.isGpsPermissionGranted ? 'Habilitados' : 'Deshabilitados'}',
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        !systemPermisionProvier.isGpsPermissionGranted
+            ? FilledButton(
+                onPressed: () {
+                  ref.read(permissionsAppProvider.notifier).checkGpsStatus();
+                },
+                child: const Text('Activar permisos manualmente'))
+            : const SizedBox(),
       ],
     );
   }
