@@ -28,8 +28,8 @@ class MapView extends ConsumerWidget {
     return FlutterMap(
       mapController: mapController,
       options: const MapOptions(
-        initialZoom: 13,
-        initialCenter: LatLng(-28.460501, -65.780756),
+        initialZoom: 12.5,
+        initialCenter: LatLng(-28.466942368087086, -65.77876578958912),
       ),
       children: [
         TileLayer(
@@ -130,3 +130,7 @@ class MapView extends ConsumerWidget {
     );
   }
 }
+
+
+
+

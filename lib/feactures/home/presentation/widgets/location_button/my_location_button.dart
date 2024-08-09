@@ -22,8 +22,9 @@ class MyLocationButton extends ConsumerWidget {
       onPressed: mapSetting.isLoadingPositions
           ? null
           : () async {
-              final position =
-                  await ref.read(mapSettingProvider.notifier).getUserPosition();
+              final position = await ref
+                  .watch(mapSettingProvider.notifier)
+                  .getUserPosition();
 
               ref.read(mapSettingProvider).copyWith(userPosition: position);
               mapController.move(
