@@ -37,6 +37,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_map: ^6.1.0
   flutter_map_cancellable_tile_provider: ^2.0.0
+  flutter_native_splash: 2.3.10
   flutter_riverpod: ^2.4.10
   flutter_svg: ^2.0.10+1
   formz: ^0.6.1
@@ -59,10 +60,19 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/images/LOGO_APP_XXL.png"
+  image_path: "assets/images/vamos_en_bici_logo_md.png"
   remove_alpha_ios: true
-  adaptive_icon_background: "#064989" # Para íconos adaptativos en Android
-  # adaptive_icon_foreground: "assets/icon/icon-foreground.png" # Si utilizas un ícono adaptativo en Android
+  adaptive_icon_background: "#00458a" 
+  adaptive_icon_foreground: "assets/images/vamos_en_bici_logo_md.png"
+
+flutter_native_splash:
+  color: "#00458a"
+  image: assets/images/Logo-vamos-en-bici-xxl.png
+  android: true
+  ios: true
+  web: false
+  android_gravity: center
+  ios_content_mode: scaleAspectFill
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
