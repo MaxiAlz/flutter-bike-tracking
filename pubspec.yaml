@@ -34,6 +34,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
+  flutter_launcher_icons: ^0.13.1
   flutter_map: ^6.1.0
   flutter_map_cancellable_tile_provider: ^2.0.0
   flutter_riverpod: ^2.4.10
@@ -54,6 +55,14 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/LOGO_APP_XXL.png"
+  remove_alpha_ios: true
+  adaptive_icon_background: "#064989" # Para íconos adaptativos en Android
+  # adaptive_icon_foreground: "assets/icon/icon-foreground.png" # Si utilizas un ícono adaptativo en Android
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
