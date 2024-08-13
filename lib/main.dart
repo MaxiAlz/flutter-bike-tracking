@@ -2,8 +2,6 @@ import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-
 void main() async {
   await Enviroments.initEnviroment();
 

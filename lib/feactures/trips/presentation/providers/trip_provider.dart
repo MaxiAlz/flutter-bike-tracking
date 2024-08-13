@@ -98,7 +98,7 @@ class TripNotifier extends StateNotifier<TripState> {
 
       if (serviceResponse.statusCode == 400) {
         state = state.copyWith(
-            tripStatus: TripStatus.inProgress, isTripInProgress: true);
+            tripStatus: TripStatus.failed, isTripInProgress: false);
         return serviceResponse;
       }
 

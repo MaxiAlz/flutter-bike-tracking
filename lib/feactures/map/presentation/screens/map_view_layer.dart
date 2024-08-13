@@ -1,11 +1,9 @@
 import 'package:app_ciudadano_vc/feactures/map/presentation/map_presentation.dart';
 import 'package:app_ciudadano_vc/feactures/map/presentation/providers/hubs_provider.dart';
-// import 'package:app_ciudadano_vc/feactures/map/presentation/providers/map_settings_provider.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:geolocator/geolocator.dart';
 
 class MapViewLayer extends ConsumerWidget {
   const MapViewLayer({

@@ -3,4 +3,5 @@ abstract class GeolocationService {
   Future getLastKnownPosition();
   Future isLocationServiceEnabled();
   Future checkPermission();
+  Stream<bool> getServiceStatusStream();
 }

@@ -28,8 +28,8 @@ class MapView extends ConsumerWidget {
     return FlutterMap(
       mapController: mapController,
       options: const MapOptions(
-        initialZoom: 13,
-        initialCenter: LatLng(-28.460501, -65.780756),
+        initialZoom: 12.5,
+        initialCenter: LatLng(-28.466942368087086, -65.77876578958912),
       ),
       children: [
         TileLayer(
@@ -90,21 +90,47 @@ class MapView extends ConsumerWidget {
         ),
         MarkerLayer(markers: [
           Marker(
-            point: LatLng(mapSettings.userPosition.latitude,
-                mapSettings.userPosition.longitude),
-            width: 50.0, // Use double for width and height
-            height: 50.0,
-            child: IconButton(
-                color: Colors.red,
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.location_on,
-                  size: 40,
-                  shadows: [Shadow(blurRadius: 10)],
-                )),
-          )
+              point: LatLng(mapSettings.userPosition.latitude,
+                  mapSettings.userPosition.longitude),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.withOpacity(0.5),
+                      blurRadius: 5,
+                      spreadRadius: 0.9,
+                    ),
+                  ],
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: 15.0,
+                      height: 15.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Container(
+                      width: 12.0,
+                      height: 12.0,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ],
+                ),
+              ))
         ]),
       ],
     );
   }
 }
+
+
+
+

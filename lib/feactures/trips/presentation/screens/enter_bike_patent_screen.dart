@@ -18,6 +18,7 @@ class EnterBikePatentScreen extends ConsumerWidget {
         children: [
           Image.asset(
             'assets/images/vamos-en-bici-01.png',
+            // 'assets/images/LOGO_APP_XXL.png',
             width: 250,
           ),
           Text(

@@ -3,9 +3,10 @@ class Hub {
   String nombre;
   String direccion;
   Ubicacion ubicacion;
-  int cantidadBicicletas;
-  int capacidadElectrica;
-  int capacidadMecanica;
+  int cantidadElectrica;
+  int cantidadMecanica;
+  int capacidadElectricas;
+  int capacidadMecanicas;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -14,9 +15,10 @@ class Hub {
     required this.nombre,
     required this.direccion,
     required this.ubicacion,
-    required this.cantidadBicicletas,
-    required this.capacidadElectrica,
-    required this.capacidadMecanica,
+    required this.cantidadElectrica,
+    required this.cantidadMecanica,
+    required this.capacidadElectricas,
+    required this.capacidadMecanicas,
     required this.createdAt,
     required this.updatedAt,
   });

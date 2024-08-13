@@ -7,9 +7,10 @@ class HubMapper {
       nombre: json['nombre'],
       direccion: json['direccion'],
       ubicacion: UbicationMapper.fromJson(json['ubicacion']),
-      cantidadBicicletas: json['cantidad_bicicletas'],
-      capacidadElectrica: json['capacidad_electrica'],
-      capacidadMecanica: json['capacidad_mecanica'],
+      cantidadElectrica: json['cantidad_electrica'],
+      cantidadMecanica: json['cantidad_mecanica'],
+      capacidadElectricas: json['capacidad_electrica'],
+      capacidadMecanicas: json['capacidad_mecanica'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
     );

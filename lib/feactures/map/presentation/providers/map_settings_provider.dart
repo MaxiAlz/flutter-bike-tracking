@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_ciudadano_vc/shared/infraestructure/services/geolocation/geolocation_service_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -21,13 +23,13 @@ final initialPosition = Position(
 
 class MapSettingState {
   final Position userPosition;
-  final bool isLocationServiceEnabled;
+  // final bool isLocationServiceEnabled;
   final bool isLoadingPositions;
 
   MapSettingState({
     this.isLoadingPositions = false,
     required this.userPosition,
-    this.isLocationServiceEnabled = false,
+    // this.isLocationServiceEnabled = false,
   });
 
   MapSettingState copyWith({
@@ -38,29 +40,56 @@ class MapSettingState {
     return MapSettingState(
       userPosition: userPosition ?? this.userPosition,
       isLoadingPositions: isLoadingPositions ?? this.isLoadingPositions,
-      isLocationServiceEnabled:
-          isLocationServiceEnabled ?? this.isLocationServiceEnabled,
+      // isLocationServiceEnabled:
+      //     isLocationServiceEnabled ?? this.isLocationServiceEnabled,
     );
   }
 }
 
 class MapSettingNotifier extends StateNotifier<MapSettingState> {
-  MapSettingNotifier() : super(MapSettingState(userPosition: initialPosition));
+  StreamSubscription<Position>? _positionStreamSubscription;
+
+  MapSettingNotifier() : super(MapSettingState(userPosition: initialPosition)) {
+    _initialize();
+  }
 
   Future<void> updateLocation() async {
     final Position position = await GeolocationImpl().determinePosition();
     state = state.copyWith(userPosition: position);
   }
 
-  Future getUserPosition() async {
-    state = state.copyWith(isLoadingPositions: true);
-    final userPosition = await GeolocationImpl().getCurrentLocation();
-    state =
-        state.copyWith(userPosition: userPosition, isLoadingPositions: false);
-    return userPosition;
+  Future<void> _initialize() async {
+    await getUserPosition();
+    _startTracking();
   }
 
-  Future<Position> getInitialValues() async {
-    return initialPosition;
+  void _startTracking() {
+    _positionStreamSubscription = Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10,
+      ),
+    ).listen((Position position) {
+      state = state.copyWith(userPosition: position);
+    });
+  }
+
+  Future getUserPosition() async {
+    state = state.copyWith(isLoadingPositions: true);
+    try {
+      final userPosition = await GeolocationImpl().getCurrentLocation();
+      state =
+          state.copyWith(userPosition: userPosition, isLoadingPositions: false);
+      return userPosition;
+    } catch (e) {
+      state = state.copyWith(isLoadingPositions: false);
+      // Manejar error
+    }
+  }
+
+  @override
+  void dispose() {
+    _positionStreamSubscription?.cancel();
+    super.dispose();
   }
 }

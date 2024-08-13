@@ -52,11 +52,16 @@ final goRouterProvider = Provider((ref) {
         path: '/enter-code',
         builder: (context, state) => const EnterCodeScreen(),
       ),
-
-      /// Home Routes
       GoRoute(
         path: '/',
         builder: (context, state) => const HomeScreen(),
+        // builder: (context, state) {
+        //   return permissionsAsyncValue.when(
+        //     data: (_) => HomeScreen(),
+        //     loading: () => Text('cargando...'),
+        //     error: (err, stack) => Text('cargando... ${err.toString()}'),
+        //   );
+        // },
       ),
       GoRoute(
         path: '/my-account',
