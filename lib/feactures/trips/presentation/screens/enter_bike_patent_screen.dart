@@ -57,14 +57,14 @@ class _FomEnterLocker extends ConsumerWidget {
 
     Future submitTripRequest() async {
       ref.read(isLoadingProvider.notifier).update((state) => true);
-      final lockerId = ref.watch(qrFormProvider).lockerValue;
+      final trackerId = ref.watch(qrFormProvider).trackerIdValue;
       final userid = ref.watch(authProvider).user?.userId;
 
       // tripProvider.changeStatusToAnyState(tripstatus: TripStatus.pending);
 
       try {
         final resp = await tripProvider.sendTripRequest(
-            lockId: lockerId, userId: userid as int);
+            trackerId: trackerId, userId: userid as int);
 
         if (resp?.statusCode == 201) {
           ref.read(isLoadingProvider.notifier).update((state) => false);
@@ -73,8 +73,7 @@ class _FomEnterLocker extends ConsumerWidget {
 
         if (resp?.statusCode == 400) {
           ref.read(isLoadingProvider.notifier).update((state) => false);
-          tripProvider.changeStatusToAnyState(
-              tripstatus: TripStatus.inProgress);
+          tripProvider.changeStatusToAnyState(tripstatus: TripStatus.failed);
         }
 
         ref.read(isLoadingProvider.notifier).update((state) => false);
@@ -90,7 +89,7 @@ class _FomEnterLocker extends ConsumerWidget {
             children: [
               TextFormField(
                 onSaved: (newValue) {
-                  ref.read(qrFormProvider.notifier).setLockerValue(newValue);
+                  ref.read(qrFormProvider.notifier).setTrackerIdValue(newValue);
                 },
                 validator: (value) {
                   if (value!.isEmpty) return 'Campo requerido';

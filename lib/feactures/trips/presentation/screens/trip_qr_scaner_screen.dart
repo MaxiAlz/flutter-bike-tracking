@@ -192,7 +192,7 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
       });
 
       if (scanData.code != null) {
-        ref.read(qrFormProvider.notifier).setLockerValue(scanData.code);
+        ref.read(qrFormProvider.notifier).setTrackerIdValue(scanData.code);
         context.push('/test');
         controller.dispose();
       }
