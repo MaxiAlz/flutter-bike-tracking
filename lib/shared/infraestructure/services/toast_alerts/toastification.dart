@@ -4,7 +4,7 @@ import 'package:toastification/toastification.dart';
 class ToastificationService {
   final toastification = Toastification();
 
-  showSuccessToast(
+  void showToast(
       {String? message,
       String? title,
       required ToastificationType typeOfToast}) {
