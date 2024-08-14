@@ -1,4 +1,5 @@
 import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/trip_provider.dart';
+import 'package:app_ciudadano_vc/feactures/trips/presentation/widgets/trip_failed.dart';
 import 'package:app_ciudadano_vc/feactures/trips/trips.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,7 +33,7 @@ class TripTrackingScreen extends ConsumerWidget {
       case TripStatus.finished:
         return const TripEnded();
       case TripStatus.failed:
-        return const Center(child: Text('El viaje ha fallado.'));
+        return const TripRequestFailed();
 
       default:
         return const Center(
