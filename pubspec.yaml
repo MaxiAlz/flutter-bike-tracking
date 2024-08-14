@@ -50,6 +50,7 @@ dependencies:
   qr_code_scanner: ^1.0.1
   shared_preferences: ^2.2.2
   socket_io_client: ^2.0.3+1
+  toastification: ^2.1.0
   url_launcher: ^6.3.0
 
 dev_dependencies:
@@ -62,7 +63,7 @@ flutter_launcher_icons:
   ios: true
   image_path: "assets/images/vamos_en_bici_logo_md.png"
   remove_alpha_ios: true
-  adaptive_icon_background: "#00458a" 
+  adaptive_icon_background: "#00458a"
   adaptive_icon_foreground: "assets/images/vamos_en_bici_logo_md.png"
 
 flutter_native_splash:

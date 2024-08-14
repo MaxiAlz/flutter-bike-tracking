@@ -1,6 +1,7 @@
 import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toastification/toastification.dart';
 
 void main() async {
   await Enviroments.initEnviroment();
@@ -19,10 +20,12 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appRouterProvider = ref.watch(goRouterProvider);
 
-    return MaterialApp.router(
-      routerConfig: appRouterProvider,
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme().getTheme(),
+    return ToastificationWrapper(
+      child: MaterialApp.router(
+        routerConfig: appRouterProvider,
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme().getTheme(),
+      ),
     );
   }
 }
