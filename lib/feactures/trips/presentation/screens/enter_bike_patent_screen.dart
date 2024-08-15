@@ -95,7 +95,7 @@ class _FomEnterLocker extends ConsumerWidget {
                   return null;
                 },
                 decoration: InputDecoration(
-                  hintText: 'EL321 ',
+                  hintText: 'TR0321 ',
                   prefixIcon: const Icon(Icons.numbers),
                   hintStyle: const TextStyle(fontSize: 18),
                   labelText: 'Identificador',

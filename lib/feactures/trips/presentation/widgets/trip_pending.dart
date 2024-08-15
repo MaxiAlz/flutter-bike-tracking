@@ -31,7 +31,7 @@ class TripPending extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(
-              'El identificador de tu viaje es el  N°: ${tripProvider?.viajeId}. Aguarda a que el agente acargo acepte tu viaje',
+              'El identificador de tu viaje es el  N°: ${tripProvider?.viajeId}. Aguarda a que un agente a cargo inicie tu viaje',
               style: titlesStyles.bodyMedium,
               textAlign: TextAlign.center,
             ),
