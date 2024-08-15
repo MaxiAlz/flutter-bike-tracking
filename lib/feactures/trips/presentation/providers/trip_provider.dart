@@ -74,10 +74,10 @@ class TripNotifier extends StateNotifier<TripState> {
   }
 
   Future sendTripRequest(
-      {required String trackerId, required int userId}) async {
+      {required String trackerCodigo, required int userId}) async {
     try {
       final serviceResponse = await tripServices.sendTravelRequestService(
-        trackerId: trackerId,
+        trackerCodigo: trackerCodigo,
         userId: userId,
       );
 

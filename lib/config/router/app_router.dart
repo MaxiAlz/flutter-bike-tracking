@@ -80,11 +80,7 @@ final goRouterProvider = Provider((ref) {
         builder: (context, state) => const QRScannerScreen(),
       ),
       GoRoute(
-        path: '/enter-bike-patent',
-        builder: (context, state) => const EnterBikePatentScreen(),
-      ),
-      GoRoute(
-        path: '/trip-in-progress',
+        path: '/trip-trackin',
         builder: (context, state) => const TripTrackingScreen(),
       ),
     ],

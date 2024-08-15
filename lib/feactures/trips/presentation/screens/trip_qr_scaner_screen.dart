@@ -1,12 +1,11 @@
-import 'dart:developer';
+import 'dart:async';
 import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/locker_form_provider.dart';
+import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_outline_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-
-final qrStateProvider = StateProvider<String?>((ref) => "");
 
 class QRScannerScreen extends ConsumerStatefulWidget {
   const QRScannerScreen({Key? key}) : super(key: key);
@@ -19,6 +18,24 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   QRViewController? controller;
+  StreamSubscription? _scanSubscription;
+
+  bool? isFlashOn;
+  CameraFacing? cameraFacing;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeCameraState();
+  }
+
+  Future<void> _initializeCameraState() async {
+    if (controller != null) {
+      isFlashOn = await controller!.getFlashStatus();
+      cameraFacing = await controller!.getCameraInfo();
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +45,7 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Colors.white, // Color blanco para el icono de retroceso
+          color: Colors.white,
         ),
         centerTitle: true,
         backgroundColor: colors.primary,
@@ -79,25 +96,17 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
                         child: FilledButton(
                           onPressed: () async {
                             await controller?.toggleFlash();
+                            isFlashOn = await controller?.getFlashStatus();
                             setState(() {});
                           },
-                          child: FutureBuilder(
-                            future: controller?.getFlashStatus(),
-                            builder: (context, snapshot) {
-                              if (snapshot.data != null) {
-                                return Column(
-                                  children: [
-                                    const SizedBox(height: 5),
-                                    snapshot.data as bool
-                                        ? const Icon(Icons.flash_off)
-                                        : const Icon(Icons.flash_on),
-                                    const Text('Flash'),
-                                  ],
-                                );
-                              } else {
-                                return const Text('loading');
-                              }
-                            },
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 5),
+                              isFlashOn == true
+                                  ? const Icon(Icons.flash_off)
+                                  : const Icon(Icons.flash_on),
+                              const Text('Flash'),
+                            ],
                           ),
                         ),
                       ),
@@ -106,23 +115,15 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
                         child: FilledButton(
                           onPressed: () async {
                             await controller?.flipCamera();
+                            cameraFacing = await controller?.getCameraInfo();
                             setState(() {});
                           },
-                          child: FutureBuilder(
-                            future: controller?.getCameraInfo(),
-                            builder: (context, snapshot) {
-                              if (snapshot.data != null) {
-                                return const Column(
-                                  children: [
-                                    SizedBox(height: 5),
-                                    Icon(Icons.flip_camera_ios_outlined),
-                                    Text('Camara'),
-                                  ],
-                                );
-                              } else {
-                                return const Text('loading');
-                              }
-                            },
+                          child: const Column(
+                            children: [
+                              SizedBox(height: 5),
+                              Icon(Icons.flip_camera_ios_outlined),
+                              Text('Camara'),
+                            ],
                           ),
                         ),
                       ),
@@ -130,9 +131,8 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
                         margin: const EdgeInsets.all(8),
                         child: FilledButton(
                           onPressed: () async {
-                            ref
-                                .read(goRouterProvider)
-                                .push('/enter-bike-patent');
+                            controller?.dispose();
+                            ref.read(goRouterProvider).go('/trip-trackin');
                           },
                           child: const Column(
                             children: [
@@ -145,6 +145,14 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomOutlineButtom(
+                      text: 'Cancelar', onPressed: _cancelAndGoHome),
+                  const SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),
@@ -154,17 +162,19 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
     );
   }
 
-  Widget _buildQrView(BuildContext context) {
-    // final StateProvider<String?> qrStateProvider;
+  void _cancelAndGoHome() {
+    controller?.dispose();
+    if (mounted) {
+      ref.read(goRouterProvider).go('/');
+    }
+  }
 
+  Widget _buildQrView(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
         ? 250.0
         : 300.0;
-    // To ensure the Scanner view is properly sizes after rotation
-    // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
       key: qrKey,
       onQRViewCreated: (controller) => _onQRViewCreated(context, controller),
@@ -178,29 +188,26 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
     );
   }
 
-  void _onQRViewCreated(
-    BuildContext context,
-    QRViewController controller,
-  ) {
+  void _onQRViewCreated(BuildContext context, QRViewController controller) {
     setState(() {
       this.controller = controller;
     });
 
-    controller.scannedDataStream.listen((scanData) {
+    _scanSubscription = controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
       });
 
       if (scanData.code != null) {
         ref.read(qrFormProvider.notifier).setTrackerIdValue(scanData.code);
-        context.push('/test');
-        controller.dispose();
+        context.push('/trip-trackin');
+        // controller.dispose();
       }
     });
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
+    // log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('no Permission')),
@@ -210,6 +217,7 @@ class QrScannerWidgetState extends ConsumerState<QRScannerScreen> {
 
   @override
   void dispose() {
+    _scanSubscription?.cancel();
     controller?.dispose();
     super.dispose();
   }

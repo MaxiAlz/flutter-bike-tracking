@@ -5,10 +5,10 @@ final Dio dio = Dio(BaseOptions(baseUrl: Enviroments.apiUrl));
 
 class TripServices {
   Future sendTravelRequestService(
-      {required String trackerId, required int userId}) async {
+      {required String trackerCodigo, required int userId}) async {
     final Map<String, dynamic> dataTrip = {
       "usuario_id": userId,
-      "tracker_id": trackerId
+      "tracker_codigo": trackerCodigo
     };
     try {
       return await dio.post('/viaje/solicitud', data: dataTrip);
