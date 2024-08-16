@@ -16,7 +16,6 @@ class MyLocationButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
-    // final mapSetting = ref.watch(mapSettingProvider);
 
     return IconButton.filledTonal(
       onPressed: mapSetting.isLoadingPositions

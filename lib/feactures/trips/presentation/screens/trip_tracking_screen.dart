@@ -19,7 +19,6 @@ class TripTrackingScreen extends ConsumerWidget {
       }),
     );
   }
-
   Widget _buildContent({
     required TripStatus tripStatus,
   }) {

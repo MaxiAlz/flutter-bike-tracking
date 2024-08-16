@@ -122,7 +122,7 @@ class _InputPhoneNumber extends ConsumerWidget {
           return;
         }
 
-        if (serviceResponse.statusCode == 404) {
+        if (serviceResponse?.statusCode == 404) {
           ref.read(goRouterProvider).push('/register');
 
           notifyUserBySnackbar(
