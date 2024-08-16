@@ -121,6 +121,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(authStatus: AuthStatus.notAuthenticated, user: null);
   }
 
+  void setUserWitoutTrip(User newUserData) async {
+    state =
+        state.copyWith(authStatus: AuthStatus.authenticated, user: newUserData);
+  }
+
   void checkAuthStatus() async {
     final userToken =
         await keyValueStorage.getKeyValue<String>(AppConstants().tokenKey);
