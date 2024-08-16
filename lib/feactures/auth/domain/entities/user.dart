@@ -15,7 +15,7 @@ class User {
   final bool isInTrip;
   final Viaje? tripData;
 
-  User( {
+  User({
     required this.userId,
     required this.documentStatus,
     required this.isActive,
@@ -32,6 +32,42 @@ class User {
     required this.isInTrip,
     this.tripData,
   });
+
+  User copyWith({
+    int? userId,
+    String? name,
+    String? lastName,
+    String? dateOfBirth,
+    String? phoneNumber,
+    String? dniNumber,
+    String? photo,
+    String? dniFront,
+    String? dniBack,
+    String? email,
+    String? gender,
+    String? documentStatus,
+    bool? isActive,
+    bool? isInTrip,
+    Viaje? tripData,
+  }) {
+    return User(
+      userId: userId ?? this.userId,
+      name: name ?? this.name,
+      lastName: lastName ?? this.lastName,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      dniNumber: dniNumber ?? this.dniNumber,
+      photo: photo ?? this.photo,
+      dniFront: dniFront ?? this.dniFront,
+      dniBack: dniBack ?? this.dniBack,
+      email: email ?? this.email,
+      gender: gender ?? this.gender,
+      documentStatus: documentStatus ?? this.documentStatus,
+      isActive: isActive ?? this.isActive,
+      isInTrip: isInTrip ?? this.isInTrip,
+      tripData: tripData, 
+    );
+  }
 }
 
 class Viaje {
