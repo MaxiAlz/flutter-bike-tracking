@@ -1,4 +1,6 @@
 import 'package:app_ciudadano_vc/config/config.dart';
+import 'package:app_ciudadano_vc/feactures/auth/domain/auth_domain.dart';
+import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/trip_provider.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,19 @@ class TripEnded extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final titlesStyles = Theme.of(context).textTheme;
+    final userProvider = ref.read(authProvider.notifier);
+    final User userDataAuthenticated = ref.watch(authProvider).user as User;
     // final tripProvider = ref.watch(tripNotifierProvider).tripData;
+    void clearTripData() async {
+      final newUserData = userDataAuthenticated.copyWith(tripData: null);
+      userProvider.setUserWitoutTrip(newUserData);
+      await ref
+          .read(tripNotifierProvider.notifier)
+          .changeStatusToAnyState(tripstatus: TripStatus.notTravelling);
+
+      await ref.read(goRouterProvider).push('/');
+      // setUserWitoutTrip
+    }
 
     return Expanded(
       child: Column(
@@ -40,16 +54,7 @@ class TripEnded extends ConsumerWidget {
           const SizedBox(
             height: 30,
           ),
-          CustomFilledButtom(
-              text: 'Volver a home',
-              onPressed: () async {
-                await ref
-                    .read(tripNotifierProvider.notifier)
-                    .changeStatusToAnyState(
-                        tripstatus: TripStatus.notTravelling);
-
-                ref.read(goRouterProvider).push('/');
-              })
+          CustomFilledButtom(text: 'Volver a home', onPressed: clearTripData)
         ],
       ),
     );

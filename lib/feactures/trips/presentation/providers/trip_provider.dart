@@ -7,6 +7,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum TripStatus { pending, inProgress, notTravelling, failed, finished }
 
+TripStatus _mapEstadoToTripStatus(String estado) {
+  switch (estado) {
+    case 'PENDIENTE':
+      return TripStatus.pending;
+    case 'EN_VIAJE':
+      return TripStatus.inProgress;
+    case 'FINALIZADO':
+      return TripStatus.finished;
+    default:
+      return TripStatus.failed;
+  }
+}
+
 class TripData {
   final int viajeId;
   final String estado;
@@ -73,6 +86,14 @@ class TripNotifier extends StateNotifier<TripState> {
     state = state.copyWith(tripStatus: tripstatus);
   }
 
+  Future setTripData(
+      {required String estadoViaje, required int viajeId}) async {
+    state = state.copyWith(
+      tripData: TripData(estado: estadoViaje, viajeId: viajeId),
+      tripStatus: _mapEstadoToTripStatus(estadoViaje),
+    );
+  }
+
   Future sendTripRequest(
       {required String trackerCodigo, required int userId}) async {
     try {
@@ -92,7 +113,7 @@ class TripNotifier extends StateNotifier<TripState> {
           tripStatus: _mapEstadoToTripStatus(estadoViaje),
         );
 
-        _initializeSocket(channel: socketChanelTrip);
+        initializeSocket(channel: socketChanelTrip);
 
         return serviceResponse;
       }
@@ -115,20 +136,7 @@ class TripNotifier extends StateNotifier<TripState> {
     }
   }
 
-  TripStatus _mapEstadoToTripStatus(String estado) {
-    switch (estado) {
-      case 'PENDIENTE':
-        return TripStatus.pending;
-      case 'EN_VIAJE':
-        return TripStatus.inProgress;
-      case 'FINALIZADO':
-        return TripStatus.finished;
-      default:
-        return TripStatus.failed;
-    }
-  }
-
-  void _initializeSocket({required String channel}) {
+  void initializeSocket({required String channel}) {
     socket?.dispose();
     socket = SocketService(channel: channel);
     socket!.initialize();
