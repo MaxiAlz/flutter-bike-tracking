@@ -1,7 +1,9 @@
 import 'package:app_ciudadano_vc/feactures/auth/domain/entities/user.dart';
+import 'package:app_ciudadano_vc/feactures/trips/domain/entities/viaje_entity.dart';
 
 class UserMapper {
   static User userJsonToEntity(Map<String, dynamic> json) {
+    
     return User(
         userId: json['id'] ?? '',
         name: json['nombre'] ?? '',
