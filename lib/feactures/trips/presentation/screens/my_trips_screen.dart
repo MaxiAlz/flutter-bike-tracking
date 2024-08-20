@@ -12,12 +12,20 @@ class MyTripsSCreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Colors.white, 
+          color: Colors.white,
         ),
         centerTitle: true,
         backgroundColor: colors.primary,
       ),
-      body: const _BodyTripsInfo(),
+      body: const Column(
+        children: [
+          CustomTopHeader(
+            titleHeader: 'Mis viajes realizados',
+            icon: Icons.pedal_bike_outlined,
+          ),
+          _BodyTripsInfo(),
+        ],
+      ),
     );
   }
 }
@@ -30,68 +38,36 @@ class _BodyTripsInfo extends ConsumerWidget {
     final myTripsData = ref.watch(myTripProvider);
 
     return myTripsData.when(
-      data: (myTrips) => SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              const CustomTopHeader(
-                titleHeader: 'Mis viajes realizados',
-                icon: Icons.pedal_bike_outlined,
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Column(
-                  children: myTrips.items.map((viaje) {
+      data: (myTrips) => myTrips.items.isEmpty
+          ? const Center(child: Text('No hay viajes'))
+          : Expanded(
+              child: RefreshIndicator(
+                onRefresh: () => ref.refresh(myTripProvider.future),
+                child: ListView.builder(
+                  itemCount:
+                      myTrips.items.length, // +1 para incluir el encabezado
+                  itemBuilder: (context, index) {
+                    final viaje = myTrips.items[index];
                     return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         ListTile(
                           title: Text('Viaje: N° ${viaje.id}'),
                           leading: const Icon(Icons.directions_bike_rounded),
                           subtitle: Text(
                               '${viaje.estacionInicioId} - ${viaje.estacionFinalId ?? "En curso"}'),
-                          trailing: Text('Duracion: ${viaje.duracion}'),
+                          trailing: Text('Duración: ${viaje.duracion} min'),
                           isThreeLine: false,
                         ),
                         const Divider(),
                       ],
                     );
-                  }).toList(),
+                  },
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Column(
-                  children: [
-                    ListTile(
-                      title: Text(
-                        'Viaje: N° 1',
-                      ),
-                      leading: Icon(Icons.directions_bike_rounded),
-                      subtitle: Text('Nodo tecnologico - Plaza 25 de mayo'),
-                      trailing: Text('20/04/2024'),
-                      isThreeLine: false,
-                    ),
-                    Divider(),
-                    ListTile(
-                      title: Text(
-                        'Viaje: 20/04/2024',
-                      ),
-                      leading: Icon(Icons.directions_bike_rounded),
-                      subtitle: Text('Nodo tecnologico - Plaza 25 de mayo'),
-                      // trailing: Text('20/04/2024'),
-                      isThreeLine: false,
-                    ),
-                    Divider(),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
+            ),
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, stack) => Center(child: Text('Error al cargar viajes, pruebe mas tarde')),
+      error: (err, stack) => Center(child: Text('Error: $err')),
     );
   }
 }
