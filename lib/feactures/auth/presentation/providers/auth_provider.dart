@@ -135,7 +135,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final newToken =
           serviceResponse.headers['authorization'][0].replaceAll('Bearer ', '');
       await keyValueStorage.setStringKeyValue('userToken', newToken);
-
+      print('###############TOKEN URA######################');
+      print(newToken);
       state = state.copyWith(authStatus: AuthStatus.authenticated, user: user);
     } catch (e) {
       logoutUSer();
