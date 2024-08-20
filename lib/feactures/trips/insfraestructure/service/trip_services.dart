@@ -14,7 +14,7 @@ class TripServices {
       "tracker_codigo": trackerCodigo
     };
     try {
-      return await dio.post('/viaje/solicitud', data: dataTrip);
+      return await api.postHttp(path: '/viaje/solicitud', body: dataTrip);
     } on DioException catch (error) {
       return error.response;
     }

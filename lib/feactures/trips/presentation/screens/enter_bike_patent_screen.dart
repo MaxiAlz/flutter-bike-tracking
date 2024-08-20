@@ -13,6 +13,7 @@ class EnterBikePatentScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final titlesStyles = Theme.of(context).textTheme;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -37,6 +38,7 @@ class EnterBikePatentScreen extends ConsumerWidget {
               onPressed: () {
                 ref.read(isLoadingProvider.notifier).update((state) => false);
                 ref.read(goRouterProvider).push('/');
+                ref.read(qrFormProvider.notifier).setTrackerIdValue('');
               })
         ],
       ),
@@ -53,6 +55,7 @@ class _FomEnterLocker extends ConsumerWidget {
     final tripProvider = ref.read(tripNotifierProvider.notifier);
     final isLoading = ref.watch(isLoadingProvider);
     final toastificationService = ToastificationService();
+    final trackerIdValueByQr = ref.watch(qrFormProvider).trackerIdValue;
 
     Future submitTripRequest() async {
       ref.read(isLoadingProvider.notifier).update((state) => true);
@@ -63,16 +66,19 @@ class _FomEnterLocker extends ConsumerWidget {
             trackerCodigo: trackerCodigo, userId: userid as int);
 
         if (resp?.statusCode == 201) {
+          ref.read(qrFormProvider.notifier).setTrackerIdValue('');
           ref.read(isLoadingProvider.notifier).update((state) => false);
           tripProvider.changeStatusToAnyState(tripstatus: TripStatus.pending);
         }
 
-        if (resp?.statusCode == 400) {
+        if (resp?.statusCode == 400 || resp?.statusCode == 401) {
+          ref.read(qrFormProvider.notifier).setTrackerIdValue('');
           ref.read(isLoadingProvider.notifier).update((state) => false);
           tripProvider.changeStatusToAnyState(tripstatus: TripStatus.failed);
         }
 
         ref.read(isLoadingProvider.notifier).update((state) => false);
+        ref.read(qrFormProvider.notifier).setTrackerIdValue('');
       } catch (error) {
         Exception(error);
         toastificationService.showErrorToast(
@@ -86,6 +92,7 @@ class _FomEnterLocker extends ConsumerWidget {
           child: Column(
             children: [
               TextFormField(
+                initialValue: trackerIdValueByQr,
                 onSaved: (newValue) {
                   ref.read(qrFormProvider.notifier).setTrackerIdValue(newValue);
                 },
