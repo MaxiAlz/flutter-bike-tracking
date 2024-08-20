@@ -99,11 +99,10 @@ class _UserInformation extends ConsumerWidget {
                 ],
               ),
             ),
-            // GlassmorphicContainer(),
-            OutlinedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.edit_outlined),
-                label: const Text('Editar perfil'))
+            // OutlinedButton.icon(
+            //     onPressed: () {},
+            //     icon: const Icon(Icons.edit_outlined),
+            //     label: const Text('Editar perfil'))
           ],
         ),
       ),
