@@ -54,8 +54,13 @@ class _BodyTripsInfo extends ConsumerWidget {
                         ListTile(
                           title: Text('Viaje: N° ${viaje.id}'),
                           leading: const Icon(Icons.directions_bike_rounded),
-                          subtitle: Text(
-                              '${viaje.estacionInicioId} - ${viaje.estacionFinalId ?? "En curso"}'),
+                          subtitle: Row(
+                            children: [
+                              Text(viaje.estacionInicioNombre),
+                              const Icon(Icons.moving_rounded),
+                              Text(viaje.estacionFinalNombre ?? "En curso"),
+                            ],
+                          ),
                           trailing: Text('Duración: ${viaje.duracion} min'),
                           isThreeLine: false,
                         ),
@@ -67,7 +72,8 @@ class _BodyTripsInfo extends ConsumerWidget {
               ),
             ),
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, stack) => Center(child: Text('Error: $err')),
+      error: (err, stack) =>
+          Center(child: Text('Error al cargar viajes: $err')),
     );
   }
 }

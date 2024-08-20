@@ -3,7 +3,6 @@ import 'package:app_ciudadano_vc/feactures/trips/domain/entities/viaje_entity.da
 
 class UserMapper {
   static User userJsonToEntity(Map<String, dynamic> json) {
-    
     return User(
         userId: json['id'] ?? '',
         name: json['nombre'] ?? '',
@@ -33,10 +32,10 @@ class UserMapper {
       usuarioId: json['usuario_id'] ?? 0,
       administradorInicioId: json['administrador_inicio_id'] ?? 0,
       administradorFinalId: json['administrador_final_id'],
-      estacionInicioId: json['estacion_inicio_id'] ?? 0,
-      estacionFinalId: json['estacion_final_id'],
       fechaInicio: json['fecha_inicio'] ?? '',
       updatedAt: json['updated_at'] ?? '',
+      estacionInicioNombre: json['estacion_inicio']['nombre'],
+      estacionFinalNombre: json['estacion_final']?['nombre'],
     );
   }
 }
