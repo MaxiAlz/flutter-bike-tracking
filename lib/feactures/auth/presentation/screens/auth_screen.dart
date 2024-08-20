@@ -40,7 +40,7 @@ class AuthScreen extends ConsumerWidget {
             InfoText(
                 subTitleStyle: subTitleStyle,
                 text:
-                    'Te enviaremos un código por SMS para verificar tu número'),
+                    'Te enviaremos un código por TELEGRAM para verificar tu número'),
             const SizedBox(height: 10),
             _InputPhoneNumber(
               textController: textController,
