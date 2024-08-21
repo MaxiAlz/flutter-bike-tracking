@@ -48,25 +48,28 @@ class TripState {
   final bool isTripInProgress;
   final TripData? tripData;
   final String startTime;
+  final String errorMessage;
 
   TripState({
     this.tripData,
     this.tripStatus = TripStatus.notTravelling,
     this.isTripInProgress = false,
     this.startTime = '',
+    this.errorMessage = '',
   });
 
-  TripState copyWith({
-    TripStatus? tripStatus,
-    bool? isTripInProgress,
-    TripData? tripData,
-    String? startTime,
-  }) {
+  TripState copyWith(
+      {TripStatus? tripStatus,
+      bool? isTripInProgress,
+      TripData? tripData,
+      String? startTime,
+      String? errorMessage}) {
     return TripState(
       tripStatus: tripStatus ?? this.tripStatus,
       isTripInProgress: isTripInProgress ?? this.isTripInProgress,
       tripData: tripData ?? this.tripData,
       startTime: startTime ?? this.startTime,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
@@ -86,6 +89,11 @@ class TripNotifier extends StateNotifier<TripState> {
 
   Future changeStatusToAnyState({required TripStatus tripstatus}) async {
     state = state.copyWith(tripStatus: tripstatus);
+  }
+
+  Future requestFailed(
+      {required TripStatus tripstatus, required String errorMessage}) async {
+    state = state.copyWith(tripStatus: tripstatus, errorMessage: errorMessage);
   }
 
   Future setTripData(

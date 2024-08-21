@@ -71,15 +71,20 @@ class _FomEnterLocker extends ConsumerWidget {
           tripProvider.changeStatusToAnyState(tripstatus: TripStatus.pending);
         }
 
-        if (resp?.statusCode == 400 || resp?.statusCode == 401) {
+        if (resp.statusCode >= 400 && resp.statusCode < 500) {
           ref.read(qrFormProvider.notifier).setTrackerIdValue('');
           ref.read(isLoadingProvider.notifier).update((state) => false);
-          tripProvider.changeStatusToAnyState(tripstatus: TripStatus.failed);
+          toastificationService.showErrorToast(message: resp.data["message"]);
+          tripProvider.requestFailed(
+              tripstatus: TripStatus.failed,
+              errorMessage: resp.data["message"]);
         }
 
         ref.read(isLoadingProvider.notifier).update((state) => false);
         ref.read(qrFormProvider.notifier).setTrackerIdValue('');
       } catch (error) {
+        // tripProvider.requestFailed(
+        //     tripstatus: TripStatus.failed, errorMessage: error.toString());
         Exception(error);
         toastificationService.showErrorToast(
             message: 'Error al solicitar viaje');
@@ -99,7 +104,8 @@ class _FomEnterLocker extends ConsumerWidget {
                 },
                 validator: (value) {
                   if (value!.isEmpty) return 'Campo requerido';
-                  if (value.length > 15) return 'Campo demasiado largo';
+                  if (value.length > 6) return 'Campo demasiado largo';
+                  if (value.length < 6) return 'Campo incompleto';
                   return null;
                 },
                 decoration: InputDecoration(

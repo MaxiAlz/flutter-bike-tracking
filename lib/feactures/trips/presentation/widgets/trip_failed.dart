@@ -13,6 +13,7 @@ class TripRequestFailed extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final titlesStyle = Theme.of(context).textTheme;
+    final tripProvider = ref.watch(tripNotifierProvider);
 
     return Expanded(
         child: Column(
@@ -29,7 +30,7 @@ class TripRequestFailed extends ConsumerWidget {
         ),
         Center(
           child: Text(
-            'Tu solicitud de viaje ah Fallado, prueba mas tarde',
+            'Tu solicitud de viaje ah Fallado, pruebe mas tarde.',
             style: titlesStyle.titleMedium,
           ),
         ),
@@ -40,10 +41,27 @@ class TripRequestFailed extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 30),
           child: Center(
             child: SvgPicture.asset(
-              'assets/svg/undraw_warning_re_eoyh.svg',
+              'assets/svg/undraw_access_denied_re_awnf.svg',
               width: 350.0,
             ),
           ),
+        ),
+        const Center(
+          child: Text(
+            'Mesaje de error:',
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Center(
+          child: Text(
+            tripProvider.errorMessage.toUpperCase(),
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
+        const SizedBox(
+          height: 20,
         ),
         CustomFilledButtom(
             text: 'Volver a home',

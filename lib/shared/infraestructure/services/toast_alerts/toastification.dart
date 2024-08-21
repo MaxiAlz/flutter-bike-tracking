@@ -14,7 +14,7 @@ class ToastificationService {
       title: Text(title ?? "Exito"),
       description: Text(message ?? "Accion exitosa"),
       alignment: Alignment.topCenter,
-      autoCloseDuration: const Duration(seconds: 4),
+      autoCloseDuration: const Duration(seconds: 6),
       boxShadow: lowModeShadow,
       dragToClose: true,
     );
@@ -30,7 +30,7 @@ class ToastificationService {
       title: Text(title ?? "Error"),
       description: Text(message ?? "Ah ocurrido un error,Pruebe mas tarde"),
       alignment: Alignment.topCenter,
-      autoCloseDuration: const Duration(seconds: 4),
+      autoCloseDuration: const Duration(seconds: 6),
       boxShadow: lowModeShadow,
       dragToClose: true,
     );
