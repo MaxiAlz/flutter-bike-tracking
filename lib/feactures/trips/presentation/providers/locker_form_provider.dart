@@ -23,6 +23,6 @@ class QrFormNotifier extends StateNotifier<QrFormState> {
   QrFormNotifier() : super(QrFormState());
 
   void setTrackerIdValue(String? trackerIdValue) {
-    state = state.copyWith(trackerIdValue: trackerIdValue);
+    state = state.copyWith(trackerIdValue: trackerIdValue!.toUpperCase());
   }
 }

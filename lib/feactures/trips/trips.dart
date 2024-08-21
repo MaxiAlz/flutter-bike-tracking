@@ -1,4 +1,5 @@
 // ### Widgets
+export 'package:app_ciudadano_vc/feactures/trips/presentation/widgets/trip_denied.dart';
 export 'package:app_ciudadano_vc/feactures/trips/presentation/widgets/trip_in_ptrogress.dart';
 export 'package:app_ciudadano_vc/feactures/trips/presentation/widgets/trip_ended.dart';
 export 'package:app_ciudadano_vc/feactures/trips/presentation/widgets/trip_pending.dart';

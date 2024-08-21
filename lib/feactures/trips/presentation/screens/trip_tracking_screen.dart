@@ -19,13 +19,14 @@ class TripTrackingScreen extends ConsumerWidget {
       }),
     );
   }
+
   Widget _buildContent({
     required TripStatus tripStatus,
   }) {
     switch (tripStatus) {
       case TripStatus.notTravelling:
         return const EnterBikePatentScreen();
-      case TripStatus.pending:
+      case TripStatus.  pending:
         return const TripPending();
       case TripStatus.inProgress:
         return const TripInProgress();
@@ -33,7 +34,8 @@ class TripTrackingScreen extends ConsumerWidget {
         return const TripEnded();
       case TripStatus.failed:
         return const TripRequestFailed();
-
+      case TripStatus.denied:
+        return const TripDenied();
       default:
         return const Center(
             child: Text('Ha ocurrido un error esperando el estado del viaje'));

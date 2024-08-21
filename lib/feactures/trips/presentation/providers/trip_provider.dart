@@ -5,7 +5,7 @@ import 'package:app_ciudadano_vc/shared/infraestructure/share_infraestructure.da
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum TripStatus { pending, inProgress, notTravelling, failed, finished }
+enum TripStatus { pending, inProgress, notTravelling, failed, finished, denied }
 
 TripStatus _mapEstadoToTripStatus(String estado) {
   switch (estado) {
@@ -15,6 +15,8 @@ TripStatus _mapEstadoToTripStatus(String estado) {
       return TripStatus.inProgress;
     case 'FINALIZADO':
       return TripStatus.finished;
+    case 'RECHAZADO':
+      return TripStatus.denied;
     default:
       return TripStatus.failed;
   }

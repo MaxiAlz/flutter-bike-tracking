@@ -63,7 +63,7 @@ class _FomEnterLocker extends ConsumerWidget {
       final userid = ref.watch(authProvider).user?.userId;
       try {
         final resp = await tripProvider.sendTripRequest(
-            trackerCodigo: trackerCodigo, userId: userid as int);
+            trackerCodigo: trackerCodigo.toUpperCase(), userId: userid as int);
 
         if (resp?.statusCode == 201) {
           ref.read(qrFormProvider.notifier).setTrackerIdValue('');
@@ -93,6 +93,7 @@ class _FomEnterLocker extends ConsumerWidget {
             children: [
               TextFormField(
                 initialValue: trackerIdValueByQr,
+                maxLength: 6,
                 onSaved: (newValue) {
                   ref.read(qrFormProvider.notifier).setTrackerIdValue(newValue);
                 },
