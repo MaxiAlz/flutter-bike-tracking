@@ -66,11 +66,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         return serviceResponse;
       }
 
-      if (serviceResponse == null) {
-        print('ah ocurrido un error');
-      }
-
-      if (serviceResponse.statusCode == 404) {
+      if (serviceResponse?.statusCode == 404) {
         state = state.copyWith(authStatus: AuthStatus.notRegistered);
         return serviceResponse;
       }
@@ -121,6 +117,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(authStatus: AuthStatus.notAuthenticated, user: null);
   }
 
+  void setUserWitoutTrip(User newUserData) async {
+    state =
+        state.copyWith(authStatus: AuthStatus.authenticated, user: newUserData);
+  }
+
   void checkAuthStatus() async {
     final userToken =
         await keyValueStorage.getKeyValue<String>(AppConstants().tokenKey);
@@ -134,7 +135,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final newToken =
           serviceResponse.headers['authorization'][0].replaceAll('Bearer ', '');
       await keyValueStorage.setStringKeyValue('userToken', newToken);
-
+      print('###############TOKEN URA######################');
+      print(newToken);
       state = state.copyWith(authStatus: AuthStatus.authenticated, user: user);
     } catch (e) {
       logoutUSer();

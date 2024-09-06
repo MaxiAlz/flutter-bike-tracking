@@ -5,6 +5,7 @@ import 'package:app_ciudadano_vc/feactures/notifications/notifications.dart';
 import 'package:app_ciudadano_vc/feactures/trips/presentation/screens/trip_qr_scaner_screen.dart';
 import 'package:app_ciudadano_vc/feactures/trips/trips.dart';
 import 'package:app_ciudadano_vc/feactures/user/user_settings.dart';
+import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,12 +34,10 @@ final goRouterProvider = Provider((ref) {
         path: '/waiting-validation',
         builder: (context, state) => const WaitingValidation(),
       ),
-
       GoRoute(
         path: '/auth',
         builder: (context, state) => const AuthScreen(),
       ),
-
       GoRoute(
         path: '/register',
         builder: (context, state) => const RegisterScreen(),
@@ -55,13 +54,6 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: '/',
         builder: (context, state) => const HomeScreen(),
-        // builder: (context, state) {
-        //   return permissionsAsyncValue.when(
-        //     data: (_) => HomeScreen(),
-        //     loading: () => Text('cargando...'),
-        //     error: (err, stack) => Text('cargando... ${err.toString()}'),
-        //   );
-        // },
       ),
       GoRoute(
         path: '/my-account',
@@ -80,12 +72,12 @@ final goRouterProvider = Provider((ref) {
         builder: (context, state) => const QRScannerScreen(),
       ),
       GoRoute(
-        path: '/enter-bike-patent',
-        builder: (context, state) => const EnterBikePatentScreen(),
+        path: '/trip-trackin',
+        builder: (context, state) => const TripTrackingScreen(),
       ),
       GoRoute(
-        path: '/trip-in-progress',
-        builder: (context, state) => const TripTrackingScreen(),
+        path: '/404',
+        builder: (context, state) => const PageInProgress(),
       ),
     ],
     redirect: (context, state) {

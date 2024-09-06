@@ -32,10 +32,27 @@ class Api extends HttpAdapter {
   }
 
   @override
-  Future<void> postHttp(
-      {required String path, required Map<String, dynamic> body}) {
-    // TODO: implement postHttp
-    throw UnimplementedError();
+  Future<dynamic> postHttp({
+    required String path,
+    required Map<String, dynamic> body,
+  }) async {
+    final userToken = await setKeyValue.getKeyValue<String>('userToken');
+    try {
+      final response = await dio.post(
+        path,
+        data: body,
+        options: Options(headers: {
+          'Authorization': 'Bearer $userToken',
+          'Content-Type': 'application/json',
+        }),
+      );
+
+      return response;
+    } on DioException catch (dioError) {
+      return dioError.response;
+    } catch (error) {
+      return error;
+    }
   }
 
   @override

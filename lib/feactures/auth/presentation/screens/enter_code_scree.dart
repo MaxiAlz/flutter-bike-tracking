@@ -40,7 +40,7 @@ class EnterCodeScreen extends ConsumerWidget {
             const SizedBox(height: 20),
             InfoText(
                 subTitleStyle: subTitleStyle,
-                text: 'Escribe el codigo que recibiste por SMS a:'),
+                text: 'Escribe el codigo que recibiste por TELEGRAM a:'),
             const SizedBox(height: 10),
             Text(
               authForm.phoneNumber,

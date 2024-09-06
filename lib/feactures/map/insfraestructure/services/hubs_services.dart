@@ -8,7 +8,7 @@ class HubServices {
   Future<List<Hub>> getAvailableHubs() async {
     try {
       final apiResponse = await api.getHttp(path: '/estacion');
-      // Convertimos la respuesta JSON en una lista de hubs usando el método fromJson de la clase Hub
+
       if (apiResponse.statusCode == 200) {
         // Convertimos la respuesta JSON en una lista de hubs usando el método fromJson de la clase Hub
         final List<dynamic> hubDataList = apiResponse.data;

@@ -5,7 +5,22 @@ import 'package:app_ciudadano_vc/shared/infraestructure/share_infraestructure.da
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum TripStatus { pending, inProgress, notTravelling, failed, finished }
+enum TripStatus { pending, inProgress, notTravelling, failed, finished, denied }
+
+TripStatus _mapEstadoToTripStatus(String estado) {
+  switch (estado) {
+    case 'PENDIENTE':
+      return TripStatus.pending;
+    case 'EN_VIAJE':
+      return TripStatus.inProgress;
+    case 'FINALIZADO':
+      return TripStatus.finished;
+    case 'RECHAZADO':
+      return TripStatus.denied;
+    default:
+      return TripStatus.failed;
+  }
+}
 
 class TripData {
   final int viajeId;
@@ -33,25 +48,28 @@ class TripState {
   final bool isTripInProgress;
   final TripData? tripData;
   final String startTime;
+  final String errorMessage;
 
   TripState({
     this.tripData,
     this.tripStatus = TripStatus.notTravelling,
     this.isTripInProgress = false,
     this.startTime = '',
+    this.errorMessage = '',
   });
 
-  TripState copyWith({
-    TripStatus? tripStatus,
-    bool? isTripInProgress,
-    TripData? tripData,
-    String? startTime,
-  }) {
+  TripState copyWith(
+      {TripStatus? tripStatus,
+      bool? isTripInProgress,
+      TripData? tripData,
+      String? startTime,
+      String? errorMessage}) {
     return TripState(
       tripStatus: tripStatus ?? this.tripStatus,
       isTripInProgress: isTripInProgress ?? this.isTripInProgress,
       tripData: tripData ?? this.tripData,
       startTime: startTime ?? this.startTime,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
@@ -73,10 +91,24 @@ class TripNotifier extends StateNotifier<TripState> {
     state = state.copyWith(tripStatus: tripstatus);
   }
 
-  Future sendTripRequest({required String lockId, required int userId}) async {
+  Future requestFailed(
+      {required TripStatus tripstatus, required String errorMessage}) async {
+    state = state.copyWith(tripStatus: tripstatus, errorMessage: errorMessage);
+  }
+
+  Future setTripData(
+      {required String estadoViaje, required int viajeId}) async {
+    state = state.copyWith(
+      tripData: TripData(estado: estadoViaje, viajeId: viajeId),
+      tripStatus: _mapEstadoToTripStatus(estadoViaje),
+    );
+  }
+
+  Future sendTripRequest(
+      {required String trackerCodigo, required int userId}) async {
     try {
       final serviceResponse = await tripServices.sendTravelRequestService(
-        lockId: lockId,
+        trackerCodigo: trackerCodigo,
         userId: userId,
       );
 
@@ -91,7 +123,7 @@ class TripNotifier extends StateNotifier<TripState> {
           tripStatus: _mapEstadoToTripStatus(estadoViaje),
         );
 
-        _initializeSocket(channel: socketChanelTrip);
+        initializeSocket(channel: socketChanelTrip);
 
         return serviceResponse;
       }
@@ -114,20 +146,7 @@ class TripNotifier extends StateNotifier<TripState> {
     }
   }
 
-  TripStatus _mapEstadoToTripStatus(String estado) {
-    switch (estado) {
-      case 'PENDIENTE':
-        return TripStatus.pending;
-      case 'EN_VIAJE':
-        return TripStatus.inProgress;
-      case 'FINALIZADO':
-        return TripStatus.finished;
-      default:
-        return TripStatus.failed;
-    }
-  }
-
-  void _initializeSocket({required String channel}) {
+  void initializeSocket({required String channel}) {
     socket?.dispose();
     socket = SocketService(channel: channel);
     socket!.initialize();

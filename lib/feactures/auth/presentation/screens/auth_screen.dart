@@ -40,7 +40,7 @@ class AuthScreen extends ConsumerWidget {
             InfoText(
                 subTitleStyle: subTitleStyle,
                 text:
-                    'Te enviaremos un código por SMS para verificar tu número'),
+                    'Te enviaremos un código por TELEGRAM para verificar tu número'),
             const SizedBox(height: 10),
             _InputPhoneNumber(
               textController: textController,
@@ -122,7 +122,7 @@ class _InputPhoneNumber extends ConsumerWidget {
           return;
         }
 
-        if (serviceResponse.statusCode == 404) {
+        if (serviceResponse?.statusCode == 404) {
           ref.read(goRouterProvider).push('/register');
 
           notifyUserBySnackbar(

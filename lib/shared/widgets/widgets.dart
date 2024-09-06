@@ -1,3 +1,6 @@
+
+export 'package:app_ciudadano_vc/shared/widgets/screens/page_in_progress.dart';
+export 'package:app_ciudadano_vc/shared/widgets/notifications/check_permisions_view.dart';
 export 'package:app_ciudadano_vc/shared/widgets/modal/custom_dialog.dart';
 export 'package:app_ciudadano_vc/shared/widgets/buttons/custom_circular_button.dart';
 export 'package:app_ciudadano_vc/shared/infraestructure/masks/input_masks.dart';

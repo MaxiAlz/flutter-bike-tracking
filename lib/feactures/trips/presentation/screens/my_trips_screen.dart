@@ -1,5 +1,7 @@
+import 'package:app_ciudadano_vc/feactures/trips/presentation/providers/my_trips_provider.dart';
 import 'package:app_ciudadano_vc/shared/widgets/headers/custom_top_header.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MyTripsSCreen extends StatelessWidget {
   const MyTripsSCreen({super.key});
@@ -7,67 +9,71 @@ class MyTripsSCreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final subtitlesStyle = Theme.of(context).textTheme.titleMedium;
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(
-          color: Colors.white, // Color blanco para el icono de retroceso
+          color: Colors.white,
         ),
         centerTitle: true,
         backgroundColor: colors.primary,
-        title: Text(
-          'Mis viajes',
-          style: subtitlesStyle!.copyWith(fontSize: 18, color: Colors.white),
-        ),
       ),
-      body: const _BodyTripsInfo(),
+      body: const Column(
+        children: [
+          CustomTopHeader(
+            titleHeader: 'Mis viajes realizados',
+            icon: Icons.pedal_bike_outlined,
+          ),
+          _BodyTripsInfo(),
+        ],
+      ),
     );
   }
 }
 
-class _BodyTripsInfo extends StatelessWidget {
-  const _BodyTripsInfo({
-    super.key,
-  });
+class _BodyTripsInfo extends ConsumerWidget {
+  const _BodyTripsInfo();
 
   @override
-  Widget build(BuildContext context) {
-    return const SingleChildScrollView(
-      child: Center(
-        child: Column(children: [
-          CustomTopHeader(
-            titleHeader: 'Historial de viajes',
-            icon: Icons.pedal_bike_outlined,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: Column(
-              children: [
-                ListTile(
-                  title: Text(
-                    'Viaje: N° 1',
-                  ),
-                  leading: const Icon(Icons.directions_bike_rounded),
-                  subtitle: const Text('Nodo tecnologico - Plaza 25 de mayo'),
-                  trailing: Text('20/04/2024'),
-                  isThreeLine: false,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final myTripsData = ref.watch(myTripProvider);
+
+    return myTripsData.when(
+      data: (myTrips) => myTrips.items.isEmpty
+          ? const Center(child: Text('No hay viajes'))
+          : Expanded(
+              child: RefreshIndicator(
+                onRefresh: () => ref.refresh(myTripProvider.future),
+                child: ListView.builder(
+                  itemCount:
+                      myTrips.items.length, // +1 para incluir el encabezado
+                  itemBuilder: (context, index) {
+                    final viaje = myTrips.items[index];
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ListTile(
+                          title: Text('Viaje: N° ${viaje.id}'),
+                          leading: const Icon(Icons.directions_bike_rounded),
+                          subtitle: Row(
+                            children: [
+                              Text(viaje.estacionInicioNombre),
+                              const Icon(Icons.moving_rounded),
+                              Text(viaje.estacionFinalNombre ?? "En curso"),
+                            ],
+                          ),
+                          trailing: Text('Duración: ${viaje.duracion} min'),
+                          isThreeLine: false,
+                        ),
+                        const Divider(),
+                      ],
+                    );
+                  },
                 ),
-                Divider(),
-                ListTile(
-                  title: Text(
-                    'Viaje: 20/04/2024',
-                  ),
-                  leading: const Icon(Icons.directions_bike_rounded),
-                  subtitle: const Text('Nodo tecnologico - Plaza 25 de mayo'),
-                  // trailing: Text('20/04/2024'),
-                  isThreeLine: false,
-                ),
-                Divider(),
-              ],
+              ),
             ),
-          ),
-        ]),
-      ),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, stack) =>
+          Center(child: Text('Error al cargar viajes: $err')),
     );
   }
 }
