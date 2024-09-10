@@ -45,17 +45,21 @@ android {
         applicationId "com.example.app_ciudadano_vc"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion /* flutter.minSdkVersion */20
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        minSdkVersion 20/* flutter.minSdkVersion */
+        targetSdkVersion 34/* flutter.targetSdkVersion */
+        versionCode 1/* flutterVersionCode.toInteger() */
+        versionName "1.0"/* flutterVersionName */
     }
 
-    buildTypes {
+     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.debug  // Cambia por una firma de release si la tienes configurada
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    def newApkName = "new-vamo-en-bici.sdk"
+                    outputFileName = newApkName
+                }
+            }
         }
     }
 }
