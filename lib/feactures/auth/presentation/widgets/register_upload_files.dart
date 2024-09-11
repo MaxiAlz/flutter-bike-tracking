@@ -2,9 +2,11 @@ import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/files_register_form_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/register_form_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/infraestructure/service/register_service.dart';
+import 'package:app_ciudadano_vc/shared/infraestructure/share_infraestructure.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toastification/toastification.dart';
 
 // final isLoadingProvider = StateProvider.autoDispose<bool>((ref) {
 //   return false;
@@ -28,11 +30,10 @@ class UploadFiles extends ConsumerWidget {
 }
 
 class _UploadFilesView extends ConsumerWidget {
-  final MaterialStatesController photoFacePathController =
-      MaterialStatesController();
-  static MaterialStatesController photonDinFrontPath =
-      MaterialStatesController();
-  final MaterialStatesController photoDniBackPath = MaterialStatesController();
+  final WidgetStatesController photoFacePathController =
+      WidgetStatesController();
+  static WidgetStatesController photonDinFrontPath = WidgetStatesController();
+  final WidgetStatesController photoDniBackPath = WidgetStatesController();
 
   _UploadFilesView({
     required this.titleStyle,
@@ -48,11 +49,12 @@ class _UploadFilesView extends ConsumerWidget {
     final fileRegisterForm = ref.watch(filesRegisterFormProvider);
     final routerProvider = ref.watch(goRouterProvider);
     final isLoading = ref.watch(isLoadingProvider);
+    final toastification = ToastificationService();
 
     final RegisterServices registerService = RegisterServices();
 
     final buttonStyles = ButtonStyle(
-      minimumSize: MaterialStateProperty.all<Size>(const Size(300, 50)),
+      minimumSize: WidgetStateProperty.all<Size>(const Size(300, 50)),
     );
     const textStylesButton =
         TextStyle(fontWeight: FontWeight.normal, fontSize: 20);
@@ -65,20 +67,19 @@ class _UploadFilesView extends ConsumerWidget {
             files: fileRegisterForm, userData: registerForm);
 
         if (serviceResponse.statusCode == 201) {
-          ShowCustomSnackbar().show(
-              context: context,
-              label: '¡Registro exitoso!',
-              color: Colors.green);
-          routerProvider.push('/auth');
-          // context.push(location)
+          toastification.showSuccesToast(
+              title: 'Registro Exitoso',
+              message: 'Ingresa nuevamente tu numero para ingresar al sistema',
+              style: ToastificationStyle.fillColored,
+              autoCloseDuration: 20);
         }
       } catch (e) {
-        ShowCustomSnackbar().show(
-            context: context, label: 'Error al registrarse', color: Colors.red);
+        toastification.showErrorToast(
+            message: 'No se pudo registrar el usuario, pruebe mas tarde, $e');
         Exception(e);
       } finally {
-        ref.read(goRouterProvider).push('/auth');
-        ref.watch(isLoadingProvider.notifier).update((state) => true);
+        routerProvider.push('/auth');
+        ref.watch(isLoadingProvider.notifier).update((state) => false);
       }
     }
 

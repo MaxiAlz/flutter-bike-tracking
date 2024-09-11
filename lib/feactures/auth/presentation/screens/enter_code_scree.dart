@@ -5,7 +5,6 @@ import 'package:app_ciudadano_vc/feactures/auth/presentation/widgets/Info_text.d
 import 'package:app_ciudadano_vc/shared/infraestructure/share_infraestructure.dart';
 import 'package:app_ciudadano_vc/shared/providers/loading_provider.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
-import 'package:app_ciudadano_vc/shared/widgets/notifications/show_snackbar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -72,11 +71,10 @@ class _InputVerificationCode extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-
     final maskFormated = InputMaskFormated();
     final subTitleStyle = Theme.of(context).textTheme.titleMedium;
     final isloading = ref.watch(isLoadingProvider);
-    
+    final toastification = ToastificationService();
     Future submitPhoneAndCode() async {
       ref.read(isLoadingProvider.notifier).update((state) => true);
 
@@ -92,26 +90,18 @@ class _InputVerificationCode extends ConsumerWidget {
             .loginUser(phoneNumber: phoneNumber, code: codeUnmasked);
 
         if (serviceResponse.statusCode == 400) {
-          // ignore: use_build_context_synchronously
-          ShowCustomSnackbar().show(
-              context: context,
-              label: 'Credenciales Invalidas',
-              color: Colors.red);
+          toastification.showErrorToast(message: 'Credenciales Invalidas');
+
           return;
         }
         if (serviceResponse.statusCode == 201) {
-          // ShowCustomSnackbar().show(
-          //     context: context, label: 'Bienvenido', color: Colors.lightBlue);
           ref.read(goRouterProvider).push('/');
-          // ignore: use_build_context_synchronously
           return serviceResponse;
         }
 
         return serviceResponse;
       } on DioException catch (e) {
-        // ignore: use_build_context_synchronously
-        ShowCustomSnackbar().show(
-            context: context, label: 'Ah ocurrido un error', color: Colors.red);
+        toastification.showErrorToast();
 
         return e.response;
       } finally {

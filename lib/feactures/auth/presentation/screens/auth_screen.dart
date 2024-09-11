@@ -2,10 +2,9 @@ import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_form_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/widgets/info_text.dart';
-import 'package:app_ciudadano_vc/shared/infraestructure/masks/input_masks.dart';
+import 'package:app_ciudadano_vc/shared/infraestructure/share_infraestructure.dart';
 import 'package:app_ciudadano_vc/shared/widgets/buttons/custom_filled_button.dart';
 import 'package:app_ciudadano_vc/shared/widgets/loaders/full_loader.dart';
-import 'package:app_ciudadano_vc/shared/widgets/notifications/show_snackbar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +14,8 @@ class AuthScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final titleStyle = Theme.of(context).textTheme.titleLarge;
+    final textStiles = Theme.of(context).textTheme;
     final subTitleStyle = Theme.of(context).textTheme.titleMedium;
-
     final textController = TextEditingController();
     final focusNode = FocusNode();
 
@@ -33,7 +31,7 @@ class AuthScreen extends ConsumerWidget {
             ),
             Text(
               'Iniciar sesion',
-              style: titleStyle,
+              style: textStiles.titleLarge,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
@@ -49,21 +47,18 @@ class AuthScreen extends ConsumerWidget {
 
             // _SendPhoneNumberButton(focusNode: focusNode),
             const SizedBox(height: 40),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('¿ No tienes cuenta ?'),
-                TextButton(
-                  onPressed: () {
-                    ref.read(goRouterProvider).push('/register');
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'Registrarse',
-                    style: subTitleStyle!.copyWith(
-                      decoration: TextDecoration.underline,
-                    ),
+                    'Ingresa tu numero de telefono y se iniciara automatiamente el proceso',
+                    textAlign: TextAlign.center,
+                    style: textStiles.bodySmall,
                   ),
-                ),
+                )
               ],
             )
           ],
@@ -92,22 +87,14 @@ class _InputPhoneNumber extends ConsumerWidget {
 
     final isloading = ref.watch(isLoadingProvider);
 
+    final toastification = ToastificationService();
+
     textController.addListener(() {
       // Si el usuario borra todo el texto, vacía el campo de entrada.
       if (textController.text.isEmpty) {
         textController.clear();
       }
     });
-
-    notifyUserBySnackbar({required String label, required Color color}) {
-      return Center(
-        child: ShowCustomSnackbar().show(
-          context: context,
-          label: label,
-          color: color,
-        ),
-      );
-    }
 
     Future onPressSendPhone() async {
       ref.read(isLoadingProvider.notifier).update((state) => true);
@@ -125,14 +112,14 @@ class _InputPhoneNumber extends ConsumerWidget {
         if (serviceResponse?.statusCode == 404) {
           ref.read(goRouterProvider).push('/register');
 
-          notifyUserBySnackbar(
-              label: 'No se encontro un usuario con este numero',
-              color: Colors.lightBlue);
+          toastification.showInfoToast(
+              title: 'Este numero no esta registrado',
+              message: 'Cree una cuenta para acceder al servicio');
 
           return;
         }
       } on DioException catch (error) {
-        notifyUserBySnackbar(label: 'Ah ocurrido un error', color: Colors.red);
+        toastification.showErrorToast(title: 'Error inesperado');
         return error;
       } finally {
         ref.read(isLoadingProvider.notifier).update((state) => false);
