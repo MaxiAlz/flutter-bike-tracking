@@ -10,17 +10,16 @@ class PageInProgress extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final titlesStyle = Theme.of(context);
-    // final tripProvider = ref.watch(tripNotifierProvider);
+    final router = ref.read(goRouterProvider);
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: titlesStyle.primaryColor,
+        // backgroundColor: titlesStyle.primaryColor,
         iconTheme: const IconThemeData(
           color: Colors.white, // Color blanco para el icono de retroceso
         ),
       ),
-      body: Expanded(
-          child: Column(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
@@ -61,10 +60,10 @@ class PageInProgress extends ConsumerWidget {
           CustomFilledButtom(
               text: 'Volver a home',
               onPressed: () async {
-                ref.read(goRouterProvider).go('/');
+                router.go('/');
               })
         ],
-      )),
+      ),
     );
   }
 }
