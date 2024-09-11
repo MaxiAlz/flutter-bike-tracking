@@ -27,16 +27,16 @@ const appMenuItems = <MenuItems>[
   MenuItems(
       title: 'Historial de reportes',
       subtittle: 'Mis reportes ciudadanos.',
-      link: '/404',
+      link: '/not-found',
       icon: Icons.report_outlined),
   MenuItems(
       title: 'Terminos y condiciones',
       subtittle: '',
-      link: '/404',
+      link: '/not-found',
       icon: Icons.comment_bank_outlined),
   MenuItems(
       title: 'Ayuda',
       subtittle: '',
-      link: '/404',
+      link: '/not-found',
       icon: Icons.help_outline_outlined),
 ];

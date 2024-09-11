@@ -14,4 +14,4 @@ export 'package:app_ciudadano_vc/shared/widgets/headers/custom_top_header.dart';
 export 'package:app_ciudadano_vc/shared/widgets/inputs/custom_text_input.dart';
 export 'package:app_ciudadano_vc/shared/widgets/inputs/text_form_field.dart';
 export 'package:app_ciudadano_vc/shared/widgets/loaders/full_loader.dart';
-export 'package:app_ciudadano_vc/shared/widgets/notifications/show_snackbar.dart';
+
