@@ -3,8 +3,8 @@ import 'package:app_ciudadano_vc/feactures/auth/domain/entities/auth_status.dart
 import 'package:app_ciudadano_vc/feactures/auth/domain/entities/user.dart';
 import 'package:app_ciudadano_vc/feactures/auth/infraestructure/mappers/user_mapper.dart';
 import 'package:app_ciudadano_vc/feactures/auth/infraestructure/service/auth_service.dart';
-import 'package:app_ciudadano_vc/shared/infraestructure/services/shared_preferences/key_value_storage_impl.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/services/shared_preferences/key_value_storage_service.dart';
+import 'package:app_ciudadano_vc/shared/infraestructure/share_infraestructure.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,11 +12,14 @@ final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authServices = AuthServices();
   final setKeyValue = KeyValueStorageImpl();
   final appConstants = AppConstants();
+  final toastification = ToastificationService();
 
   return AuthNotifier(
-      authService: authServices,
-      keyValueStorage: setKeyValue,
-      appConstants: appConstants);
+    authService: authServices,
+    keyValueStorage: setKeyValue,
+    appConstants: appConstants,
+    toastification: toastification,
+  );
 });
 
 class AuthState {
@@ -47,11 +50,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
   final AuthServices authService;
   final KeyValueStorageService keyValueStorage;
   final AppConstants appConstants;
+  final ToastificationService toastification;
 
   AuthNotifier({
     required this.authService,
     required this.keyValueStorage,
     required this.appConstants,
+    required this.toastification,
   }) : super(AuthState()) {
     checkAuthStatus();
   }
@@ -75,9 +80,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = state.copyWith(authStatus: AuthStatus.error);
         return;
       }
-
       return serviceResponse;
     } on DioException catch (error) {
+      toastification.showErrorToast(message: error.message);
       return error;
     }
   }
