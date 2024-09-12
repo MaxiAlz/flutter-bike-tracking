@@ -19,7 +19,7 @@ class CheckAuthStatus extends ConsumerWidget {
         children: [
           Flash(
             curve: Curves.linear,
-            duration: Duration(milliseconds: 4000),
+            duration: const Duration(milliseconds: 4000),
             infinite: true,
             child: Image.asset(
               'assets/images/vamos-en-bici-01.png',
