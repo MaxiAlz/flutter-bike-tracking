@@ -13,6 +13,7 @@ class ToastificationService {
     toastification.show(
       type: ToastificationType.success,
       style: style ?? ToastificationStyle.flatColored,
+      autoCloseDuration: Duration(seconds: autoCloseDuration ?? 6),
       title: Text(title ?? "Exito"),
       description: Text(message ?? "Accion exitosa"),
       alignment: Alignment.topCenter,

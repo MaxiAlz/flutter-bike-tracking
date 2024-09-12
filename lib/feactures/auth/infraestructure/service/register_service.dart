@@ -1,13 +1,18 @@
 import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:app_ciudadano_vc/feactures/auth/domain/auth_domain.dart';
+import 'package:app_ciudadano_vc/shared/infraestructure/services/toast_alerts/toastification.dart';
 import 'package:dio/dio.dart';
 
 final Dio dio = Dio(BaseOptions(baseUrl: Enviroments.apiUrl));
 final Dio dioUpdate = Dio(BaseOptions(baseUrl: Enviroments.apiUrlUpdate));
 
 class RegisterServices extends RegisterServiceDomain {
+  final toasttification = ToastificationService();
   @override
   Future registerUser({required files, required userData}) async {
+    toasttification.showInfoToast(
+        message: 'Se subiran los archivos y se creara un usuario',
+        title: 'Proceso de registro iniciado');
     List<Map<String, dynamic>> responsesUrls = [];
 
     Map<String, dynamic> filteredFiles = {
@@ -21,7 +26,13 @@ class RegisterServices extends RegisterServiceDomain {
       try {
         final response = await _uploadFile(filePath);
         responsesUrls.add(response.data);
+        toasttification.showSuccesToast(
+            message:
+                '${responsesUrls.length}  de ${filteredFiles.values.length} archivos subidos');
       } catch (e) {
+        toasttification.showErrorToast(
+            message:
+                '${responsesUrls.length}  de ${filePath.length} archivos subidos');
         rethrow;
       }
     }
@@ -41,11 +52,14 @@ class RegisterServices extends RegisterServiceDomain {
     };
 
     try {
+      toasttification.showInfoToast(
+        title: 'Creando usuario',
+        message: 'solicitud en proceso',
+      );
       final response = await dio.post("/auth/registro", data: requestBody);
-
       return response;
-    } catch (e) {
-      Exception(e);
+    } on DioException catch (error) {
+      return error.response;
     }
   }
 

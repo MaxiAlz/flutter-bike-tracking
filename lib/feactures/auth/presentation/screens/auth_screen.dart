@@ -115,7 +115,6 @@ class _InputPhoneNumber extends ConsumerWidget {
           toastification.showInfoToast(
               title: 'Este numero no esta registrado',
               message: 'Cree una cuenta para acceder al servicio');
-
           return;
         }
       } on DioException catch (error) {
