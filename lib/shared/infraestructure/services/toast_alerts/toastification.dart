@@ -7,14 +7,15 @@ class ToastificationService {
   void showSuccesToast({
     String? message,
     String? title,
+    ToastificationStyle? style,
+    int? autoCloseDuration,
   }) {
     toastification.show(
       type: ToastificationType.success,
-      style: ToastificationStyle.flatColored,
+      style: style ?? ToastificationStyle.flatColored,
       title: Text(title ?? "Exito"),
       description: Text(message ?? "Accion exitosa"),
       alignment: Alignment.topCenter,
-      autoCloseDuration: const Duration(seconds: 6),
       boxShadow: lowModeShadow,
       dragToClose: true,
     );
@@ -23,14 +24,16 @@ class ToastificationService {
   void showErrorToast({
     String? message,
     String? title,
+    ToastificationStyle? style,
+    int? autoCloseDuration,
   }) {
     toastification.show(
       type: ToastificationType.error,
-      style: ToastificationStyle.flatColored,
+      style: style ?? ToastificationStyle.flatColored,
+      autoCloseDuration: Duration(seconds: autoCloseDuration ?? 6),
       title: Text(title ?? "Error"),
-      description: Text(message ?? "Ah ocurrido un error,Pruebe mas tarde"),
+      description: Text(message ?? "Pruebe mas tarde"),
       alignment: Alignment.topCenter,
-      autoCloseDuration: const Duration(seconds: 6),
       boxShadow: lowModeShadow,
       dragToClose: true,
     );
@@ -39,14 +42,16 @@ class ToastificationService {
   void showInfoToast({
     String? message,
     String? title,
+    ToastificationStyle? style,
+    int? autoCloseDuration,
   }) {
     toastification.show(
       type: ToastificationType.info,
-      style: ToastificationStyle.flatColored,
+      style: style ?? ToastificationStyle.flatColored,
+      autoCloseDuration: Duration(seconds: autoCloseDuration ?? 6),
       title: Text(title ?? "Info"),
       description: Text(message ?? "Presta atencion a esta alerta"),
       alignment: Alignment.topCenter,
-      autoCloseDuration: const Duration(seconds: 4),
       boxShadow: lowModeShadow,
       dragToClose: true,
     );

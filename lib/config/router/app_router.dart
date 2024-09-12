@@ -76,8 +76,9 @@ final goRouterProvider = Provider((ref) {
         builder: (context, state) => const TripTrackingScreen(),
       ),
       GoRoute(
-        path: '/404',
-        builder: (context, state) => const PageInProgress(),
+        path: '/not-found',
+        builder: (context, state) =>
+            const /* CheckPermissionsView() */ PageInProgress(),
       ),
     ],
     redirect: (context, state) {

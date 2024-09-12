@@ -1,5 +1,6 @@
 import 'package:app_ciudadano_vc/config/config.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/auth_presentation.dart';
+import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/auth_form_provider.dart';
 import 'package:app_ciudadano_vc/feactures/auth/presentation/providers/register_form_provider.dart';
 import 'package:app_ciudadano_vc/shared/infraestructure/masks/input_masks.dart';
 import 'package:app_ciudadano_vc/shared/widgets/widgets.dart';
@@ -38,6 +39,7 @@ class PersonalInformationForm extends ConsumerWidget {
     final colors = Theme.of(context).colorScheme;
     final maskFormated = InputMaskFormated();
     final titleStyle = Theme.of(context).textTheme.titleLarge;
+    final phoneNumber = ref.watch(authFormProvider).phoneNumber;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -82,7 +84,9 @@ class PersonalInformationForm extends ConsumerWidget {
                     },
                   ),
                   VBCustomTextInput(
-                    controller: phoneNumberController,
+                    // controller: phoneNumberController,
+                    isEnabled: false,
+                    initialValue: phoneNumber,
                     inputFormatters: [
                       maskFormated.getMask(maskType: MaskType.phoneNumberMask)
                       // InputMaskFormated.getMask(
@@ -102,17 +106,12 @@ class PersonalInformationForm extends ConsumerWidget {
                     hintText: 'Correo electronico',
                     labelText: 'Correo electronico',
                     keyboardType: TextInputType.emailAddress,
-                    // errorMessage: registerForm.lastName.errorMessage,
-                    onSaved: (value) {
-                      // ref.read(registerFormProvider.notifier).onEmailChange;
-                    },
+                    onSaved: (value) {},
                     validator: (value) {
                       if (value!.isEmpty) return "Campo requerido";
                       if (!isValidEmail(value)) return "Formato invalido";
                       return null;
                     },
-                    // onChanged:
-                    //     ref.read(registerFormProvider.notifier).onEmailChange,
                   ),
                   VBCustomTextInput(
                     controller: dniController,
@@ -122,11 +121,7 @@ class PersonalInformationForm extends ConsumerWidget {
                     hintText: '12.345.678',
                     labelText: 'DNI',
                     keyboardType: TextInputType.phone,
-                    onSaved: (value) {
-                      // ref
-                      //     .read(registerFormProvider.notifier)
-                      //     .onIdentificationNumberChange;
-                    },
+                    onSaved: (value) {},
                     validator: (value) {
                       if (value!.isEmpty) return "Campo requerido";
                       return null;
@@ -140,11 +135,7 @@ class PersonalInformationForm extends ConsumerWidget {
                     inputFormatters: [
                       maskFormated.getMask(maskType: MaskType.dateOfBirthMask)
                     ],
-                    onSaved: (newValue) {
-                      // ref
-                      //     .read(registerFormProvider.notifier)
-                      //     .onDateOfBirthChange;
-                    },
+                    onSaved: (newValue) {},
                     validator: (value) {
                       if (value!.isEmpty) return "Campo requerido";
                       return null;
@@ -216,14 +207,14 @@ class PersonalInformationForm extends ConsumerWidget {
                                         maskType: MaskType.dniMask),
                                 phoneNumberUnmasked:
                                     maskFormated.getUnmaskedValue(
-                                        maskedValue: phoneNumberController.text,
+                                        maskedValue: phoneNumber,
                                         maskType: MaskType.phoneNumberMask),
                                 name: nameController.text,
                                 lastName: lastNameController.text,
                                 email: emailController.text,
                                 dateOfBirth: dateOfBirthController.text,
                                 identificationNumber: dniController.text,
-                                phoneNumber: phoneNumberController.text,
+                                phoneNumber: phoneNumber,
                                 gender: gender as String,
                               );
                           ref.read(goRouterProvider).push('/file-register');

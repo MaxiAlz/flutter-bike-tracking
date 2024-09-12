@@ -26,37 +26,35 @@ class TripEnded extends ConsumerWidget {
       // setUserWitoutTrip
     }
 
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-              child: Image.asset(
-            'assets/images/vamos-en-bici-01.png',
-          )),
-          const SizedBox(
-            height: 30,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+            child: Image.asset(
+          'assets/images/vamos-en-bici-01.png',
+        )),
+        const SizedBox(
+          height: 30,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Text('¡Tu viaje ha finalizado! ',
+              style: titlesStyles.titleLarge, textAlign: TextAlign.center),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            'Esperamos que hayas disfrutado tu paseo por la ciudad, te esperamos pronto',
+            style: titlesStyles.bodyMedium,
+            textAlign: TextAlign.center,
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Text('¡Tu viaje ha finalizado! ',
-                style: titlesStyles.titleLarge, textAlign: TextAlign.center),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              'Esperamos que hayas disfrutado tu paseo por la ciudad, te esperamos pronto',
-              style: titlesStyles.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          CustomFilledButtom(text: 'Volver a home', onPressed: clearTripData)
-        ],
-      ),
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        CustomFilledButtom(text: 'Volver a home', onPressed: clearTripData)
+      ],
     );
   }
 }

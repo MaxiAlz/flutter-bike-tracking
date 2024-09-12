@@ -3,6 +3,7 @@ import 'package:app_ciudadano_vc/feactures/auth/domain/auth_domain.dart';
 import 'package:dio/dio.dart';
 
 final Dio dio = Dio(BaseOptions(baseUrl: Enviroments.apiUrl));
+final Dio dioUpdate = Dio(BaseOptions(baseUrl: Enviroments.apiUrlUpdate));
 
 class RegisterServices extends RegisterServiceDomain {
   @override
@@ -17,8 +18,12 @@ class RegisterServices extends RegisterServiceDomain {
 
     // Enviar archivos uno por uno
     for (String filePath in filteredFiles.values) {
-      final response = await _uploadFile(filePath);
-      responsesUrls.add(response.data);
+      try {
+        final response = await _uploadFile(filePath);
+        responsesUrls.add(response.data);
+      } catch (e) {
+        rethrow;
+      }
     }
 
     // Ensamblar datos del usuario y las URLs de las fotos
@@ -49,7 +54,7 @@ class RegisterServices extends RegisterServiceDomain {
       FormData formData = FormData.fromMap({
         "file": await MultipartFile.fromFile(filePath, filename: "file"),
       });
-      final response = await dio.post("/upload", data: formData);
+      final response = await dioUpdate.post("/upload", data: formData);
       return response;
     } catch (e) {
       Exception(e);

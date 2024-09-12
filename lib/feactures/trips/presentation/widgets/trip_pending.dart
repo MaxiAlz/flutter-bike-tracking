@@ -10,34 +10,32 @@ class TripPending extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final titlesStyles = Theme.of(context).textTheme;
     final tripProvider = ref.watch(tripNotifierProvider).tripData;
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(
-            child: FullLoader(
-              label: 'Esperando aprobacion',
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(
+          child: FullLoader(
+            label: 'Esperando aprobacion',
           ),
-          const SizedBox(
-            height: 30,
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Text('Un agente debe aceptar tu viaje ',
+              style: titlesStyles.titleLarge, textAlign: TextAlign.center),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            'El identificador de tu viaje es el  N°: ${tripProvider?.viajeId}. Aguarda a que un agente a cargo inicie tu viaje',
+            style: titlesStyles.bodyMedium,
+            textAlign: TextAlign.center,
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Text('Un agente debe aceptar tu viaje ',
-                style: titlesStyles.titleLarge, textAlign: TextAlign.center),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              'El identificador de tu viaje es el  N°: ${tripProvider?.viajeId}. Aguarda a que un agente a cargo inicie tu viaje',
-              style: titlesStyles.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -14,6 +14,8 @@ class VBCustomTextInput extends StatelessWidget {
   final String? errorMessage;
   final String? Function(String?)? validator;
   final Function(String?)? onSaved;
+  final String? initialValue;
+  final bool? isEnabled;
 
   const VBCustomTextInput({
     super.key,
@@ -24,9 +26,11 @@ class VBCustomTextInput extends StatelessWidget {
     this.keyboardType,
     this.onChanged,
     this.validator,
+    this.initialValue,
     this.errorMessage,
     this.controller,
     this.focusNode,
+    this.isEnabled,
     this.onEditingComplete,
     this.onSaved,
   });
@@ -44,8 +48,10 @@ class VBCustomTextInput extends StatelessWidget {
           focusNode: focusNode,
           onChanged: onChanged,
           validator: validator,
+          initialValue: initialValue,
           onEditingComplete: onEditingComplete,
           inputFormatters: inputFormatters,
+          enabled: isEnabled,
           decoration: InputDecoration(
               errorText: errorMessage,
               errorBorder: const OutlineInputBorder(
