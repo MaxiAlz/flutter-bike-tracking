@@ -6,10 +6,14 @@ Developer: Maximiliano Alzugaray
 
 ## ScreenShots:
 
-![Captura de pantalla de la aplicación](assets/screenshots/Screenshot_2024-09-28-16-45-15-495_com.example.app_ciudadano_vc.jpg)
-![Captura de pantalla de la aplicación](assets/screenshots/Screenshot_2024-09-29-16-27-06-346_com.example.app_ciudadano_vc.jpg)
-![Captura de pantalla de la aplicación](assets/screenshots/Screenshot_2024-09-29-16-27-00-201_com.example.app_ciudadano_vc.jpg)
-![Captura de pantalla de la aplicación](assets/screenshots/Screenshot_2024-09-29-16-26-49-938_com.example.app_ciudadano_vc.jpg)
+<img src="assets/screenshots/Screenshot_2024-09-28-16-45-15-495_com.example.app_ciudadano_vc.jpg" alt="Descripción de la imagen" width="400"/>
+
+<img src="assets/screenshots/Screenshot_2024-09-29-16-27-06-346_com.example.app_ciudadano_vc.jpg" alt="Descripción de la imagen" width="400"/>
+
+<img src="assets/screenshots/Screenshot_2024-09-29-16-27-00-201_com.example.app_ciudadano_vc.jpg" alt="Descripción de la imagen" width="400"/>
+
+<img src="assets/screenshots/Screenshot_2024-09-29-16-26-49-938_com.example.app_ciudadano_vc.jpg" alt="Descripción de la imagen" width="400"/>
+
 
 ## Descipcion
 
